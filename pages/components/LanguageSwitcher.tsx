@@ -1,20 +1,17 @@
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-
-export default function LanguageSwitcher() {
+import { useRouter } from "next/router";
+export function LanguageSwitcher() {
   const router = useRouter();
-  const { pathname, asPath, query } = router;
-  const locale = router.locale || 'th';
-
+  const { locale, asPath } = router;
   return (
-    <div style={{ marginBottom: 24 }}>
-      <Link href={asPath} locale="th">
-        <button disabled={locale === 'th'}>ไทย</button>
-      </Link>
-      {' | '}
-      <Link href={asPath} locale="en">
-        <button disabled={locale === 'en'}>English</button>
-      </Link>
+    <div style={{ marginTop: 24 }}>
+      <button
+        disabled={locale === "en"}
+        onClick={() => router.push(asPath, asPath, { locale: "en" })}
+      >EN</button>
+      <button
+        disabled={locale === "th"}
+        onClick={() => router.push(asPath, asPath, { locale: "th" })}
+      >TH</button>
     </div>
   );
 }

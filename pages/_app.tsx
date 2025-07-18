@@ -1,14 +1,15 @@
+import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { NextIntlProvider } from 'next-intl';
-import '../styles/globals.css';
+import { useRouter } from 'next/router';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-  // ถ้าไม่มี messages ให้แสดงหน้าว่าง (กัน error)
+  const { locale, defaultLocale } = useRouter();
   return (
     <NextIntlProvider
-      locale={pageProps.locale}
+      locale={locale}
       messages={pageProps.messages}
-      timeZone="Asia/Bangkok"
+      defaultLocale={defaultLocale}
     >
       <Component {...pageProps} />
     </NextIntlProvider>
