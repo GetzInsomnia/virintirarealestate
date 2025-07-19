@@ -267,9 +267,6 @@
 }
 
 /* Global font logic */
-body[lang="th"] {
-  font-family: "Prompt", sans-serif;
-}
-body[lang="en"] {
-  font-family: "Inter", sans-serif;
+html, body {
+  font-family: 'Prompt', 'Inter', sans-serif;
 }

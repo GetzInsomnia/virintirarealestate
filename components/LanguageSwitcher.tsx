@@ -2,14 +2,12 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 export function LanguageSwitcher() {
-  const router = useRouter();
-  const { pathname, asPath, query, locale } = router;
-
+  const { asPath, locale } = useRouter();
   return (
-    <div style={{ display: "flex", gap: 12 }}>
+    <div>
       <Link href={asPath} locale="th">
         <button disabled={locale === "th"}>ไทย</button>
-      </Link>
+      </Link>{" "}
       <Link href={asPath} locale="en">
         <button disabled={locale === "en"}>English</button>
       </Link>

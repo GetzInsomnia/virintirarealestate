@@ -12,7 +12,7 @@ export default function Custom404() {
       </Head>
       <div style={{ textAlign: "center", marginTop: "2rem" }}>
         <h1>404</h1>
-        <p>{t("notFound") || "Not Found"}</p>
+        <p>{t("notFound")}</p>
       </div>
     </>
   );

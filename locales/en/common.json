@@ -1,9 +1,6 @@
 {
-  "seo_404_title": "404 Not Found | Virintira",
-  "seo_404_description": "Sorry, the page was not found.",
-  "not_found": "Sorry, this page could not be found.",
-  "seo_title": "Virintira | Accounting & Business (EN)",
-  "seo_description": "Accounting and business services in English.",
-  "lang": "en",
-  "welcome": "Welcome!"
+  "welcome": "Welcome! This is the English homepage.",
+  "seo_title": "Accounting Firm | English",
+  "seo_description": "Multilingual accounting firm (English)",
+  "notFound": "Page not found"
 }
