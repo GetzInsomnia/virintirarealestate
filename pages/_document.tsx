@@ -22,10 +22,11 @@ class MyDocument extends Document<MyDocumentProps> {
   }
 
   render() {
-    const locale =
-      this.props.locale ?? this.props.__NEXT_DATA__.locale ?? 'th';
+    // Determine the language for the <Html> tag so our CSS selectors
+    // (e.g. html[lang="en"]) can apply the correct font family.
+    const lang = this.props.locale ?? this.props.__NEXT_DATA__.locale ?? 'th';
     return (
-      <Html lang={locale}>
+      <Html lang={lang}>
         <Head>
           {/* Preload font (ตัวอย่าง) */}
           <link
