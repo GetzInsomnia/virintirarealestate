@@ -1,15 +1,19 @@
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import Head from "next/head";
+import { NextSeo } from "next-seo";
+import { useRouter } from "next/router";
 import { GetStaticProps } from "next";
 
 export default function Custom404() {
   const { t } = useTranslation("common");
+  const { locale } = useRouter();
+  const ogLocale = locale === "en" ? "en_US" : "th_TH";
   return (
     <>
-      <Head>
-        <title>404 - {t("seo_title")}</title>
-      </Head>
+      <NextSeo
+        title={`404 - ${t("seo_title")}`}
+        openGraph={{ locale: ogLocale }}
+      />
       <div style={{ textAlign: "center", marginTop: "2rem" }}>
         <h1>404</h1>
         <p>{t("notFound")}</p>
