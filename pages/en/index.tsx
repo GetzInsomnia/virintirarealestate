@@ -1,5 +1,5 @@
-import Head from "next/head";
 import { useTranslations } from "next-intl";
+import Head from "next/head";
 import { LanguageSwitcher } from "../../components/LanguageSwitcher";
 export { getStaticProps } from "../../lib/getStaticProps";
 
@@ -10,7 +10,8 @@ export default function Home() {
       <Head>
         <title>{t("seo_title")}</title>
         <meta name="description" content={t("seo_description")} />
-        <html lang={t("lang")} />
+        <meta property="og:title" content={t("seo_title")} />
+        <meta property="og:description" content={t("seo_description")} />
       </Head>
       <main>
         <LanguageSwitcher />
