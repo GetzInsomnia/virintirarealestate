@@ -12,12 +12,11 @@ interface MyDocumentProps extends DocumentProps {
 }
 class MyDocument extends Document<MyDocumentProps> {
   static async getInitialProps(ctx: DocumentContext) {
-    const initialProps = (await Document.getInitialProps(
-      ctx
-    )) as DocumentProps;
+    const initialProps = (await Document.getInitialProps(ctx)) as DocumentProps;
+    const lang = (ctx.query?.lang as string) || 'th';
     return {
       ...initialProps,
-      locale: ctx.locale || initialProps.__NEXT_DATA__.locale || 'th',
+      locale: lang,
     };
   }
 
