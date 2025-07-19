@@ -1,7 +1,9 @@
 // next-seo.config.js
+// Default SEO configuration shared across all pages.
+// Individual pages should extend these options via the `NextSeo` component.
 const config = {
-  title: "Virintira | Accounting & Business",
-  description: "Multilingual accounting partner.",
+  defaultTitle: 'Virintira | Accounting & Business',
+  description: 'Multilingual accounting partner.',
   openGraph: {
     type: 'website',
     locale: 'th_TH',
