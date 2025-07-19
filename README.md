@@ -14,12 +14,23 @@ Install dependencies:
 npm install
 ```
 
+Run the above command before executing `npm run dev`, `npm run build`,
+or `npm run lint`. These scripts require all dependencies to be installed.
+
 ## Development
 
 Start a development server with hot reload:
 
 ```bash
 npm run dev
+```
+
+## Linting
+
+Check code quality using ESLint:
+
+```bash
+npm run lint
 ```
 
 ## Production
