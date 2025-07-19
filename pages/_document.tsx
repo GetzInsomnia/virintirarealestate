@@ -16,14 +16,14 @@ class MyDocument extends Document<{ locale: string }> {
           {/* Preload font (ตัวอย่าง) */}
           <link
             rel="preload"
-            href="/fonts/Prompt-Regular.ttf"
+            href="/fonts/Prompt/Prompt-Regular.ttf"
             as="font"
             type="font/ttf"
             crossOrigin="anonymous"
           />
           <link
             rel="preload"
-            href="/fonts/Inter-Regular.ttf"
+            href="/fonts/Inter/Inter-Regular.ttf"
             as="font"
             type="font/ttf"
             crossOrigin="anonymous"
