@@ -1,5 +1,5 @@
-import { useTranslations } from "next-intl";
 import Head from "next/head";
+import { useTranslations } from "next-intl";
 import { LanguageSwitcher } from "../../components/LanguageSwitcher";
 export { getStaticProps } from "../../lib/getStaticProps";
 
@@ -10,10 +10,11 @@ export default function Home() {
       <Head>
         <title>{t("seo_title")}</title>
         <meta name="description" content={t("seo_description")} />
+        <html lang={t("lang")} />
       </Head>
       <main>
-        <h1>{t("welcome")}</h1>
         <LanguageSwitcher />
+        <h1>{t("welcome")}</h1>
       </main>
     </>
   );

@@ -1,5 +1,9 @@
 {
-  "welcome": "Welcome to Virintira",
-  "seo_title": "Virintira | Accounting & Business",
-  "seo_description": "Multilingual accounting partner. Tax, audit, company setup, and more."
+  "seo_404_title": "404 Not Found | Virintira",
+  "seo_404_description": "Sorry, the page was not found.",
+  "not_found": "Sorry, this page could not be found.",
+  "seo_title": "Virintira | Accounting & Business (EN)",
+  "seo_description": "Accounting and business services in English.",
+  "lang": "en",
+  "welcome": "Welcome!"
 }
