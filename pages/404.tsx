@@ -3,11 +3,13 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { GetStaticProps } from "next";
+import nextI18NextConfig from "../next-i18next.config";
 
 export default function Custom404() {
   const { t } = useTranslation("common");
-  const { locale } = useRouter();
-  const ogLocale = locale === "en" ? "en_US" : "th_TH";
+  const { asPath } = useRouter();
+  const lang = asPath.split("/")[1] || nextI18NextConfig.i18n.defaultLocale;
+  const ogLocale = lang === "en" ? "en_US" : "th_TH";
   return (
     <>
       <NextSeo
@@ -22,8 +24,8 @@ export default function Custom404() {
   );
 }
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+export const getStaticProps: GetStaticProps = async () => ({
   props: {
-    ...(await serverSideTranslations(locale ?? "th", ["common"])),
+    ...(await serverSideTranslations(nextI18NextConfig.i18n.defaultLocale, ["common"])),
   },
 });
