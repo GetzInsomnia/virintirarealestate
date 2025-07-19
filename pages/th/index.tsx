@@ -1,17 +1,16 @@
-import { useTranslations } from "next-intl";
 import Head from "next/head";
+import { useTranslation } from "next-i18next";
 import { LanguageSwitcher } from "../../components/LanguageSwitcher";
-export { getStaticProps } from "../../lib/getStaticProps";
+import { GetStaticProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export default function Home() {
-  const t = useTranslations();
+  const { t } = useTranslation("common");
   return (
     <>
       <Head>
         <title>{t("seo_title")}</title>
         <meta name="description" content={t("seo_description")} />
-        <meta property="og:title" content={t("seo_title")} />
-        <meta property="og:description" content={t("seo_description")} />
       </Head>
       <main>
         <LanguageSwitcher />
@@ -20,3 +19,9 @@ export default function Home() {
     </>
   );
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "th", ["common"])),
+  },
+});

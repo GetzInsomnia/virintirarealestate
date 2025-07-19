@@ -1,8 +1,9 @@
-import { GetStaticPropsContext } from "next";
-export async function getStaticProps({ locale }: GetStaticPropsContext) {
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+
+export async function getStaticProps({ locale }: { locale: string }) {
   return {
     props: {
-      messages: (await import(`../locales/${locale}/common.json`)).default,
+      ...(await serverSideTranslations(locale, ['common'])),
     },
   };
 }

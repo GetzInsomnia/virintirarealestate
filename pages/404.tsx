@@ -1,25 +1,25 @@
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Head from "next/head";
-import { useTranslations } from "next-intl";
-import { LanguageSwitcher } from "../components/LanguageSwitcher";
-export { getStaticProps } from "../lib/getStaticProps";
+import { GetStaticProps } from "next";
 
 export default function Custom404() {
-  const t = useTranslations();
+  const { t } = useTranslation("common");
   return (
     <>
       <Head>
-        <title>{t("seo_404_title", { defaultValue: "404 Not Found" })}</title>
-        <meta
-          name="description"
-          content={t("seo_404_description", { defaultValue: "Sorry, the page was not found." })}
-        />
-        <html lang={t("lang")} />
+        <title>404 - {t("seo_title")}</title>
       </Head>
-      <main style={{ minHeight: "60vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-        <LanguageSwitcher />
-        <h1 style={{ fontSize: "3rem", marginBottom: "1rem" }}>404</h1>
-        <p style={{ fontSize: "1.25rem" }}>{t("not_found", { defaultValue: "ขออภัย ไม่พบหน้านี้" })}</p>
-      </main>
+      <div style={{ textAlign: "center", marginTop: "2rem" }}>
+        <h1>404</h1>
+        <p>{t("notFound") || "Not Found"}</p>
+      </div>
     </>
   );
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "th", ["common"])),
+  },
+});
