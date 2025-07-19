@@ -1,15 +1,29 @@
-import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/document';
+import Document, {
+  Html,
+  Head,
+  Main,
+  NextScript,
+  DocumentContext,
+  DocumentProps,
+} from 'next/document';
 
-class MyDocument extends Document<{ locale: string }> {
+interface MyDocumentProps extends DocumentProps {
+  locale?: string;
+}
+class MyDocument extends Document<MyDocumentProps> {
   static async getInitialProps(ctx: DocumentContext) {
-    const initialProps = await Document.getInitialProps(ctx);
-    // locale จาก context
-    return { ...initialProps, locale: ctx.locale || 'th' };
+    const initialProps = (await Document.getInitialProps(
+      ctx
+    )) as DocumentProps;
+    return {
+      ...initialProps,
+      locale: ctx.locale || initialProps.__NEXT_DATA__.locale || 'th',
+    };
   }
 
   render() {
-    // @ts-ignore
-    const { locale } = this.props;
+    const locale =
+      this.props.locale ?? this.props.__NEXT_DATA__.locale ?? 'th';
     return (
       <Html lang={locale}>
         <Head>
