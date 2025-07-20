@@ -42,6 +42,17 @@ npm run build
 npm start
 ```
 
+## Sitemap
+
+After each build, the [`postbuild`](package.json) script runs
+[`next-sitemap`](https://github.com/iamvishnusankar/next-sitemap) to
+generate `sitemap.xml` and `robots.txt` under the `public/` directory.
+You can also run this step manually:
+
+```bash
+npm run postbuild
+```
+
 
 ## License
 
