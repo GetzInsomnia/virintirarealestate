@@ -2,7 +2,7 @@ import { GetStaticProps } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
 import Head from 'next/head'
-import LanguageSwitcher from "@/components/LanguageSwitcher"
+import LanguageSwitcher from "../../components/LanguageSwitcher";
 
 export default function Home() {
   const { t } = useTranslation('common')
