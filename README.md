@@ -53,6 +53,12 @@ You can also run this step manually:
 npm run postbuild
 ```
 
+## Locale detection
+
+Language detection is handled by [`middleware.ts`](middleware.ts). The middleware
+reads the `Accept-Language` header and redirects visitors to the corresponding
+`/[lang]` route. Unsupported languages fall back to the default locale (`th`).
+
 
 ## License
 
