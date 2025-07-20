@@ -1,17 +1,17 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router'
 
-export function LanguageSwitcher() {
-  const { asPath } = useRouter();
-  const pathname = asPath.split("?")[0];
-  const segments = pathname.split("/");
-  const currentLang = segments[1] || "th";
-  const rest = segments.slice(2).join("/");
-  const toPath = (lang: string) => `/${lang}${rest ? `/${rest}` : ""}`;
+export default function LanguageSwitcher() {
+  const router = useRouter()
+  const { locale, asPath } = router
+
+  const changeTo = locale === 'th' ? 'en' : 'th'
+
   return (
-    <div>
-      <Link href={toPath("th")}> <button disabled={currentLang === "th"}>ไทย</button> </Link>{" "}
-      <Link href={toPath("en")}> <button disabled={currentLang === "en"}>English</button> </Link>
-    </div>
-  );
+    <button
+      onClick={() => router.push(asPath, asPath, { locale: changeTo })}
+      disabled={locale === changeTo}
+    >
+      {changeTo === 'th' ? 'ไทย' : 'English'}
+    </button>
+  )
 }
