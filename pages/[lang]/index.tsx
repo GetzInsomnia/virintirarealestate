@@ -4,7 +4,7 @@ import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { NextSeo } from "next-seo";
 import nextI18NextConfig from "../../next-i18next.config";
-import { LanguageSwitcher } from "../../components/LanguageSwitcher";
+import LanguageSwitcher from "../../components/LanguageSwitcher";
 
 export default function Home() {
   const { t } = useTranslation("common");
