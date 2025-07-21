@@ -33,6 +33,9 @@ Check code quality using ESLint:
 npm run lint
 ```
 
+`npm run lint` expects a `.eslintrc.json` file that extends
+`next/core-web-vitals` in the project root.
+
 ## Production
 
 Build the optimized application and start it in production mode:
