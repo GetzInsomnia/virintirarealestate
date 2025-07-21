@@ -19,9 +19,7 @@ export function middleware(req: NextRequest) {
 
   // Detect the preferred language from the request headers. If the client
   // sends an unsupported language, fall back to the default locale.
-  const acceptLang = req.headers.get("accept-language") || "";
-  const preferred = acceptLang.split(",")[0].split("-")[0];
-  const redirectLocale = locales.includes(preferred) ? preferred : defaultLocale;
+  const redirectLocale = defaultLocale;
 
   return NextResponse.redirect(new URL(`/${redirectLocale}${pathname}`, req.url));
 }
