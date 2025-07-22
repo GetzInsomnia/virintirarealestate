@@ -4,5 +4,7 @@
   "seo_description": "Multilingual accounting firm (English)",
   "notFound": "Page not found",
   "internalError": "Internal Server Error",
-  "backHome": "Back Home"
+  "backHome": "Back Home",
+  "back_home": "Back Home",
+  "internal_error": "Internal Error"
 }
