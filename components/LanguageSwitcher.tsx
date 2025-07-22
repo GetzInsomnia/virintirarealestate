@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 
 export default function LanguageSwitcher() {
   const router = useRouter()
-  const { locale, asPath, pathname, query } = router
+  const { locale, defaultLocale, asPath, pathname, query } = router
 
   // ลิสต์ภาษา
   const languages = [
@@ -15,14 +15,15 @@ export default function LanguageSwitcher() {
       {languages.map((lang) => (
         <button
           key={lang.code}
-          disabled={locale === lang.code}
+          disabled={(locale ?? defaultLocale) === lang.code}
           onClick={() => {
             // ใช้ pathname + query เพื่อไม่ให้ path หาย
             router.push({ pathname, query }, asPath, { locale: lang.code })
           }}
           style={{
             marginRight: 8,
-            fontWeight: locale === lang.code ? 'bold' : 'normal'
+            fontWeight:
+              (locale ?? defaultLocale) === lang.code ? 'bold' : 'normal'
           }}
         >
           {lang.label}
