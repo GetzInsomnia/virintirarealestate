@@ -24,7 +24,7 @@ class MyDocument extends Document<{ locale?: string }> {
           />
           <link
             rel="preload"
-            href="/fonts/Inter/Inter-Regular.ttf"
+            href="/fonts/Inter/Inter_18pt-Regular.ttf"
             as="font"
             type="font/ttf"
             crossOrigin="anonymous"
