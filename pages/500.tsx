@@ -18,9 +18,9 @@ export default function Custom500() {
       />
       <div style={{ textAlign: "center", marginTop: "2rem" }}>
         <h1>500</h1>
-        <p>{t("internalError")}</p>
+        <p>{t("internal_error")}</p>
         <p>
-          <a href={`/${lang}`}>{t("backHome")}</a>
+          <a href={`/${lang}`}>{t("back_home")}</a>
         </p>
       </div>
     </>

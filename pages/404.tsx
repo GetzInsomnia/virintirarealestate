@@ -19,6 +19,9 @@ export default function Custom404() {
       <div style={{ textAlign: "center", marginTop: "2rem" }}>
         <h1>404</h1>
         <p>{t("notFound")}</p>
+        <p>
+          <a href={`/${lang}`}>{t("back_home")}</a>
+        </p>
       </div>
     </>
   );
