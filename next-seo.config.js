@@ -7,7 +7,7 @@ const config = {
   openGraph: {
     type: 'website',
     locale: 'th_TH',
-    url: 'https://your-domain.com/',
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://your-domain.com/',
     site_name: 'Virintira',
   },
   twitter: {

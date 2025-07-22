@@ -11,7 +11,7 @@ export default function Home() {
   const { asPath, defaultLocale } = useRouter()
   const lang = asPath.split('/')[1] || defaultLocale || 'th'
   const ogLocale = lang === 'en' ? 'en_US' : 'th_TH'
-  const baseUrl = 'https://your-domain.com'
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://your-domain.com'
   const pageUrl = lang === defaultLocale ? baseUrl : `${baseUrl}/${lang}`
   return (
     <>
