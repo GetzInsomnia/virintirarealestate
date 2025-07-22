@@ -7,8 +7,9 @@ import nextI18NextConfig from "../next-i18next.config";
 
 export default function Custom404() {
   const { t } = useTranslation("common");
-  const { asPath } = useRouter();
-  const lang = asPath.split("/")[1] || nextI18NextConfig.i18n.defaultLocale;
+  const { locale, defaultLocale } = useRouter();
+  const lang =
+    locale ?? defaultLocale ?? nextI18NextConfig.i18n.defaultLocale;
   const ogLocale = lang === "en" ? "en_US" : "th_TH";
   return (
     <>
