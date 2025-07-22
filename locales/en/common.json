@@ -2,5 +2,7 @@
   "welcome": "Welcome! This is the English homepage.",
   "seo_title": "Accounting Firm | English",
   "seo_description": "Multilingual accounting firm (English)",
-  "notFound": "Page not found"
+  "notFound": "Page not found",
+  "internalError": "Internal Server Error",
+  "backHome": "Back Home"
 }
