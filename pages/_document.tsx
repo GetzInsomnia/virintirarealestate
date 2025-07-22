@@ -1,33 +1,20 @@
-import Document, {
-  Html,
-  Head,
-  Main,
-  NextScript,
-  DocumentContext,
-  DocumentProps,
-} from 'next/document';
+import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/document';
 
-interface MyDocumentProps extends DocumentProps {
-  locale?: string;
-}
-class MyDocument extends Document<MyDocumentProps> {
+class MyDocument extends Document<{ locale?: string }> {
   static async getInitialProps(ctx: DocumentContext) {
-    const initialProps = (await Document.getInitialProps(ctx)) as DocumentProps;
-    const lang = (ctx.query?.lang as string) || 'th';
-    return {
-      ...initialProps,
-      locale: lang,
-    };
+    const initialProps = await Document.getInitialProps(ctx);
+    // Next.js 14+ สามารถอ่าน ctx.locale ได้ตรงๆ (ถ้าใช้ next-i18next config ถูกต้อง)
+    const locale = ctx.locale || 'th';
+    return { ...initialProps, locale };
   }
 
   render() {
-    // Determine the language for the <Html> tag so our CSS selectors
-    // (e.g. html[lang="en"]) can apply the correct font family.
-    const lang = this.props.locale ?? this.props.__NEXT_DATA__.locale ?? 'th';
+    // locale จาก props (ถ้าไม่มี fallback เป็น 'th')
+    const locale = this.props.locale || 'th';
     return (
-      <Html lang={lang}>
+      <Html lang={locale}>
         <Head>
-          {/* Preload font (ตัวอย่าง) */}
+          {/* Preload Fonts - เลือก preload font หลักที่ใช้บ่อย */}
           <link
             rel="preload"
             href="/fonts/Prompt/Prompt-Regular.ttf"
@@ -51,4 +38,5 @@ class MyDocument extends Document<MyDocumentProps> {
     );
   }
 }
+
 export default MyDocument;

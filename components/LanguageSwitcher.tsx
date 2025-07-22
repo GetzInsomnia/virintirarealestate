@@ -2,16 +2,32 @@ import { useRouter } from 'next/router'
 
 export default function LanguageSwitcher() {
   const router = useRouter()
-  const { locale, asPath } = router
+  const { locale, asPath, pathname, query } = router
 
-  const changeTo = locale === 'th' ? 'en' : 'th'
+  // ลิสต์ภาษา
+  const languages = [
+    { code: 'th', label: 'ไทย' },
+    { code: 'en', label: 'English' },
+  ]
 
   return (
-    <button
-      onClick={() => router.push(asPath, asPath, { locale: changeTo })}
-      disabled={locale === changeTo}
-    >
-      {changeTo === 'th' ? 'ไทย' : 'English'}
-    </button>
+    <div>
+      {languages.map((lang) => (
+        <button
+          key={lang.code}
+          disabled={locale === lang.code}
+          onClick={() => {
+            // ใช้ pathname + query เพื่อไม่ให้ path หาย
+            router.push({ pathname, query }, asPath, { locale: lang.code })
+          }}
+          style={{
+            marginRight: 8,
+            fontWeight: locale === lang.code ? 'bold' : 'normal'
+          }}
+        >
+          {lang.label}
+        </button>
+      ))}
+    </div>
   )
 }
