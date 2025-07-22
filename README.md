@@ -17,6 +17,17 @@ npm install
 Run the above command before executing `npm run dev`, `npm run build`,
 or `npm run lint`. These scripts require all dependencies to be installed.
 
+## Environment variables
+
+Set `NEXT_PUBLIC_SITE_URL` to the fully qualified URL of your deployed site:
+
+```bash
+NEXT_PUBLIC_SITE_URL=https://example.com
+```
+
+This value is used when generating SEO metadata and the sitemap so that all
+links include an absolute URL.
+
 ## Development
 
 Start a development server with hot reload:
