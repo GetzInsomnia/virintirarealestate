@@ -24,8 +24,11 @@ export default function Custom404() {
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => ({
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
   props: {
-    ...(await serverSideTranslations(nextI18NextConfig.i18n.defaultLocale, ["common"])),
+    ...(await serverSideTranslations(
+      locale ?? nextI18NextConfig.i18n.defaultLocale,
+      ["common"]
+    )),
   },
 });
