@@ -11,13 +11,14 @@ export default function Home() {
   const { asPath, defaultLocale } = useRouter()
   const lang = asPath.split('/')[1] || defaultLocale || 'th'
   const ogLocale = lang === 'en' ? 'en_US' : 'th_TH'
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://your-domain.com'
+  const baseUrl = defaultSeo.baseUrl
   const pageUrl = lang === defaultLocale ? baseUrl : `${baseUrl}/${lang}`
   return (
     <>
       <NextSeo
         title={t('seo_title')}
         description={t('seo_description')}
+        canonical={pageUrl}
         openGraph={{
           ...defaultSeo.openGraph,
           title: t('seo_title'),
