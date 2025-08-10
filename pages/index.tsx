@@ -1,7 +1,7 @@
 import { GetStaticProps } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
-import { NextSeo } from 'next-seo'
+import { NextSeo, LocalBusinessJsonLd } from 'next-seo'
 import { useRouter } from 'next/router'
 import defaultSeo from '../next-seo.config'
 import LanguageSwitcher from "./../components/LanguageSwitcher"
@@ -29,7 +29,28 @@ export default function Home() {
         languageAlternates={[
           { hrefLang: 'th', href: `${baseUrl}/th` },
           { hrefLang: 'en', href: `${baseUrl}/en` },
+          { hrefLang: 'x-default', href: baseUrl },
         ]}
+      />
+      <LocalBusinessJsonLd
+        type='AccountingService'
+        id={baseUrl}
+        name='Virintira'
+        description='Multilingual accounting partner.'
+        url={baseUrl}
+        telephone='+66-2-123-4567'
+        address={{
+          streetAddress: '123 Example Road',
+          addressLocality: 'Bangkok',
+          addressRegion: 'Bangkok',
+          postalCode: '10110',
+          addressCountry: 'TH',
+        }}
+        openingHours={[{
+          opens: '09:00',
+          closes: '17:00',
+          dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        }]}
       />
       <LanguageSwitcher />
       <h1>{t('welcome')}</h1>
