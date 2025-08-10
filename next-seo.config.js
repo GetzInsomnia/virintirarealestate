@@ -1,7 +1,7 @@
 // next-seo.config.js
 // Default SEO configuration shared across all pages.
 // Individual pages should extend these options via the `NextSeo` component.
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://your-domain.com/';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.virintira.com/';
 
 const config = {
   baseUrl: siteUrl,
