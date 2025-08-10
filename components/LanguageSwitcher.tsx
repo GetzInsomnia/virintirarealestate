@@ -1,8 +1,9 @@
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 export default function LanguageSwitcher() {
   const router = useRouter()
-  const { locale, defaultLocale, asPath, pathname, query } = router
+  const { locale, defaultLocale, pathname, query } = router
 
   // ลิสต์ภาษา
   const languages = [
@@ -13,13 +14,10 @@ export default function LanguageSwitcher() {
   return (
     <div>
       {languages.map((lang) => (
-        <button
+        <Link
           key={lang.code}
-          disabled={(locale ?? defaultLocale) === lang.code}
-          onClick={() => {
-            // ใช้ pathname + query เพื่อไม่ให้ path หาย
-            router.push({ pathname, query }, asPath, { locale: lang.code })
-          }}
+          href={{ pathname, query }}
+          locale={lang.code}
           style={{
             marginRight: 8,
             fontWeight:
@@ -27,7 +25,7 @@ export default function LanguageSwitcher() {
           }}
         >
           {lang.label}
-        </button>
+        </Link>
       ))}
     </div>
   )
