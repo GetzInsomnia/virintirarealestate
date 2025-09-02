@@ -2,6 +2,12 @@
   "welcome": "Welcome! This is the English homepage.",
   "seo_title": "Accounting Firm | English",
   "seo_description": "Multilingual accounting firm (English)",
+  "seo_keywords": [
+    "accounting",
+    "multilingual",
+    "English",
+    "financial services"
+  ],
   "notFound": "Page not found",
   "back_home": "Back Home",
   "internal_error": "Internal Error"
