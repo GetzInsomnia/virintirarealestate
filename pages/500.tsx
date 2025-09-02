@@ -11,6 +11,7 @@ export default function Custom500() {
   const { locale, defaultLocale } = useRouter();
   const lang =
     locale ?? defaultLocale ?? nextI18NextConfig.i18n.defaultLocale;
+  const keywords = t('seo_keywords', { returnObjects: true }) as string[];
   const ogLocale =
     lang === "en" ? "en_US" : lang === "zh" ? "zh_CN" : "th_TH";
   const baseUrl = defaultSeo.baseUrl;
@@ -28,6 +29,10 @@ export default function Custom500() {
           locale: ogLocale,
           url: pageUrl,
         }}
+        additionalMetaTags={[{
+          name: 'keywords',
+          content: keywords.join(', '),
+        }]}
         languageAlternates={[
           { hrefLang: 'th', href: `${baseUrl}/th/500` },
           { hrefLang: 'en', href: `${baseUrl}/en/500` },
@@ -41,6 +46,7 @@ export default function Custom500() {
         <p>
           <a href={`/${lang}`}>{t("back_home")}</a>
         </p>
+        <p>{keywords.join(', ')}</p>
       </div>
     </>
   );
