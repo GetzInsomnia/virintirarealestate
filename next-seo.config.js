@@ -33,6 +33,20 @@ const config = {
     site: '@virintira',
     cardType: 'summary_large_image',
   },
+  additionalMetaTags: [
+    {
+      name: 'geo.position',
+      content: '13.7563; 100.5018',
+    },
+    {
+      name: 'ICBM',
+      content: '13.7563, 100.5018',
+    },
+    {
+      name: 'ai-experiment',
+      content: 'enabled',
+    },
+  ],
 };
 
 export default config;
