@@ -4,6 +4,7 @@ import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { GetStaticProps } from "next";
 import nextI18NextConfig from "../next-i18next.config";
+import defaultSeo from "../next-seo.config";
 
 export default function Custom404() {
   const { t } = useTranslation("common");
@@ -11,11 +12,21 @@ export default function Custom404() {
   const lang =
     locale ?? defaultLocale ?? nextI18NextConfig.i18n.defaultLocale;
   const ogLocale = lang === "en" ? "en_US" : "th_TH";
+  const baseUrl = defaultSeo.baseUrl;
+  const pageUrl =
+    lang === defaultLocale
+      ? `${baseUrl}/404`
+      : `${baseUrl}/${lang}/404`;
   return (
     <>
       <NextSeo
         title={`404 - ${t("seo_title")}`}
-        openGraph={{ locale: ogLocale }}
+        canonical={pageUrl}
+        openGraph={{
+          ...defaultSeo.openGraph,
+          locale: ogLocale,
+          url: pageUrl,
+        }}
       />
       <div style={{ textAlign: "center", marginTop: "2rem" }}>
         <h1>404</h1>

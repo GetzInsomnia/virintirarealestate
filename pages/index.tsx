@@ -1,7 +1,7 @@
 import { GetStaticProps } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
-import { NextSeo } from 'next-seo'
+import { NextSeo, LocalBusinessJsonLd } from 'next-seo'
 import { useRouter } from 'next/router'
 import defaultSeo from '../next-seo.config'
 import LanguageSwitcher from "./../components/LanguageSwitcher"
@@ -11,13 +11,14 @@ export default function Home() {
   const { asPath, defaultLocale } = useRouter()
   const lang = asPath.split('/')[1] || defaultLocale || 'th'
   const ogLocale = lang === 'en' ? 'en_US' : 'th_TH'
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://your-domain.com'
+  const baseUrl = defaultSeo.baseUrl
   const pageUrl = lang === defaultLocale ? baseUrl : `${baseUrl}/${lang}`
   return (
     <>
       <NextSeo
         title={t('seo_title')}
         description={t('seo_description')}
+        canonical={pageUrl}
         openGraph={{
           ...defaultSeo.openGraph,
           title: t('seo_title'),
@@ -28,7 +29,28 @@ export default function Home() {
         languageAlternates={[
           { hrefLang: 'th', href: `${baseUrl}/th` },
           { hrefLang: 'en', href: `${baseUrl}/en` },
+          { hrefLang: 'x-default', href: baseUrl },
         ]}
+      />
+      <LocalBusinessJsonLd
+        type='AccountingService'
+        id={baseUrl}
+        name='Virintira'
+        description='Multilingual accounting partner.'
+        url={baseUrl}
+        telephone='+66-2-123-4567'
+        address={{
+          streetAddress: '123 Example Road',
+          addressLocality: 'Bangkok',
+          addressRegion: 'Bangkok',
+          postalCode: '10110',
+          addressCountry: 'TH',
+        }}
+        openingHours={[{
+          opens: '09:00',
+          closes: '17:00',
+          dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        }]}
       />
       <LanguageSwitcher />
       <h1>{t('welcome')}</h1>
