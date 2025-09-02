@@ -9,6 +9,7 @@ export default function LanguageSwitcher() {
   const languages = [
     { code: 'th', label: 'ไทย' },
     { code: 'en', label: 'English' },
+    { code: 'zh', label: '中文' },
   ]
 
   return (
