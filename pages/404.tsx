@@ -11,7 +11,8 @@ export default function Custom404() {
   const { locale, defaultLocale } = useRouter();
   const lang =
     locale ?? defaultLocale ?? nextI18NextConfig.i18n.defaultLocale;
-  const ogLocale = lang === "en" ? "en_US" : "th_TH";
+  const ogLocale =
+    lang === "en" ? "en_US" : lang === "zh" ? "zh_CN" : "th_TH";
   const baseUrl = defaultSeo.baseUrl;
   const pageUrl =
     lang === defaultLocale
@@ -27,6 +28,12 @@ export default function Custom404() {
           locale: ogLocale,
           url: pageUrl,
         }}
+        languageAlternates={[
+          { hrefLang: 'th', href: `${baseUrl}/th/404` },
+          { hrefLang: 'en', href: `${baseUrl}/en/404` },
+          { hrefLang: 'zh', href: `${baseUrl}/zh/404` },
+          { hrefLang: 'x-default', href: `${baseUrl}/404` },
+        ]}
       />
       <div style={{ textAlign: "center", marginTop: "2rem" }}>
         <h1>404</h1>
