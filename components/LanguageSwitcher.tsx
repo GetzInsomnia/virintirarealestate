@@ -1,31 +1,29 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
+const localeLabels: Record<string, string> = {
+  th: 'ไทย',
+  en: 'English',
+  zh: '中文',
+}
+
 export default function LanguageSwitcher() {
   const router = useRouter()
-  const { locale, defaultLocale, pathname, query } = router
-
-  // ลิสต์ภาษา
-  const languages = [
-    { code: 'th', label: 'ไทย' },
-    { code: 'en', label: 'English' },
-    { code: 'zh', label: '中文' },
-  ]
+  const { locale, defaultLocale, pathname, query, locales } = router
 
   return (
     <div>
-      {languages.map((lang) => (
+      {(locales ?? []).map((code) => (
         <Link
-          key={lang.code}
+          key={code}
           href={{ pathname, query }}
-          locale={lang.code}
+          locale={code}
           style={{
             marginRight: 8,
-            fontWeight:
-              (locale ?? defaultLocale) === lang.code ? 'bold' : 'normal'
+            fontWeight: (locale ?? defaultLocale) === code ? 'bold' : 'normal'
           }}
         >
-          {lang.label}
+          {localeLabels[code] ?? code}
         </Link>
       ))}
     </div>
