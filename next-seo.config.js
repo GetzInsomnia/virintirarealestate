@@ -10,6 +10,7 @@ const config = {
   openGraph: {
     type: 'website',
     locale: 'th_TH',
+    localeAlternate: ['th_TH', 'en_US', 'zh_CN'],
     url: siteUrl,
     site_name: 'Virintira',
     images: [
