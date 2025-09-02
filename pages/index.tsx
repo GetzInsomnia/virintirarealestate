@@ -10,6 +10,7 @@ export default function Home() {
   const { t } = useTranslation('common')
   const { asPath, defaultLocale } = useRouter()
   const lang = asPath.split('/')[1] || defaultLocale || 'th'
+  const keywords = t('seo_keywords', { returnObjects: true }) as string[]
   const ogLocale =
     lang === 'en' ? 'en_US' : lang === 'zh' ? 'zh_CN' : 'th_TH'
   const baseUrl = defaultSeo.baseUrl
@@ -27,6 +28,10 @@ export default function Home() {
           locale: ogLocale,
           url: pageUrl,
         }}
+        additionalMetaTags={[{
+          name: 'keywords',
+          content: keywords.join(', '),
+        }]}
         languageAlternates={[
           { hrefLang: 'th', href: `${baseUrl}/th` },
           { hrefLang: 'en', href: `${baseUrl}/en` },
@@ -56,6 +61,7 @@ export default function Home() {
       />
       <LanguageSwitcher />
       <h1>{t('welcome')}</h1>
+      <p>{keywords.join(', ')}</p>
     </>
   )
 }
