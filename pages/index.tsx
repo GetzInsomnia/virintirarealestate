@@ -10,7 +10,8 @@ export default function Home() {
   const { t } = useTranslation('common')
   const { asPath, defaultLocale } = useRouter()
   const lang = asPath.split('/')[1] || defaultLocale || 'th'
-  const ogLocale = lang === 'en' ? 'en_US' : 'th_TH'
+  const ogLocale =
+    lang === 'en' ? 'en_US' : lang === 'zh' ? 'zh_CN' : 'th_TH'
   const baseUrl = defaultSeo.baseUrl
   const pageUrl = lang === defaultLocale ? baseUrl : `${baseUrl}/${lang}`
   return (
@@ -29,6 +30,7 @@ export default function Home() {
         languageAlternates={[
           { hrefLang: 'th', href: `${baseUrl}/th` },
           { hrefLang: 'en', href: `${baseUrl}/en` },
+          { hrefLang: 'zh', href: `${baseUrl}/zh` },
           { hrefLang: 'x-default', href: baseUrl },
         ]}
       />
