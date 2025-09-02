@@ -12,6 +12,20 @@ const config = {
     locale: 'th_TH',
     url: siteUrl,
     site_name: 'Virintira',
+    images: [
+      {
+        url: `${siteUrl}og-image.png`,
+        width: 1845,
+        height: 871,
+        alt: 'Virintira Open Graph Image',
+      },
+      {
+        url: `${siteUrl}favicon.ico`,
+        width: 256,
+        height: 256,
+        alt: 'Virintira Favicon',
+      },
+    ],
   },
   twitter: {
     handle: '@virintira',
