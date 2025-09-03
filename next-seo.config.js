@@ -44,6 +44,14 @@ const config = {
       content: '13.7563, 100.5018',
     },
     {
+      name: 'geo.region',
+      content: 'TH-Bangkok',
+    },
+    {
+      name: 'geo.placename',
+      content: 'Bangkok',
+    },
+    {
       name: 'ai-experiment',
       content: 'enabled',
     },
