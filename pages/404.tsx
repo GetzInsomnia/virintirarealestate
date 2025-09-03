@@ -21,15 +21,16 @@ export default function Custom404() {
       <NextSeo
         title={`404 - ${t("seo_title")}`}
         canonical={pageUrl}
+        noindex
+        nofollow
         openGraph={{
           ...defaultSeo.openGraph,
           locale: ogLocale,
           url: pageUrl,
         }}
-        additionalMetaTags={[{
-          name: 'keywords',
-          content: keywords.join(', '),
-        }]}
+        additionalMetaTags={[
+          { name: 'keywords', content: keywords.join(', ') },
+        ]}
         languageAlternates={[
           { hrefLang: 'th', href: `${baseUrl}/th/404` },
           { hrefLang: 'en', href: `${baseUrl}/en/404` },

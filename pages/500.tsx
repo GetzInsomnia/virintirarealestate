@@ -21,15 +21,16 @@ export default function Custom500() {
       <NextSeo
         title={`500 - ${t("seo_title")}`}
         canonical={pageUrl}
+        noindex
+        nofollow
         openGraph={{
           ...defaultSeo.openGraph,
           locale: ogLocale,
           url: pageUrl,
         }}
-        additionalMetaTags={[{
-          name: 'keywords',
-          content: keywords.join(', '),
-        }]}
+        additionalMetaTags={[
+          { name: 'keywords', content: keywords.join(', ') },
+        ]}
         languageAlternates={[
           { hrefLang: 'th', href: `${baseUrl}/th/500` },
           { hrefLang: 'en', href: `${baseUrl}/en/500` },
