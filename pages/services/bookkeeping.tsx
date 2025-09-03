@@ -2,7 +2,12 @@ import { GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
-import { NextSeo, FAQPageJsonLd } from 'next-seo'
+import {
+  NextSeo,
+  FAQPageJsonLd,
+  WebPageJsonLd,
+  BreadcrumbJsonLd,
+} from 'next-seo'
 import defaultSeo from '../../next-seo.config'
 import LanguageSwitcher from '../../components/LanguageSwitcher'
 import ServiceJsonLd from '../../components/ServiceJsonLd'
@@ -11,11 +16,12 @@ export default function Bookkeeping() {
   const { t } = useTranslation('common')
   const { locale, defaultLocale } = useRouter()
   const lang = locale || defaultLocale || 'th'
-  const baseUrl = defaultSeo.baseUrl
-  const pageUrl =
-    lang === defaultLocale
-      ? `${baseUrl}/services/bookkeeping`
-      : `${baseUrl}/${lang}/services/bookkeeping`
+  const keywords = t('bookkeeping_service_keywords', { returnObjects: true }) as string[]
+  const ogLocale = lang === 'en' ? 'en_US' : lang === 'zh' ? 'zh_CN' : 'th_TH'
+  const baseUrl = defaultSeo.baseUrl.replace(/\/$/, '')
+  const siteUrl = `${baseUrl}/th`
+  const homeUrl = `${baseUrl}/${lang}`
+  const pageUrl = `${baseUrl}/${lang}/services/bookkeeping`
   return (
     <>
       <NextSeo
@@ -26,13 +32,46 @@ export default function Bookkeeping() {
           ...defaultSeo.openGraph,
           title: t('bookkeeping_service_name'),
           description: t('bookkeeping_service_description'),
+          locale: ogLocale,
           url: pageUrl,
         }}
+        additionalMetaTags={[
+          {
+            name: 'keywords',
+            content: keywords.join(', '),
+          },
+        ]}
+        languageAlternates={[
+          { hrefLang: 'th', href: `${baseUrl}/th/services/bookkeeping` },
+          { hrefLang: 'en', href: `${baseUrl}/en/services/bookkeeping` },
+          { hrefLang: 'zh', href: `${baseUrl}/zh/services/bookkeeping` },
+          { hrefLang: 'x-default', href: `${baseUrl}/th/services/bookkeeping` },
+        ]}
+      />
+      <WebPageJsonLd
+        id={pageUrl}
+        url={pageUrl}
+        title={t('bookkeeping_service_name')}
+        description={t('bookkeeping_service_description')}
+      />
+      <BreadcrumbJsonLd
+        itemListElements={[
+          {
+            position: 1,
+            name: t('seo_title'),
+            item: homeUrl,
+          },
+          {
+            position: 2,
+            name: t('bookkeeping_service_name'),
+            item: pageUrl,
+          },
+        ]}
       />
       <ServiceJsonLd
         name={t('bookkeeping_service_name')}
         description={t('bookkeeping_service_description')}
-        provider={{ '@type': 'Organization', name: 'Virintira', url: baseUrl }}
+        provider={{ '@type': 'Organization', name: 'Virintira', url: siteUrl }}
         url={pageUrl}
       />
       <FAQPageJsonLd

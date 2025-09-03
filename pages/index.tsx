@@ -1,8 +1,15 @@
 import { GetStaticProps } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
-import { NextSeo, LocalBusinessJsonLd } from 'next-seo'
+import {
+  NextSeo,
+  LocalBusinessJsonLd,
+  WebPageJsonLd,
+  BreadcrumbJsonLd,
+  SiteLinksSearchBoxJsonLd,
+} from 'next-seo'
 import { useRouter } from 'next/router'
+import Script from 'next/script'
 import defaultSeo from '../next-seo.config'
 import LanguageSwitcher from "./../components/LanguageSwitcher"
 
@@ -13,8 +20,9 @@ export default function Home() {
   const keywords = t('seo_keywords', { returnObjects: true }) as string[]
   const ogLocale =
     lang === 'en' ? 'en_US' : lang === 'zh' ? 'zh_CN' : 'th_TH'
-  const baseUrl = defaultSeo.baseUrl
-  const pageUrl = lang === defaultLocale ? baseUrl : `${baseUrl}/${lang}`
+  const baseUrl = defaultSeo.baseUrl.replace(/\/$/, '')
+  const siteUrl = `${baseUrl}/th`
+  const pageUrl = `${baseUrl}/${lang}`
   return (
     <>
       <NextSeo
@@ -36,15 +44,28 @@ export default function Home() {
           { hrefLang: 'th', href: `${baseUrl}/th` },
           { hrefLang: 'en', href: `${baseUrl}/en` },
           { hrefLang: 'zh', href: `${baseUrl}/zh` },
-          { hrefLang: 'x-default', href: baseUrl },
+          { hrefLang: 'x-default', href: `${baseUrl}/th` },
         ]}
+      />
+      <WebPageJsonLd
+        id={pageUrl}
+        url={pageUrl}
+        title={t('seo_title')}
+        description={t('seo_description')}
+      />
+      <BreadcrumbJsonLd
+        itemListElements={[{
+          position: 1,
+          name: t('seo_title'),
+          item: pageUrl,
+        }]}
       />
       <LocalBusinessJsonLd
         type='AccountingService'
-        id={baseUrl}
+        id={siteUrl}
         name='Virintira'
         description='Multilingual accounting partner.'
-        url={baseUrl}
+        url={siteUrl}
         telephone='+66-2-123-4567'
         address={{
           streetAddress: '123 Example Road',
@@ -59,6 +80,33 @@ export default function Home() {
           closes: '17:00',
           dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
         }]}
+      />
+      <SiteLinksSearchBoxJsonLd
+        url={siteUrl}
+        potentialActions={[
+          {
+            target: `${siteUrl}/search?query={search_term_string}`,
+            queryInput: 'search_term_string',
+          },
+        ]}
+      />
+      {/* eslint-disable-next-line react/no-danger */}
+      <Script
+        id='speakable'
+        type='application/ld+json'
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebPage',
+            name: t('seo_title'),
+            description: t('seo_description'),
+            url: pageUrl,
+            speakable: {
+              '@type': 'SpeakableSpecification',
+              cssSelector: ['h1', 'p'],
+            },
+          }).replace(/</g, '\\u003c'),
+        }}
       />
       <LanguageSwitcher />
       <h1>{t('welcome')}</h1>

@@ -15,6 +15,7 @@ class MyDocument extends Document<{ locale?: string }> {
       <Html lang={locale}>
         <Head>
           {/* Preload Fonts - เลือก preload font หลักที่ใช้บ่อย */}
+          <meta name="next-size-adjust" content="100%" />
           <link
             rel="preload"
             href="/fonts/Prompt/Prompt-Regular.ttf"
