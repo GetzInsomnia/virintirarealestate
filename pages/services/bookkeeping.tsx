@@ -16,12 +16,10 @@ export default function Bookkeeping() {
   const { t } = useTranslation('common')
   const { locale, defaultLocale } = useRouter()
   const lang = locale || defaultLocale || 'th'
-  const baseUrl = defaultSeo.baseUrl
-  const homeUrl = lang === defaultLocale ? baseUrl : `${baseUrl}/${lang}`
-  const pageUrl =
-    lang === defaultLocale
-      ? `${baseUrl}/services/bookkeeping`
-      : `${baseUrl}/${lang}/services/bookkeeping`
+  const baseUrl = defaultSeo.baseUrl.replace(/\/$/, '')
+  const siteUrl = `${baseUrl}/th`
+  const homeUrl = `${baseUrl}/${lang}`
+  const pageUrl = `${baseUrl}/${lang}/services/bookkeeping`
   return (
     <>
       <NextSeo
@@ -58,7 +56,7 @@ export default function Bookkeeping() {
       <ServiceJsonLd
         name={t('bookkeeping_service_name')}
         description={t('bookkeeping_service_description')}
-        provider={{ '@type': 'Organization', name: 'Virintira', url: baseUrl }}
+        provider={{ '@type': 'Organization', name: 'Virintira', url: siteUrl }}
         url={pageUrl}
       />
       <FAQPageJsonLd

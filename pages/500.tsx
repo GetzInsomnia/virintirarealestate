@@ -14,11 +14,8 @@ export default function Custom500() {
   const keywords = t('seo_keywords', { returnObjects: true }) as string[];
   const ogLocale =
     lang === "en" ? "en_US" : lang === "zh" ? "zh_CN" : "th_TH";
-  const baseUrl = defaultSeo.baseUrl;
-  const pageUrl =
-    lang === defaultLocale
-      ? `${baseUrl}/500`
-      : `${baseUrl}/${lang}/500`;
+  const baseUrl = defaultSeo.baseUrl.replace(/\/$/, "");
+  const pageUrl = `${baseUrl}/${lang}/500`;
   return (
     <>
       <NextSeo
@@ -37,7 +34,7 @@ export default function Custom500() {
           { hrefLang: 'th', href: `${baseUrl}/th/500` },
           { hrefLang: 'en', href: `${baseUrl}/en/500` },
           { hrefLang: 'zh', href: `${baseUrl}/zh/500` },
-          { hrefLang: 'x-default', href: `${baseUrl}/500` },
+          { hrefLang: 'x-default', href: `${baseUrl}/th/500` },
         ]}
       />
       <div style={{ textAlign: "center", marginTop: "2rem" }}>

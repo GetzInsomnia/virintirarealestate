@@ -14,11 +14,8 @@ export default function Custom404() {
   const keywords = t('seo_keywords', { returnObjects: true }) as string[];
   const ogLocale =
     lang === "en" ? "en_US" : lang === "zh" ? "zh_CN" : "th_TH";
-  const baseUrl = defaultSeo.baseUrl;
-  const pageUrl =
-    lang === defaultLocale
-      ? `${baseUrl}/404`
-      : `${baseUrl}/${lang}/404`;
+  const baseUrl = defaultSeo.baseUrl.replace(/\/$/, "");
+  const pageUrl = `${baseUrl}/${lang}/404`;
   return (
     <>
       <NextSeo
@@ -37,7 +34,7 @@ export default function Custom404() {
           { hrefLang: 'th', href: `${baseUrl}/th/404` },
           { hrefLang: 'en', href: `${baseUrl}/en/404` },
           { hrefLang: 'zh', href: `${baseUrl}/zh/404` },
-          { hrefLang: 'x-default', href: `${baseUrl}/404` },
+          { hrefLang: 'x-default', href: `${baseUrl}/th/404` },
         ]}
       />
       <div style={{ textAlign: "center", marginTop: "2rem" }}>
