@@ -1,7 +1,8 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { appWithTranslation } from "next-i18next";
-import * as NextSeo from "next-seo";
+// @ts-ignore - JsonLd types are not exported from next-seo
+import { DefaultSeo, JsonLd } from "next-seo";
 import defaultSeo from "../next-seo.config";
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -26,46 +27,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     url: siteUrl,
   };
 
-  const { JsonLd: NextSeoJsonLd } = NextSeo as any;
-  const ESCAPE_ENTITIES: Record<string, string> = {
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&apos;",
-  };
-  const ESCAPE_REGEX = new RegExp("[" + Object.keys(ESCAPE_ENTITIES).join("") + "]", "g");
-  const ESCAPE_REPLACER = (t: string) => ESCAPE_ENTITIES[t];
-  const safeJsonLdReplacer = (_: string, value: any) => {
-    switch (typeof value) {
-      case "object":
-        return value === null ? undefined : value;
-      case "number":
-      case "boolean":
-      case "bigint":
-        return value;
-      case "string":
-        return value.replace(ESCAPE_REGEX, ESCAPE_REPLACER);
-      default:
-        return undefined;
-    }
-  };
-  const JsonLd =
-    NextSeoJsonLd ??
-    (({ scriptKey, scriptId, ...rest }: any) => (
-      <script
-        type="application/ld+json"
-        id={scriptId}
-        data-testid={scriptId}
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(rest, safeJsonLdReplacer),
-        }}
-        key={`jsonld-${scriptKey}`}
-      />
-    ));
-
   return (
     <>
+      <DefaultSeo {...defaultSeo} />
       <JsonLd
         scriptKey="organization"
         scriptId="organization-jsonld"
