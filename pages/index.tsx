@@ -90,6 +90,7 @@ export default function Home() {
           },
         ]}
       />
+      {/* eslint-disable-next-line react/no-danger */}
       <Script
         id='speakable'
         type='application/ld+json'
@@ -104,7 +105,7 @@ export default function Home() {
               '@type': 'SpeakableSpecification',
               cssSelector: ['h1', 'p'],
             },
-          }),
+          }).replace(/</g, '\\u003c'),
         }}
       />
       <LanguageSwitcher />

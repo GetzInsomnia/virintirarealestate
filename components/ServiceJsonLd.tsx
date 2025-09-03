@@ -31,11 +31,16 @@ export default function ServiceJsonLd({
   }
 
   return (
-    <Script
-      id="service-jsonld"
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-    />
+    <>
+      {/* eslint-disable-next-line react/no-danger */}
+      <Script
+        id="service-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
+        }}
+      />
+    </>
   )
 }
 
