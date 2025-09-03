@@ -6,10 +6,16 @@ interface Provider {
   url?: string
 }
 
+interface AreaServed {
+  '@type': string
+  name: string
+}
+
 export interface ServiceJsonLdProps {
   name: string
   description: string
   provider: Provider
+  areaServed?: AreaServed
   type?: string
   url?: string
   id?: string
@@ -20,6 +26,7 @@ export default function ServiceJsonLd({
   name,
   description,
   provider,
+  areaServed,
   url,
   id = 'service-jsonld',
 }: ServiceJsonLdProps) {
@@ -29,6 +36,7 @@ export default function ServiceJsonLd({
     name,
     description,
     provider,
+    ...(areaServed ? { areaServed } : {}),
     ...(url ? { url } : {}),
   }
 

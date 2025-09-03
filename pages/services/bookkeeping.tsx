@@ -75,6 +75,7 @@ export default function Bookkeeping() {
         name={t('bookkeeping_service_name')}
         description={t('bookkeeping_service_description')}
         provider={{ '@type': 'Organization', name: 'Virintira', url: siteUrl }}
+        areaServed={{ '@type': 'AdministrativeArea', name: 'Bangkok' }}
         url={pageUrl}
       />
       <FAQPageJsonLd
