@@ -25,12 +25,22 @@ export default function Home() {
         title={t('seo_title')}
         description={t('seo_description')}
         canonical={pageUrl}
-        openGraph={getOpenGraph(
-          lang,
-          pageUrl,
-          t('seo_title'),
-          t('seo_description')
-        )}
+        openGraph={{
+          ...getOpenGraph(
+            lang,
+            pageUrl,
+            t('seo_title'),
+            t('seo_description')
+          ),
+          images: [
+            {
+              url: `${baseUrl}/og-home.png`,
+              width: 1845,
+              height: 871,
+              alt: `${t('seo_title')} Open Graph Image`,
+            },
+          ],
+        }}
         additionalMetaTags={[{
           name: 'keywords',
           content: keywords.join(', '),

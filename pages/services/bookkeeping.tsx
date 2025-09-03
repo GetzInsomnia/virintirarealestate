@@ -26,12 +26,22 @@ export default function Bookkeeping() {
         title={t('bookkeeping_service_name')}
         description={t('bookkeeping_service_description')}
         canonical={pageUrl}
-        openGraph={getOpenGraph(
-          lang,
-          pageUrl,
-          t('bookkeeping_service_name'),
-          t('bookkeeping_service_description')
-        )}
+        openGraph={{
+          ...getOpenGraph(
+            lang,
+            pageUrl,
+            t('bookkeeping_service_name'),
+            t('bookkeeping_service_description')
+          ),
+          images: [
+            {
+              url: `${baseUrl}/og-service.png`,
+              width: 1845,
+              height: 871,
+              alt: `${t('bookkeeping_service_name')} Open Graph Image`,
+            },
+          ],
+        }}
         additionalMetaTags={[
           {
             name: 'keywords',

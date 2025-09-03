@@ -17,7 +17,7 @@ export default function BookkeepingMatters() {
   const { locale, defaultLocale } = useRouter()
   const lang = locale || defaultLocale || 'th'
   const keywords = t('blog_post_keywords', { returnObjects: true }) as string[]
-  const { baseUrl, siteUrl, pageUrl } = getSeoUrls(lang, '/blog/bookkeeping-matters')
+  the { baseUrl, siteUrl, pageUrl } = getSeoUrls(lang, '/blog/bookkeeping-matters')
   const homeUrl = siteUrl
   return (
     <>
@@ -25,12 +25,22 @@ export default function BookkeepingMatters() {
         title={t('blog_post_title')}
         description={t('blog_post_description')}
         canonical={pageUrl}
-        openGraph={getOpenGraph(
-          lang,
-          pageUrl,
-          t('blog_post_title'),
-          t('blog_post_description')
-        )}
+        openGraph={{
+          ...getOpenGraph(
+            lang,
+            pageUrl,
+            t('blog_post_title'),
+            t('blog_post_description')
+          ),
+          images: [
+            {
+              url: `${baseUrl}/og-blog.png`,
+              width: 1845,
+              height: 871,
+              alt: `${t('blog_post_title')} Open Graph Image`,
+            },
+          ],
+        }}
         additionalMetaTags={[
           {
             name: 'keywords',
@@ -62,7 +72,7 @@ export default function BookkeepingMatters() {
       <ArticleJsonLd
         url={pageUrl}
         title={t('blog_post_title')}
-        images={[`${baseUrl}/og-image.png`]}
+        images={[`${baseUrl}/og-blog.png`]}
         datePublished="2023-01-01"
         dateModified="2023-01-01"
         authorName={t('blog_post_author')}
