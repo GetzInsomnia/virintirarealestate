@@ -31,3 +31,19 @@ test('uses Accept-Language to determine locale', () => {
   const res = middleware(req);
   assert.strictEqual(res.headers.get('location'), 'https://example.com/zh/blog');
 });
+
+test('supports region subtags and q values', () => {
+  const req = new NextRequest('https://example.com/about', {
+    headers: { 'accept-language': 'en-US,en;q=0.8,th;q=0.5' },
+  });
+  const res = middleware(req);
+  assert.strictEqual(res.headers.get('location'), 'https://example.com/en/about');
+});
+
+test('falls back to default locale on malformed header', () => {
+  const req = new NextRequest('https://example.com/about', {
+    headers: { 'accept-language': 'malformed-header' },
+  });
+  const res = middleware(req);
+  assert.strictEqual(res.headers.get('location'), 'https://example.com/th/about');
+});
