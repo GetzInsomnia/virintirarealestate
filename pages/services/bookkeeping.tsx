@@ -8,6 +8,7 @@ import {
   WebPageJsonLd,
   BreadcrumbJsonLd,
 } from 'next-seo'
+import Script from 'next/script'
 import LanguageSwitcher from '../../components/LanguageSwitcher'
 import ServiceJsonLd from '../../components/ServiceJsonLd'
 import { getOpenGraph, getLanguageAlternates, getSeoUrls } from '../../lib/seo'
@@ -73,6 +74,24 @@ export default function Bookkeeping() {
             acceptedAnswerText: t('faq_answer_1'),
           },
         ]}
+      />
+      {/* eslint-disable-next-line react/no-danger */}
+      <Script
+        id='speakable'
+        type='application/ld+json'
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebPage',
+            name: t('bookkeeping_service_name'),
+            description: t('bookkeeping_service_description'),
+            url: pageUrl,
+            speakable: {
+              '@type': 'SpeakableSpecification',
+              cssSelector: ['h1', 'h2', 'p'],
+            },
+          }).replace(/</g, '\\u003c'),
+        }}
       />
       <LanguageSwitcher />
       <h1>{t('bookkeeping_service_name')}</h1>

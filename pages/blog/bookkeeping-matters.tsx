@@ -8,6 +8,7 @@ import {
   WebPageJsonLd,
   BreadcrumbJsonLd,
 } from 'next-seo'
+import Script from 'next/script'
 import LanguageSwitcher from '../../components/LanguageSwitcher'
 import { getOpenGraph, getLanguageAlternates, getSeoUrls } from '../../lib/seo'
 
@@ -68,6 +69,24 @@ export default function BookkeepingMatters() {
         description={t('blog_post_description')}
         publisherName="Virintira"
         publisherLogo={`${baseUrl}/favicon.ico`}
+      />
+      {/* eslint-disable-next-line react/no-danger */}
+      <Script
+        id='speakable'
+        type='application/ld+json'
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebPage',
+            name: t('blog_post_title'),
+            description: t('blog_post_description'),
+            url: pageUrl,
+            speakable: {
+              '@type': 'SpeakableSpecification',
+              cssSelector: ['h1', 'p'],
+            },
+          }).replace(/</g, '\\u003c'),
+        }}
       />
       <LanguageSwitcher />
       <h1>{t('blog_post_title')}</h1>
