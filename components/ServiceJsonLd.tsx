@@ -1,5 +1,4 @@
-import React from 'react'
-import { JsonLd, JsonLdProps } from 'next-seo'
+import Script from 'next/script'
 
 interface Provider {
   '@type': string
@@ -7,17 +6,36 @@ interface Provider {
   url?: string
 }
 
-export interface ServiceJsonLdProps extends JsonLdProps {
+export interface ServiceJsonLdProps {
   name: string
   description: string
   provider: Provider
   type?: string
+  url?: string
 }
 
 export default function ServiceJsonLd({
   type = 'Service',
-  keyOverride,
-  ...rest
+  name,
+  description,
+  provider,
+  url,
 }: ServiceJsonLdProps) {
-  return <JsonLd type={type} keyOverride={keyOverride} {...rest} scriptKey="Service" />
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': type,
+    name,
+    description,
+    provider,
+    ...(url ? { url } : {}),
+  }
+
+  return (
+    <Script
+      id="service-jsonld"
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  )
 }
+
