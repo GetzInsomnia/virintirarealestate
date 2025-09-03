@@ -66,6 +66,8 @@ export default function BookkeepingMatters() {
         dateModified="2023-01-01"
         authorName={t('blog_post_author')}
         description={t('blog_post_description')}
+        publisherName="Virintira"
+        publisherLogo={`${baseUrl}/favicon.ico`}
       />
       <LanguageSwitcher />
       <h1>{t('blog_post_title')}</h1>
