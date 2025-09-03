@@ -8,8 +8,8 @@ import LanguageSwitcher from "./../components/LanguageSwitcher"
 
 export default function Home() {
   const { t } = useTranslation('common')
-  const { asPath, defaultLocale } = useRouter()
-  const lang = asPath.split('/')[1] || defaultLocale || 'th'
+  const { locale, defaultLocale } = useRouter()
+  const lang = locale || defaultLocale || 'th'
   const keywords = t('seo_keywords', { returnObjects: true }) as string[]
   const ogLocale =
     lang === 'en' ? 'en_US' : lang === 'zh' ? 'zh_CN' : 'th_TH'
