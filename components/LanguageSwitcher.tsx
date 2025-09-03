@@ -10,22 +10,32 @@ const localeLabels: Record<string, string> = {
 export default function LanguageSwitcher() {
   const router = useRouter()
   const { locale, defaultLocale, pathname, query, locales } = router
+  const activeLocale = locale ?? defaultLocale
 
   return (
-    <div>
-      {(locales ?? []).map((code) => (
-        <Link
-          key={code}
-          href={{ pathname, query }}
-          locale={code}
-          style={{
-            marginRight: 8,
-            fontWeight: (locale ?? defaultLocale) === code ? 'bold' : 'normal'
-          }}
-        >
-          {localeLabels[code] ?? code}
-        </Link>
-      ))}
-    </div>
+    <nav aria-label="Language selector">
+      <ul>
+        {(locales ?? []).map((code) => {
+          const label = localeLabels[code] ?? code
+          const isActive = activeLocale === code
+          return (
+            <li key={code}>
+              <Link
+                href={{ pathname, query }}
+                locale={code}
+                aria-label={`Switch to ${label}`}
+                aria-current={isActive ? 'true' : undefined}
+                style={{
+                  marginRight: 8,
+                  fontWeight: isActive ? 'bold' : 'normal'
+                }}
+              >
+                {label}
+              </Link>
+            </li>
+          )
+        })}
+      </ul>
+    </nav>
   )
 }
