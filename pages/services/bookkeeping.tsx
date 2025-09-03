@@ -60,6 +60,7 @@ export default function Bookkeeping() {
         ]}
       />
       <ServiceJsonLd
+        id="bookkeeping-service-jsonld"
         name={t('bookkeeping_service_name')}
         description={t('bookkeeping_service_description')}
         provider={{ '@type': 'Organization', name: 'Virintira', url: siteUrl }}
