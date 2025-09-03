@@ -56,7 +56,7 @@ export default function MonthlyStatements() {
         name={t('howto_title')}
         description={t('howto_description')}
         url={pageUrl}
-        steps={steps.map((s) => ({ name: s.name, text: s.text }))}
+        step={steps.map((s) => ({ name: s.name, text: s.text }))}
       />
       <LanguageSwitcher />
       <h1>{t('howto_title')}</h1>
