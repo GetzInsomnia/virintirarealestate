@@ -5,12 +5,13 @@ import * as NextSeo from "next-seo";
 import defaultSeo from "../next-seo.config";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const baseUrl = defaultSeo.baseUrl;
+  const baseUrl = defaultSeo.baseUrl.replace(/\/$/, '');
+  const siteUrl = `${baseUrl}/th`;
   const orgJsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "Virintira",
-    url: baseUrl,
+    url: siteUrl,
     logo: `${baseUrl}/favicon.ico`,
     sameAs: [
       "https://twitter.com/virintira",
@@ -22,7 +23,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "Virintira",
-    url: baseUrl,
+    url: siteUrl,
   };
 
   const { JsonLd: NextSeoJsonLd } = NextSeo as any;

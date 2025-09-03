@@ -20,8 +20,9 @@ export default function Home() {
   const keywords = t('seo_keywords', { returnObjects: true }) as string[]
   const ogLocale =
     lang === 'en' ? 'en_US' : lang === 'zh' ? 'zh_CN' : 'th_TH'
-  const baseUrl = defaultSeo.baseUrl
-  const pageUrl = lang === defaultLocale ? baseUrl : `${baseUrl}/${lang}`
+  const baseUrl = defaultSeo.baseUrl.replace(/\/$/, '')
+  const siteUrl = `${baseUrl}/th`
+  const pageUrl = `${baseUrl}/${lang}`
   return (
     <>
       <NextSeo
@@ -43,7 +44,7 @@ export default function Home() {
           { hrefLang: 'th', href: `${baseUrl}/th` },
           { hrefLang: 'en', href: `${baseUrl}/en` },
           { hrefLang: 'zh', href: `${baseUrl}/zh` },
-          { hrefLang: 'x-default', href: baseUrl },
+          { hrefLang: 'x-default', href: `${baseUrl}/th` },
         ]}
       />
       <WebPageJsonLd
@@ -61,10 +62,10 @@ export default function Home() {
       />
       <LocalBusinessJsonLd
         type='AccountingService'
-        id={baseUrl}
+        id={siteUrl}
         name='Virintira'
         description='Multilingual accounting partner.'
-        url={baseUrl}
+        url={siteUrl}
         telephone='+66-2-123-4567'
         address={{
           streetAddress: '123 Example Road',
@@ -81,10 +82,10 @@ export default function Home() {
         }]}
       />
       <SiteLinksSearchBoxJsonLd
-        url={baseUrl}
+        url={siteUrl}
         potentialActions={[
           {
-            target: `${baseUrl}/search?query={search_term_string}`,
+            target: `${siteUrl}/search?query={search_term_string}`,
             queryInput: 'search_term_string',
           },
         ]}
