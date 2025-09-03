@@ -53,6 +53,7 @@ export default function Home() {
           postalCode: '10110',
           addressCountry: 'TH',
         }}
+        geo={{ latitude: '13.7563', longitude: '100.5018' }}
         openingHours={[{
           opens: '09:00',
           closes: '17:00',
