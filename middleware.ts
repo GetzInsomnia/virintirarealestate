@@ -39,7 +39,10 @@ export function middleware(req: NextRequest) {
     req.headers.get("accept-language")
   );
 
-  return NextResponse.redirect(new URL(`/${redirectLocale}${pathname}`, req.url));
+  return NextResponse.redirect(
+    new URL(`/${redirectLocale}${pathname}`, req.url),
+    308
+  );
 }
 
 export const config = {
