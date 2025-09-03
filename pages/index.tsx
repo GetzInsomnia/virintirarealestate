@@ -1,7 +1,12 @@
 import { GetStaticProps } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
-import { NextSeo, LocalBusinessJsonLd } from 'next-seo'
+import {
+  NextSeo,
+  LocalBusinessJsonLd,
+  WebPageJsonLd,
+  BreadcrumbJsonLd,
+} from 'next-seo'
 import { useRouter } from 'next/router'
 import defaultSeo from '../next-seo.config'
 import LanguageSwitcher from "./../components/LanguageSwitcher"
@@ -38,6 +43,19 @@ export default function Home() {
           { hrefLang: 'zh', href: `${baseUrl}/zh` },
           { hrefLang: 'x-default', href: baseUrl },
         ]}
+      />
+      <WebPageJsonLd
+        id={pageUrl}
+        url={pageUrl}
+        title={t('seo_title')}
+        description={t('seo_description')}
+      />
+      <BreadcrumbJsonLd
+        itemListElements={[{
+          position: 1,
+          name: t('seo_title'),
+          item: pageUrl,
+        }]}
       />
       <LocalBusinessJsonLd
         type='AccountingService'
