@@ -10,5 +10,9 @@
   ],
   "notFound": "Page not found",
   "back_home": "Back Home",
-  "internal_error": "Internal Error"
+  "internal_error": "Internal Error",
+  "bookkeeping_service_name": "Bookkeeping Service",
+  "bookkeeping_service_description": "Comprehensive bookkeeping for small businesses.",
+  "faq_question_1": "What does your bookkeeping service include?",
+  "faq_answer_1": "It includes daily transaction recording, bank reconciliation, and financial reporting."
 }
