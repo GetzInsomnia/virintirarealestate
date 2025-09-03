@@ -20,5 +20,20 @@
     "bank reconciliation"
   ],
   "faq_question_1": "What does your bookkeeping service include?",
-  "faq_answer_1": "It includes daily transaction recording, bank reconciliation, and financial reporting."
+  "faq_answer_1": "It includes daily transaction recording, bank reconciliation, and financial reporting.",
+  "blog_post_title": "Why Bookkeeping Matters",
+  "blog_post_description": "Discover why accurate bookkeeping is crucial for small businesses.",
+  "blog_post_keywords": [
+    "bookkeeping",
+    "small business",
+    "accounting"
+  ],
+  "blog_post_author": "Virintira Team",
+  "howto_title": "Prepare Monthly Financial Statements",
+  "howto_description": "Follow these steps to compile your monthly financial statements.",
+  "howto_steps": [
+    { "name": "Collect receipts", "text": "Gather all income and expense receipts." },
+    { "name": "Record entries", "text": "Log each transaction in your ledger." },
+    { "name": "Review and finalize", "text": "Verify totals and generate statements." }
+  ]
 }
