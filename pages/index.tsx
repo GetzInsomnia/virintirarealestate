@@ -6,8 +6,10 @@ import {
   LocalBusinessJsonLd,
   WebPageJsonLd,
   BreadcrumbJsonLd,
+  SiteLinksSearchBoxJsonLd,
 } from 'next-seo'
 import { useRouter } from 'next/router'
+import Script from 'next/script'
 import defaultSeo from '../next-seo.config'
 import LanguageSwitcher from "./../components/LanguageSwitcher"
 
@@ -77,6 +79,27 @@ export default function Home() {
           closes: '17:00',
           dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
         }]}
+      />
+      <SiteLinksSearchBoxJsonLd
+        url={baseUrl}
+        searchUrl={`${baseUrl}/search?query={search_term_string}`}
+      />
+      <Script
+        id='speakable'
+        type='application/ld+json'
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebPage',
+            name: t('seo_title'),
+            description: t('seo_description'),
+            url: pageUrl,
+            speakable: {
+              '@type': 'SpeakableSpecification',
+              cssSelector: ['h1', 'p'],
+            },
+          }),
+        }}
       />
       <LanguageSwitcher />
       <h1>{t('welcome')}</h1>
