@@ -1,4 +1,5 @@
 import defaultSeo from '../next-seo.config'
+import nextI18NextConfig from '../next-i18next.config'
 import { buildUrl } from './url'
 
 export const getSeoUrls = (lang: string, path = '') => buildUrl(lang, path)
@@ -18,10 +19,14 @@ export const getOpenGraph = (
   url,
 })
 
-export const getLanguageAlternates = (path = '') => [
-  { hrefLang: 'th', href: getSeoUrls('th', path).pageUrl },
-  { hrefLang: 'en', href: getSeoUrls('en', path).pageUrl },
-  { hrefLang: 'zh', href: getSeoUrls('zh', path).pageUrl },
-  { hrefLang: 'x-default', href: getSeoUrls('th', path).pageUrl },
-]
+export const getLanguageAlternates = (path = '') => {
+  const defaultLocale = nextI18NextConfig.i18n.defaultLocale
+  const { baseUrl } = getSeoUrls(defaultLocale, path)
+  return [
+    { hrefLang: 'th', href: getSeoUrls('th', path).pageUrl },
+    { hrefLang: 'en', href: getSeoUrls('en', path).pageUrl },
+    { hrefLang: 'zh', href: getSeoUrls('zh', path).pageUrl },
+    { hrefLang: 'x-default', href: baseUrl + path },
+  ]
+}
 
