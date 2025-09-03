@@ -11,6 +11,7 @@ import {
 import defaultSeo from '../../next-seo.config'
 import LanguageSwitcher from '../../components/LanguageSwitcher'
 import ServiceJsonLd from '../../components/ServiceJsonLd'
+import { buildUrl } from '../../lib/url'
 
 export default function Bookkeeping() {
   const { t } = useTranslation('common')
@@ -18,10 +19,8 @@ export default function Bookkeeping() {
   const lang = locale || defaultLocale || 'th'
   const keywords = t('bookkeeping_service_keywords', { returnObjects: true }) as string[]
   const ogLocale = lang === 'en' ? 'en_US' : lang === 'zh' ? 'zh_CN' : 'th_TH'
-  const baseUrl = defaultSeo.baseUrl.replace(/\/$/, '')
-  const siteUrl = `${baseUrl}/th`
-  const homeUrl = `${baseUrl}/${lang}`
-  const pageUrl = `${baseUrl}/${lang}/services/bookkeeping`
+  const { baseUrl, siteUrl, pageUrl } = buildUrl(lang, '/services/bookkeeping')
+  const homeUrl = siteUrl
   return (
     <>
       <NextSeo
@@ -42,10 +41,10 @@ export default function Bookkeeping() {
           },
         ]}
         languageAlternates={[
-          { hrefLang: 'th', href: `${baseUrl}/th/services/bookkeeping` },
-          { hrefLang: 'en', href: `${baseUrl}/en/services/bookkeeping` },
-          { hrefLang: 'zh', href: `${baseUrl}/zh/services/bookkeeping` },
-          { hrefLang: 'x-default', href: `${baseUrl}/th/services/bookkeeping` },
+          { hrefLang: 'th', href: buildUrl('th', '/services/bookkeeping').pageUrl },
+          { hrefLang: 'en', href: buildUrl('en', '/services/bookkeeping').pageUrl },
+          { hrefLang: 'zh', href: buildUrl('zh', '/services/bookkeeping').pageUrl },
+          { hrefLang: 'x-default', href: buildUrl('th', '/services/bookkeeping').pageUrl },
         ]}
       />
       <WebPageJsonLd
