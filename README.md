@@ -61,12 +61,17 @@ npm start
 After each build, the [`postbuild`](package.json) script runs
 [`next-sitemap`](https://github.com/iamvishnusankar/next-sitemap) to
 generate `sitemap.xml` and `robots.txt` under the `public/` directory.
-You can also run this step manually:
+When you add or remove pages, regenerate these files with:
+
+```bash
+npm run build && npm run postbuild
+```
+
+You can also run just the postbuild step manually:
 
 ```bash
 npm run postbuild
 ```
-
 ## Locale detection
 
 Language detection is handled by [`middleware.ts`](middleware.ts). When a path
