@@ -9,8 +9,8 @@ import ServiceJsonLd from '../../components/ServiceJsonLd'
 
 export default function Bookkeeping() {
   const { t } = useTranslation('common')
-  const { asPath, defaultLocale } = useRouter()
-  const lang = asPath.split('/')[1] || defaultLocale || 'th'
+  const { locale, defaultLocale } = useRouter()
+  const lang = locale || defaultLocale || 'th'
   const baseUrl = defaultSeo.baseUrl
   const pageUrl =
     lang === defaultLocale
