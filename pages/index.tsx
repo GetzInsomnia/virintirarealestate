@@ -82,7 +82,12 @@ export default function Home() {
       />
       <SiteLinksSearchBoxJsonLd
         url={baseUrl}
-        searchUrl={`${baseUrl}/search?query={search_term_string}`}
+        potentialActions={[
+          {
+            target: `${baseUrl}/search?query={search_term_string}`,
+            queryInput: 'search_term_string',
+          },
+        ]}
       />
       <Script
         id='speakable'
