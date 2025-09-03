@@ -6,4 +6,9 @@ module.exports = {
     defaultLocale: 'th',
     locales: ['th', 'en', 'zh'],
   },
+  alternateRefs: [
+    { href: 'https://www.virintira.com/th', hreflang: 'th' },
+    { href: 'https://www.virintira.com/en', hreflang: 'en' },
+    { href: 'https://www.virintira.com/zh', hreflang: 'zh' },
+  ],
 };
