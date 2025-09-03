@@ -17,7 +17,7 @@ export default function BookkeepingMatters() {
   const { locale, defaultLocale } = useRouter()
   const lang = locale || defaultLocale || 'th'
   const keywords = t('blog_post_keywords', { returnObjects: true }) as string[]
-  the { baseUrl, siteUrl, pageUrl } = getSeoUrls(lang, '/blog/bookkeeping-matters')
+  const { baseUrl, siteUrl, pageUrl } = getSeoUrls(lang, '/blog/bookkeeping-matters')
   const homeUrl = siteUrl
   return (
     <>
