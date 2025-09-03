@@ -12,6 +12,7 @@ import { useRouter } from 'next/router'
 import Script from 'next/script'
 import defaultSeo from '../next-seo.config'
 import LanguageSwitcher from "./../components/LanguageSwitcher"
+import { buildUrl } from '../lib/url'
 
 export default function Home() {
   const { t } = useTranslation('common')
@@ -20,9 +21,7 @@ export default function Home() {
   const keywords = t('seo_keywords', { returnObjects: true }) as string[]
   const ogLocale =
     lang === 'en' ? 'en_US' : lang === 'zh' ? 'zh_CN' : 'th_TH'
-  const baseUrl = defaultSeo.baseUrl.replace(/\/$/, '')
-  const siteUrl = `${baseUrl}/th`
-  const pageUrl = `${baseUrl}/${lang}`
+  const { baseUrl, siteUrl, pageUrl } = buildUrl(lang)
   return (
     <>
       <NextSeo
@@ -41,10 +40,10 @@ export default function Home() {
           content: keywords.join(', '),
         }]}
         languageAlternates={[
-          { hrefLang: 'th', href: `${baseUrl}/th` },
-          { hrefLang: 'en', href: `${baseUrl}/en` },
-          { hrefLang: 'zh', href: `${baseUrl}/zh` },
-          { hrefLang: 'x-default', href: `${baseUrl}/th` },
+          { hrefLang: 'th', href: buildUrl('th').siteUrl },
+          { hrefLang: 'en', href: buildUrl('en').siteUrl },
+          { hrefLang: 'zh', href: buildUrl('zh').siteUrl },
+          { hrefLang: 'x-default', href: buildUrl('th').siteUrl },
         ]}
       />
       <WebPageJsonLd
