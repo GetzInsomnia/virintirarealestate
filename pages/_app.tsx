@@ -1,7 +1,8 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { appWithTranslation } from "next-i18next";
-import { DefaultSeo, JsonLd } from "next-seo";
+import { DefaultSeo } from "next-seo";
+import JsonLd from "../components/JsonLd";
 import { useRouter } from "next/router";
 import { buildUrl } from "../lib/url";
 import defaultSeo from "../next-seo.config";
