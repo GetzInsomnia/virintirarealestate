@@ -16,6 +16,8 @@ export default function Bookkeeping() {
   const { t } = useTranslation('common')
   const { locale, defaultLocale } = useRouter()
   const lang = locale || defaultLocale || 'th'
+  const keywords = t('bookkeeping_service_keywords', { returnObjects: true }) as string[]
+  const ogLocale = lang === 'en' ? 'en_US' : lang === 'zh' ? 'zh_CN' : 'th_TH'
   const baseUrl = defaultSeo.baseUrl.replace(/\/$/, '')
   const siteUrl = `${baseUrl}/th`
   const homeUrl = `${baseUrl}/${lang}`
@@ -30,8 +32,21 @@ export default function Bookkeeping() {
           ...defaultSeo.openGraph,
           title: t('bookkeeping_service_name'),
           description: t('bookkeeping_service_description'),
+          locale: ogLocale,
           url: pageUrl,
         }}
+        additionalMetaTags={[
+          {
+            name: 'keywords',
+            content: keywords.join(', '),
+          },
+        ]}
+        languageAlternates={[
+          { hrefLang: 'th', href: `${baseUrl}/th/services/bookkeeping` },
+          { hrefLang: 'en', href: `${baseUrl}/en/services/bookkeeping` },
+          { hrefLang: 'zh', href: `${baseUrl}/zh/services/bookkeeping` },
+          { hrefLang: 'x-default', href: `${baseUrl}/th/services/bookkeeping` },
+        ]}
       />
       <WebPageJsonLd
         id={pageUrl}
