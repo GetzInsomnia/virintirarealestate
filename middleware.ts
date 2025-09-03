@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import Negotiator from "negotiator";
 
 const locales = ["th", "en", "zh"];
 const defaultLocale = "th";
@@ -6,19 +7,14 @@ const defaultLocale = "th";
 function getPreferredLocale(header: string | null) {
   if (!header) return defaultLocale;
 
-  const languages = header
-    .split(",")
-    .map((part) => {
-      const [lang, qValue] = part.trim().split(";q=");
-      return {
-        lang: lang.toLowerCase().split("-")[0],
-        q: qValue ? parseFloat(qValue) : 1,
-      };
-    })
-    .sort((a, b) => b.q - a.q);
-
-  for (const { lang } of languages) {
-    if (locales.includes(lang)) return lang;
+  try {
+    const negotiator = new Negotiator({
+      headers: { "accept-language": header },
+    });
+    const language = negotiator.language(locales);
+    if (language) return language;
+  } catch {
+    // Ignore parsing errors and fall back to default locale
   }
 
   return defaultLocale;
