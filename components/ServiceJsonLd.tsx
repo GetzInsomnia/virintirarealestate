@@ -12,6 +12,7 @@ export interface ServiceJsonLdProps {
   provider: Provider
   type?: string
   url?: string
+  id?: string
 }
 
 export default function ServiceJsonLd({
@@ -20,6 +21,7 @@ export default function ServiceJsonLd({
   description,
   provider,
   url,
+  id = 'service-jsonld',
 }: ServiceJsonLdProps) {
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -34,7 +36,7 @@ export default function ServiceJsonLd({
     <>
       {/* eslint-disable-next-line react/no-danger */}
       <Script
-        id="service-jsonld"
+        id={id}
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
