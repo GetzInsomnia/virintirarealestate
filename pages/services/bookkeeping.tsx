@@ -8,18 +8,16 @@ import {
   WebPageJsonLd,
   BreadcrumbJsonLd,
 } from 'next-seo'
-import defaultSeo from '../../next-seo.config'
 import LanguageSwitcher from '../../components/LanguageSwitcher'
 import ServiceJsonLd from '../../components/ServiceJsonLd'
-import { buildUrl } from '../../lib/url'
+import { getOpenGraph, getLanguageAlternates, getSeoUrls } from '../../lib/seo'
 
 export default function Bookkeeping() {
   const { t } = useTranslation('common')
   const { locale, defaultLocale } = useRouter()
   const lang = locale || defaultLocale || 'th'
   const keywords = t('bookkeeping_service_keywords', { returnObjects: true }) as string[]
-  const ogLocale = lang === 'en' ? 'en_US' : lang === 'zh' ? 'zh_CN' : 'th_TH'
-  const { baseUrl, siteUrl, pageUrl } = buildUrl(lang, '/services/bookkeeping')
+  const { baseUrl, siteUrl, pageUrl } = getSeoUrls(lang, '/services/bookkeeping')
   const homeUrl = siteUrl
   return (
     <>
@@ -27,25 +25,19 @@ export default function Bookkeeping() {
         title={t('bookkeeping_service_name')}
         description={t('bookkeeping_service_description')}
         canonical={pageUrl}
-        openGraph={{
-          ...defaultSeo.openGraph,
-          title: t('bookkeeping_service_name'),
-          description: t('bookkeeping_service_description'),
-          locale: ogLocale,
-          url: pageUrl,
-        }}
+        openGraph={getOpenGraph(
+          lang,
+          pageUrl,
+          t('bookkeeping_service_name'),
+          t('bookkeeping_service_description')
+        )}
         additionalMetaTags={[
           {
             name: 'keywords',
             content: keywords.join(', '),
           },
         ]}
-        languageAlternates={[
-          { hrefLang: 'th', href: buildUrl('th', '/services/bookkeeping').pageUrl },
-          { hrefLang: 'en', href: buildUrl('en', '/services/bookkeeping').pageUrl },
-          { hrefLang: 'zh', href: buildUrl('zh', '/services/bookkeeping').pageUrl },
-          { hrefLang: 'x-default', href: buildUrl('th', '/services/bookkeeping').pageUrl },
-        ]}
+        languageAlternates={getLanguageAlternates('/services/bookkeeping')}
       />
       <WebPageJsonLd
         id={pageUrl}

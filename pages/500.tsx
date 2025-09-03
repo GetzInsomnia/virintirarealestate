@@ -4,8 +4,7 @@ import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { GetStaticProps } from "next";
 import nextI18NextConfig from "../next-i18next.config";
-import defaultSeo from "../next-seo.config";
-import { buildUrl } from "../lib/url";
+import { getOpenGraph, getLanguageAlternates, getSeoUrls } from "../lib/seo";
 
 export default function Custom500() {
   const { t } = useTranslation("common");
@@ -13,9 +12,7 @@ export default function Custom500() {
   const lang =
     locale ?? defaultLocale ?? nextI18NextConfig.i18n.defaultLocale;
   const keywords = t('seo_keywords', { returnObjects: true }) as string[];
-  const ogLocale =
-    lang === "en" ? "en_US" : lang === "zh" ? "zh_CN" : "th_TH";
-  const { pageUrl } = buildUrl(lang, "/500");
+  const { pageUrl } = getSeoUrls(lang, "/500");
   return (
     <>
       <NextSeo
@@ -23,20 +20,11 @@ export default function Custom500() {
         canonical={pageUrl}
         noindex
         nofollow
-        openGraph={{
-          ...defaultSeo.openGraph,
-          locale: ogLocale,
-          url: pageUrl,
-        }}
+        openGraph={getOpenGraph(lang, pageUrl)}
         additionalMetaTags={[
           { name: 'keywords', content: keywords.join(', ') },
         ]}
-        languageAlternates={[
-          { hrefLang: 'th', href: buildUrl('th', '/500').pageUrl },
-          { hrefLang: 'en', href: buildUrl('en', '/500').pageUrl },
-          { hrefLang: 'zh', href: buildUrl('zh', '/500').pageUrl },
-          { hrefLang: 'x-default', href: buildUrl('th', '/500').pageUrl },
-        ]}
+        languageAlternates={getLanguageAlternates('/500')}
       />
       <div style={{ textAlign: "center", marginTop: "2rem" }}>
         <h1>500</h1>

@@ -10,41 +10,32 @@ import {
 } from 'next-seo'
 import { useRouter } from 'next/router'
 import Script from 'next/script'
-import defaultSeo from '../next-seo.config'
 import LanguageSwitcher from "./../components/LanguageSwitcher"
-import { buildUrl } from '../lib/url'
+import { getOpenGraph, getLanguageAlternates, getSeoUrls } from '../lib/seo'
 
 export default function Home() {
   const { t } = useTranslation('common')
   const { locale, defaultLocale } = useRouter()
   const lang = locale || defaultLocale || 'th'
   const keywords = t('seo_keywords', { returnObjects: true }) as string[]
-  const ogLocale =
-    lang === 'en' ? 'en_US' : lang === 'zh' ? 'zh_CN' : 'th_TH'
-  const { baseUrl, siteUrl, pageUrl } = buildUrl(lang)
+  const { baseUrl, siteUrl, pageUrl } = getSeoUrls(lang)
   return (
     <>
       <NextSeo
         title={t('seo_title')}
         description={t('seo_description')}
         canonical={pageUrl}
-        openGraph={{
-          ...defaultSeo.openGraph,
-          title: t('seo_title'),
-          description: t('seo_description'),
-          locale: ogLocale,
-          url: pageUrl,
-        }}
+        openGraph={getOpenGraph(
+          lang,
+          pageUrl,
+          t('seo_title'),
+          t('seo_description')
+        )}
         additionalMetaTags={[{
           name: 'keywords',
           content: keywords.join(', '),
         }]}
-        languageAlternates={[
-          { hrefLang: 'th', href: buildUrl('th').siteUrl },
-          { hrefLang: 'en', href: buildUrl('en').siteUrl },
-          { hrefLang: 'zh', href: buildUrl('zh').siteUrl },
-          { hrefLang: 'x-default', href: buildUrl('th').siteUrl },
-        ]}
+        languageAlternates={getLanguageAlternates()}
       />
       <WebPageJsonLd
         id={pageUrl}
