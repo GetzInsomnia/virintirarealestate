@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 export interface Filters {
   minPrice?: number;
@@ -11,6 +11,8 @@ export interface Filters {
   furnished?: string;
   sort?: string;
   amenities?: string[];
+  transitLine?: string;
+  transitStation?: string;
 }
 
 interface Props {
@@ -18,9 +20,20 @@ interface Props {
   onChange: (filters: Filters) => void;
 }
 
-const amenitiesList = ['pool', 'parking', 'gym'];
-
 export default function PropertyFilters({ filters, onChange }: Props) {
+  const [amenitiesList, setAmenitiesList] = useState<string[]>([]);
+  const [transitLines, setTransitLines] = useState<Record<string, string[]>>({});
+
+  useEffect(() => {
+    fetch('/data/amenities.json')
+      .then((res) => res.json())
+      .then((data) => setAmenitiesList(data.amenities || []))
+      .catch(() => setAmenitiesList([]));
+    fetch('/data/transit-bkk.json')
+      .then((res) => res.json())
+      .then((data) => setTransitLines(data))
+      .catch(() => setTransitLines({}));
+  }, []);
   const handleNumberChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     onChange({ ...filters, [name]: value ? Number(value) : undefined });
@@ -117,6 +130,42 @@ export default function PropertyFilters({ filters, onChange }: Props) {
           />
           Near Transit
         </label>
+        {Object.keys(transitLines).length > 0 && (
+          <>
+            <label>
+              Line
+              <select
+                name="transitLine"
+                value={filters.transitLine ?? ''}
+                onChange={handleSelectChange}
+              >
+                <option value="">Any</option>
+                {Object.keys(transitLines).map((line) => (
+                  <option key={line} value={line}>
+                    {line}
+                  </option>
+                ))}
+              </select>
+            </label>
+            {filters.transitLine && (
+              <label>
+                Station
+                <select
+                  name="transitStation"
+                  value={filters.transitStation ?? ''}
+                  onChange={handleSelectChange}
+                >
+                  <option value="">Any</option>
+                  {transitLines[filters.transitLine].map((st) => (
+                    <option key={st} value={st}>
+                      {st}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
+          </>
+        )}
         <label>
           Furnished
           <select
