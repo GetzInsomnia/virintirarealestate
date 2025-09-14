@@ -6,6 +6,7 @@ import JsonLd from "../components/JsonLd";
 import { useRouter } from "next/router";
 import { buildUrl } from "../lib/url";
 import defaultSeo from "../next-seo.config";
+import { CurrencyProvider } from "../src/context/CurrencyContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { locale, defaultLocale } = useRouter();
@@ -34,7 +35,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <DefaultSeo {...defaultSeo} />
       <JsonLd scriptId="organization-jsonld" {...orgJsonLd} />
       <JsonLd scriptId="website-jsonld" {...webSiteJsonLd} />
-      <Component {...pageProps} />
+      <CurrencyProvider>
+        <Component {...pageProps} />
+      </CurrencyProvider>
     </>
   );
 }
