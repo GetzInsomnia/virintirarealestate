@@ -44,8 +44,10 @@ test('LanguageSwitcher sets aria-label and aria-current correctly', () => {
   assert.ok(nav, 'nav with aria-label "Language selector" should exist');
 
   const active = screen.getByRole('link', { name: 'Switch to English' });
-  assert.strictEqual(active.getAttribute('aria-current'), 'true');
+  assert.strictEqual(active.getAttribute('aria-current'), 'page');
+  assert.strictEqual(active.className, 'font-bold');
 
   const other = screen.getByRole('link', { name: 'Switch to ไทย' });
   assert.strictEqual(other.getAttribute('aria-current'), null);
+  assert.strictEqual(other.className, 'font-normal');
 });
