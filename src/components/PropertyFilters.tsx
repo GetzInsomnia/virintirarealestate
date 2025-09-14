@@ -1,4 +1,7 @@
 import { ChangeEvent, useEffect, useState } from 'react';
+import { PRICE_OPTIONS } from '../lib/filters/price';
+import { useCurrency } from '../context/CurrencyContext';
+import { formatCurrencyTHBBase, formatPriceTHB } from '../lib/fx/convert';
 
 export interface Filters {
   minPrice?: number;
@@ -23,6 +26,7 @@ interface Props {
 export default function PropertyFilters({ filters, onChange }: Props) {
   const [amenitiesList, setAmenitiesList] = useState<string[]>([]);
   const [transitLines, setTransitLines] = useState<Record<string, string[]>>({});
+  const { currency, rates } = useCurrency();
 
   useEffect(() => {
     fetch('/data/amenities.json')
@@ -55,26 +59,68 @@ export default function PropertyFilters({ filters, onChange }: Props) {
     }
   };
 
+  const priceTooltip = (value?: number) =>
+    value !== undefined ? formatCurrencyTHBBase(value, currency, rates) : undefined;
+
+  const handlePriceChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    const num = value ? Number(value) : undefined;
+    let updated: Filters = { ...filters, [name]: num };
+    if (name === 'minPrice' && num !== undefined) {
+      if (filters.maxPrice !== undefined && num > filters.maxPrice) {
+        updated.maxPrice = num;
+      }
+    } else if (name === 'maxPrice' && num !== undefined) {
+      if (filters.minPrice !== undefined && num < filters.minPrice) {
+        updated.minPrice = num;
+      }
+    }
+    onChange(updated);
+  };
+
+  const rangeTooltip =
+    priceTooltip(filters.minPrice) || priceTooltip(filters.maxPrice)
+      ? `${priceTooltip(filters.minPrice) ?? 'Any'} – ${priceTooltip(filters.maxPrice) ?? 'Any'}`
+      : undefined;
+
   return (
     <div className="space-y-2">
-      <div>
+      <div title={rangeTooltip}>
         <label>
           Min Price
-          <input
-            type="number"
+          <select
             name="minPrice"
             value={filters.minPrice ?? ''}
-            onChange={handleNumberChange}
-          />
+            onChange={handlePriceChange}
+            title={priceTooltip(filters.minPrice)}
+          >
+            <option value="">Any</option>
+            {PRICE_OPTIONS.filter((p) =>
+              filters.maxPrice !== undefined ? p <= filters.maxPrice : true
+            ).map((p) => (
+              <option key={p} value={p} title={priceTooltip(p)}>
+                {formatPriceTHB(p)}
+              </option>
+            ))}
+          </select>
         </label>
         <label>
           Max Price
-          <input
-            type="number"
+          <select
             name="maxPrice"
             value={filters.maxPrice ?? ''}
-            onChange={handleNumberChange}
-          />
+            onChange={handlePriceChange}
+            title={priceTooltip(filters.maxPrice)}
+          >
+            <option value="">Any</option>
+            {PRICE_OPTIONS.filter((p) =>
+              filters.minPrice !== undefined ? p >= filters.minPrice : true
+            ).map((p) => (
+              <option key={p} value={p} title={priceTooltip(p)}>
+                {formatPriceTHB(p)}
+              </option>
+            ))}
+          </select>
         </label>
       </div>
       <div>

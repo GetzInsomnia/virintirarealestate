@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { MIN_PRICE, MAX_PRICE, isValidPrice } from '../filters/price';
 
 const safeString = z.string().trim().regex(/^[\p{L}\p{N}\s-]+$/u);
 
@@ -6,8 +7,22 @@ export const searchParamsSchema = z.object({
   query: safeString.optional(),
   province: safeString.optional(),
   type: safeString.optional(),
-  minPrice: z.coerce.number().int().nonnegative().optional(),
-  maxPrice: z.coerce.number().int().nonnegative().optional(),
+  minPrice: z
+    .coerce
+    .number()
+    .int()
+    .min(MIN_PRICE)
+    .max(MAX_PRICE)
+    .refine(isValidPrice, 'Invalid price step')
+    .optional(),
+  maxPrice: z
+    .coerce
+    .number()
+    .int()
+    .min(MIN_PRICE)
+    .max(MAX_PRICE)
+    .refine(isValidPrice, 'Invalid price step')
+    .optional(),
   beds: z.coerce.number().int().nonnegative().optional(),
   baths: z.coerce.number().int().nonnegative().optional(),
   status: z.enum(['sale', 'rent']).optional(),
@@ -23,7 +38,16 @@ export const searchParamsSchema = z.object({
   transitStation: safeString.optional(),
   page: z.coerce.number().int().positive().optional(),
   pageSize: z.coerce.number().int().positive().max(100).optional(),
-});
+}).refine(
+  (data) =>
+    data.minPrice === undefined ||
+    data.maxPrice === undefined ||
+    data.minPrice <= data.maxPrice,
+  {
+    message: 'minPrice cannot exceed maxPrice',
+    path: ['maxPrice'],
+  }
+);
 
 export type SearchParams = z.infer<typeof searchParamsSchema>;
 

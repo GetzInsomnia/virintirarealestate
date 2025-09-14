@@ -1,5 +1,6 @@
 import MiniSearch from 'minisearch';
 import { searchParamsSchema, type SearchParams } from '../lib/validation/search';
+import { MIN_PRICE, MAX_PRICE, isValidPrice } from '../lib/filters/price';
 
 interface PropertyDTO {
   id: number;
@@ -112,6 +113,23 @@ self.onmessage = async (event: MessageEvent<any>) => {
     return;
   }
   const req: SearchParams = parsed.data;
+  if (req.minPrice !== undefined) {
+    if (!isValidPrice(req.minPrice) || req.minPrice < MIN_PRICE) {
+      req.minPrice = MIN_PRICE;
+    }
+  }
+  if (req.maxPrice !== undefined) {
+    if (!isValidPrice(req.maxPrice) || req.maxPrice > MAX_PRICE) {
+      req.maxPrice = MAX_PRICE;
+    }
+  }
+  if (
+    req.minPrice !== undefined &&
+    req.maxPrice !== undefined &&
+    req.minPrice > req.maxPrice
+  ) {
+    [req.minPrice, req.maxPrice] = [req.maxPrice, req.minPrice];
+  }
   const [amenities, transit] = await Promise.all([
     loadAmenities(),
     loadTransit(),
