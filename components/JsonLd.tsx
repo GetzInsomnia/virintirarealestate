@@ -1,12 +1,11 @@
 import Script from 'next/script'
 
 export interface JsonLdProps {
-  scriptKey: string
   scriptId: string
   [key: string]: unknown
 }
 
-export default function JsonLd({ scriptKey: _scriptKey, scriptId, ...jsonLd }: JsonLdProps) {
+export default function JsonLd({ scriptId, ...jsonLd }: JsonLdProps) {
   return (
     <>
       {/* eslint-disable-next-line react/no-danger */}
