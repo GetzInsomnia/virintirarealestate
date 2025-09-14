@@ -1,0 +1,1544 @@
+{
+  "shards": [
+    {
+      "key": "bangkok-condo",
+      "province": "Bangkok",
+      "type": "condo"
+    },
+    {
+      "key": "bangkok-house",
+      "province": "Bangkok",
+      "type": "house"
+    },
+    {
+      "key": "bangkok-land",
+      "province": "Bangkok",
+      "type": "land"
+    },
+    {
+      "key": "bangkok-townhouse",
+      "province": "Bangkok",
+      "type": "townhouse"
+    },
+    {
+      "key": "samut-prakan-condo",
+      "province": "Samut Prakan",
+      "type": "prakan"
+    },
+    {
+      "key": "samut-prakan-house",
+      "province": "Samut Prakan",
+      "type": "prakan"
+    },
+    {
+      "key": "samut-prakan-land",
+      "province": "Samut Prakan",
+      "type": "prakan"
+    },
+    {
+      "key": "samut-prakan-townhouse",
+      "province": "Samut Prakan",
+      "type": "prakan"
+    },
+    {
+      "key": "nonthaburi-condo",
+      "province": "Nonthaburi",
+      "type": "condo"
+    },
+    {
+      "key": "nonthaburi-house",
+      "province": "Nonthaburi",
+      "type": "house"
+    },
+    {
+      "key": "nonthaburi-land",
+      "province": "Nonthaburi",
+      "type": "land"
+    },
+    {
+      "key": "nonthaburi-townhouse",
+      "province": "Nonthaburi",
+      "type": "townhouse"
+    },
+    {
+      "key": "pathum-thani-condo",
+      "province": "Pathum Thani",
+      "type": "thani"
+    },
+    {
+      "key": "pathum-thani-house",
+      "province": "Pathum Thani",
+      "type": "thani"
+    },
+    {
+      "key": "pathum-thani-land",
+      "province": "Pathum Thani",
+      "type": "thani"
+    },
+    {
+      "key": "pathum-thani-townhouse",
+      "province": "Pathum Thani",
+      "type": "thani"
+    },
+    {
+      "key": "phra-nakhon-si-ayutthaya-condo",
+      "province": "Phra Nakhon Si Ayutthaya",
+      "type": "nakhon"
+    },
+    {
+      "key": "phra-nakhon-si-ayutthaya-house",
+      "province": "Phra Nakhon Si Ayutthaya",
+      "type": "nakhon"
+    },
+    {
+      "key": "phra-nakhon-si-ayutthaya-land",
+      "province": "Phra Nakhon Si Ayutthaya",
+      "type": "nakhon"
+    },
+    {
+      "key": "phra-nakhon-si-ayutthaya-townhouse",
+      "province": "Phra Nakhon Si Ayutthaya",
+      "type": "nakhon"
+    },
+    {
+      "key": "ang-thong-condo",
+      "province": "Ang Thong",
+      "type": "thong"
+    },
+    {
+      "key": "ang-thong-house",
+      "province": "Ang Thong",
+      "type": "thong"
+    },
+    {
+      "key": "ang-thong-land",
+      "province": "Ang Thong",
+      "type": "thong"
+    },
+    {
+      "key": "ang-thong-townhouse",
+      "province": "Ang Thong",
+      "type": "thong"
+    },
+    {
+      "key": "loburi-condo",
+      "province": "Loburi",
+      "type": "condo"
+    },
+    {
+      "key": "loburi-house",
+      "province": "Loburi",
+      "type": "house"
+    },
+    {
+      "key": "loburi-land",
+      "province": "Loburi",
+      "type": "land"
+    },
+    {
+      "key": "loburi-townhouse",
+      "province": "Loburi",
+      "type": "townhouse"
+    },
+    {
+      "key": "sing-buri-condo",
+      "province": "Sing Buri",
+      "type": "buri"
+    },
+    {
+      "key": "sing-buri-house",
+      "province": "Sing Buri",
+      "type": "buri"
+    },
+    {
+      "key": "sing-buri-land",
+      "province": "Sing Buri",
+      "type": "buri"
+    },
+    {
+      "key": "sing-buri-townhouse",
+      "province": "Sing Buri",
+      "type": "buri"
+    },
+    {
+      "key": "chai-nat-condo",
+      "province": "Chai Nat",
+      "type": "nat"
+    },
+    {
+      "key": "chai-nat-house",
+      "province": "Chai Nat",
+      "type": "nat"
+    },
+    {
+      "key": "chai-nat-land",
+      "province": "Chai Nat",
+      "type": "nat"
+    },
+    {
+      "key": "chai-nat-townhouse",
+      "province": "Chai Nat",
+      "type": "nat"
+    },
+    {
+      "key": "saraburi-condo",
+      "province": "Saraburi",
+      "type": "condo"
+    },
+    {
+      "key": "saraburi-house",
+      "province": "Saraburi",
+      "type": "house"
+    },
+    {
+      "key": "saraburi-land",
+      "province": "Saraburi",
+      "type": "land"
+    },
+    {
+      "key": "saraburi-townhouse",
+      "province": "Saraburi",
+      "type": "townhouse"
+    },
+    {
+      "key": "chon-buri-condo",
+      "province": "Chon Buri",
+      "type": "buri"
+    },
+    {
+      "key": "chon-buri-house",
+      "province": "Chon Buri",
+      "type": "buri"
+    },
+    {
+      "key": "chon-buri-land",
+      "province": "Chon Buri",
+      "type": "buri"
+    },
+    {
+      "key": "chon-buri-townhouse",
+      "province": "Chon Buri",
+      "type": "buri"
+    },
+    {
+      "key": "rayong-condo",
+      "province": "Rayong",
+      "type": "condo"
+    },
+    {
+      "key": "rayong-house",
+      "province": "Rayong",
+      "type": "house"
+    },
+    {
+      "key": "rayong-land",
+      "province": "Rayong",
+      "type": "land"
+    },
+    {
+      "key": "rayong-townhouse",
+      "province": "Rayong",
+      "type": "townhouse"
+    },
+    {
+      "key": "chanthaburi-condo",
+      "province": "Chanthaburi",
+      "type": "condo"
+    },
+    {
+      "key": "chanthaburi-house",
+      "province": "Chanthaburi",
+      "type": "house"
+    },
+    {
+      "key": "chanthaburi-land",
+      "province": "Chanthaburi",
+      "type": "land"
+    },
+    {
+      "key": "chanthaburi-townhouse",
+      "province": "Chanthaburi",
+      "type": "townhouse"
+    },
+    {
+      "key": "trat-condo",
+      "province": "Trat",
+      "type": "condo"
+    },
+    {
+      "key": "trat-house",
+      "province": "Trat",
+      "type": "house"
+    },
+    {
+      "key": "trat-land",
+      "province": "Trat",
+      "type": "land"
+    },
+    {
+      "key": "trat-townhouse",
+      "province": "Trat",
+      "type": "townhouse"
+    },
+    {
+      "key": "chachoengsao-condo",
+      "province": "Chachoengsao",
+      "type": "condo"
+    },
+    {
+      "key": "chachoengsao-house",
+      "province": "Chachoengsao",
+      "type": "house"
+    },
+    {
+      "key": "chachoengsao-land",
+      "province": "Chachoengsao",
+      "type": "land"
+    },
+    {
+      "key": "chachoengsao-townhouse",
+      "province": "Chachoengsao",
+      "type": "townhouse"
+    },
+    {
+      "key": "prachin-buri-condo",
+      "province": "Prachin Buri",
+      "type": "buri"
+    },
+    {
+      "key": "prachin-buri-house",
+      "province": "Prachin Buri",
+      "type": "buri"
+    },
+    {
+      "key": "prachin-buri-land",
+      "province": "Prachin Buri",
+      "type": "buri"
+    },
+    {
+      "key": "prachin-buri-townhouse",
+      "province": "Prachin Buri",
+      "type": "buri"
+    },
+    {
+      "key": "nakhon-nayok-condo",
+      "province": "Nakhon Nayok",
+      "type": "nayok"
+    },
+    {
+      "key": "nakhon-nayok-house",
+      "province": "Nakhon Nayok",
+      "type": "nayok"
+    },
+    {
+      "key": "nakhon-nayok-land",
+      "province": "Nakhon Nayok",
+      "type": "nayok"
+    },
+    {
+      "key": "nakhon-nayok-townhouse",
+      "province": "Nakhon Nayok",
+      "type": "nayok"
+    },
+    {
+      "key": "sa-kaeo-condo",
+      "province": "Sa Kaeo",
+      "type": "kaeo"
+    },
+    {
+      "key": "sa-kaeo-house",
+      "province": "Sa Kaeo",
+      "type": "kaeo"
+    },
+    {
+      "key": "sa-kaeo-land",
+      "province": "Sa Kaeo",
+      "type": "kaeo"
+    },
+    {
+      "key": "sa-kaeo-townhouse",
+      "province": "Sa Kaeo",
+      "type": "kaeo"
+    },
+    {
+      "key": "nakhon-ratchasima-condo",
+      "province": "Nakhon Ratchasima",
+      "type": "ratchasima"
+    },
+    {
+      "key": "nakhon-ratchasima-house",
+      "province": "Nakhon Ratchasima",
+      "type": "ratchasima"
+    },
+    {
+      "key": "nakhon-ratchasima-land",
+      "province": "Nakhon Ratchasima",
+      "type": "ratchasima"
+    },
+    {
+      "key": "nakhon-ratchasima-townhouse",
+      "province": "Nakhon Ratchasima",
+      "type": "ratchasima"
+    },
+    {
+      "key": "buri-ram-condo",
+      "province": "Buri Ram",
+      "type": "ram"
+    },
+    {
+      "key": "buri-ram-house",
+      "province": "Buri Ram",
+      "type": "ram"
+    },
+    {
+      "key": "buri-ram-land",
+      "province": "Buri Ram",
+      "type": "ram"
+    },
+    {
+      "key": "buri-ram-townhouse",
+      "province": "Buri Ram",
+      "type": "ram"
+    },
+    {
+      "key": "surin-condo",
+      "province": "Surin",
+      "type": "condo"
+    },
+    {
+      "key": "surin-house",
+      "province": "Surin",
+      "type": "house"
+    },
+    {
+      "key": "surin-land",
+      "province": "Surin",
+      "type": "land"
+    },
+    {
+      "key": "surin-townhouse",
+      "province": "Surin",
+      "type": "townhouse"
+    },
+    {
+      "key": "si-sa-ket-condo",
+      "province": "Si Sa Ket",
+      "type": "sa"
+    },
+    {
+      "key": "si-sa-ket-house",
+      "province": "Si Sa Ket",
+      "type": "sa"
+    },
+    {
+      "key": "si-sa-ket-land",
+      "province": "Si Sa Ket",
+      "type": "sa"
+    },
+    {
+      "key": "si-sa-ket-townhouse",
+      "province": "Si Sa Ket",
+      "type": "sa"
+    },
+    {
+      "key": "ubon-ratchathani-condo",
+      "province": "Ubon Ratchathani",
+      "type": "ratchathani"
+    },
+    {
+      "key": "ubon-ratchathani-house",
+      "province": "Ubon Ratchathani",
+      "type": "ratchathani"
+    },
+    {
+      "key": "ubon-ratchathani-land",
+      "province": "Ubon Ratchathani",
+      "type": "ratchathani"
+    },
+    {
+      "key": "ubon-ratchathani-townhouse",
+      "province": "Ubon Ratchathani",
+      "type": "ratchathani"
+    },
+    {
+      "key": "yasothon-condo",
+      "province": "Yasothon",
+      "type": "condo"
+    },
+    {
+      "key": "yasothon-house",
+      "province": "Yasothon",
+      "type": "house"
+    },
+    {
+      "key": "yasothon-land",
+      "province": "Yasothon",
+      "type": "land"
+    },
+    {
+      "key": "yasothon-townhouse",
+      "province": "Yasothon",
+      "type": "townhouse"
+    },
+    {
+      "key": "chaiyaphum-condo",
+      "province": "Chaiyaphum",
+      "type": "condo"
+    },
+    {
+      "key": "chaiyaphum-house",
+      "province": "Chaiyaphum",
+      "type": "house"
+    },
+    {
+      "key": "chaiyaphum-land",
+      "province": "Chaiyaphum",
+      "type": "land"
+    },
+    {
+      "key": "chaiyaphum-townhouse",
+      "province": "Chaiyaphum",
+      "type": "townhouse"
+    },
+    {
+      "key": "amnat-charoen-condo",
+      "province": "Amnat Charoen",
+      "type": "charoen"
+    },
+    {
+      "key": "amnat-charoen-house",
+      "province": "Amnat Charoen",
+      "type": "charoen"
+    },
+    {
+      "key": "amnat-charoen-land",
+      "province": "Amnat Charoen",
+      "type": "charoen"
+    },
+    {
+      "key": "amnat-charoen-townhouse",
+      "province": "Amnat Charoen",
+      "type": "charoen"
+    },
+    {
+      "key": "nong-bua-lam-phu-condo",
+      "province": "Nong Bua Lam Phu",
+      "type": "bua"
+    },
+    {
+      "key": "nong-bua-lam-phu-house",
+      "province": "Nong Bua Lam Phu",
+      "type": "bua"
+    },
+    {
+      "key": "nong-bua-lam-phu-land",
+      "province": "Nong Bua Lam Phu",
+      "type": "bua"
+    },
+    {
+      "key": "nong-bua-lam-phu-townhouse",
+      "province": "Nong Bua Lam Phu",
+      "type": "bua"
+    },
+    {
+      "key": "khon-kaen-condo",
+      "province": "Khon Kaen",
+      "type": "kaen"
+    },
+    {
+      "key": "khon-kaen-house",
+      "province": "Khon Kaen",
+      "type": "kaen"
+    },
+    {
+      "key": "khon-kaen-land",
+      "province": "Khon Kaen",
+      "type": "kaen"
+    },
+    {
+      "key": "khon-kaen-townhouse",
+      "province": "Khon Kaen",
+      "type": "kaen"
+    },
+    {
+      "key": "udon-thani-condo",
+      "province": "Udon Thani",
+      "type": "thani"
+    },
+    {
+      "key": "udon-thani-house",
+      "province": "Udon Thani",
+      "type": "thani"
+    },
+    {
+      "key": "udon-thani-land",
+      "province": "Udon Thani",
+      "type": "thani"
+    },
+    {
+      "key": "udon-thani-townhouse",
+      "province": "Udon Thani",
+      "type": "thani"
+    },
+    {
+      "key": "loei-condo",
+      "province": "Loei",
+      "type": "condo"
+    },
+    {
+      "key": "loei-house",
+      "province": "Loei",
+      "type": "house"
+    },
+    {
+      "key": "loei-land",
+      "province": "Loei",
+      "type": "land"
+    },
+    {
+      "key": "loei-townhouse",
+      "province": "Loei",
+      "type": "townhouse"
+    },
+    {
+      "key": "nong-khai-condo",
+      "province": "Nong Khai",
+      "type": "khai"
+    },
+    {
+      "key": "nong-khai-house",
+      "province": "Nong Khai",
+      "type": "khai"
+    },
+    {
+      "key": "nong-khai-land",
+      "province": "Nong Khai",
+      "type": "khai"
+    },
+    {
+      "key": "nong-khai-townhouse",
+      "province": "Nong Khai",
+      "type": "khai"
+    },
+    {
+      "key": "maha-sarakham-condo",
+      "province": "Maha Sarakham",
+      "type": "sarakham"
+    },
+    {
+      "key": "maha-sarakham-house",
+      "province": "Maha Sarakham",
+      "type": "sarakham"
+    },
+    {
+      "key": "maha-sarakham-land",
+      "province": "Maha Sarakham",
+      "type": "sarakham"
+    },
+    {
+      "key": "maha-sarakham-townhouse",
+      "province": "Maha Sarakham",
+      "type": "sarakham"
+    },
+    {
+      "key": "roi-et-condo",
+      "province": "Roi Et",
+      "type": "et"
+    },
+    {
+      "key": "roi-et-house",
+      "province": "Roi Et",
+      "type": "et"
+    },
+    {
+      "key": "roi-et-land",
+      "province": "Roi Et",
+      "type": "et"
+    },
+    {
+      "key": "roi-et-townhouse",
+      "province": "Roi Et",
+      "type": "et"
+    },
+    {
+      "key": "kalasin-condo",
+      "province": "Kalasin",
+      "type": "condo"
+    },
+    {
+      "key": "kalasin-house",
+      "province": "Kalasin",
+      "type": "house"
+    },
+    {
+      "key": "kalasin-land",
+      "province": "Kalasin",
+      "type": "land"
+    },
+    {
+      "key": "kalasin-townhouse",
+      "province": "Kalasin",
+      "type": "townhouse"
+    },
+    {
+      "key": "sakon-nakhon-condo",
+      "province": "Sakon Nakhon",
+      "type": "nakhon"
+    },
+    {
+      "key": "sakon-nakhon-house",
+      "province": "Sakon Nakhon",
+      "type": "nakhon"
+    },
+    {
+      "key": "sakon-nakhon-land",
+      "province": "Sakon Nakhon",
+      "type": "nakhon"
+    },
+    {
+      "key": "sakon-nakhon-townhouse",
+      "province": "Sakon Nakhon",
+      "type": "nakhon"
+    },
+    {
+      "key": "nakhon-phanom-condo",
+      "province": "Nakhon Phanom",
+      "type": "phanom"
+    },
+    {
+      "key": "nakhon-phanom-house",
+      "province": "Nakhon Phanom",
+      "type": "phanom"
+    },
+    {
+      "key": "nakhon-phanom-land",
+      "province": "Nakhon Phanom",
+      "type": "phanom"
+    },
+    {
+      "key": "nakhon-phanom-townhouse",
+      "province": "Nakhon Phanom",
+      "type": "phanom"
+    },
+    {
+      "key": "mukdahan-condo",
+      "province": "Mukdahan",
+      "type": "condo"
+    },
+    {
+      "key": "mukdahan-house",
+      "province": "Mukdahan",
+      "type": "house"
+    },
+    {
+      "key": "mukdahan-land",
+      "province": "Mukdahan",
+      "type": "land"
+    },
+    {
+      "key": "mukdahan-townhouse",
+      "province": "Mukdahan",
+      "type": "townhouse"
+    },
+    {
+      "key": "chiang-mai-condo",
+      "province": "Chiang Mai",
+      "type": "mai"
+    },
+    {
+      "key": "chiang-mai-house",
+      "province": "Chiang Mai",
+      "type": "mai"
+    },
+    {
+      "key": "chiang-mai-land",
+      "province": "Chiang Mai",
+      "type": "mai"
+    },
+    {
+      "key": "chiang-mai-townhouse",
+      "province": "Chiang Mai",
+      "type": "mai"
+    },
+    {
+      "key": "lamphun-condo",
+      "province": "Lamphun",
+      "type": "condo"
+    },
+    {
+      "key": "lamphun-house",
+      "province": "Lamphun",
+      "type": "house"
+    },
+    {
+      "key": "lamphun-land",
+      "province": "Lamphun",
+      "type": "land"
+    },
+    {
+      "key": "lamphun-townhouse",
+      "province": "Lamphun",
+      "type": "townhouse"
+    },
+    {
+      "key": "lampang-condo",
+      "province": "Lampang",
+      "type": "condo"
+    },
+    {
+      "key": "lampang-house",
+      "province": "Lampang",
+      "type": "house"
+    },
+    {
+      "key": "lampang-land",
+      "province": "Lampang",
+      "type": "land"
+    },
+    {
+      "key": "lampang-townhouse",
+      "province": "Lampang",
+      "type": "townhouse"
+    },
+    {
+      "key": "uttaradit-condo",
+      "province": "Uttaradit",
+      "type": "condo"
+    },
+    {
+      "key": "uttaradit-house",
+      "province": "Uttaradit",
+      "type": "house"
+    },
+    {
+      "key": "uttaradit-land",
+      "province": "Uttaradit",
+      "type": "land"
+    },
+    {
+      "key": "uttaradit-townhouse",
+      "province": "Uttaradit",
+      "type": "townhouse"
+    },
+    {
+      "key": "phrae-condo",
+      "province": "Phrae",
+      "type": "condo"
+    },
+    {
+      "key": "phrae-house",
+      "province": "Phrae",
+      "type": "house"
+    },
+    {
+      "key": "phrae-land",
+      "province": "Phrae",
+      "type": "land"
+    },
+    {
+      "key": "phrae-townhouse",
+      "province": "Phrae",
+      "type": "townhouse"
+    },
+    {
+      "key": "nan-condo",
+      "province": "Nan",
+      "type": "condo"
+    },
+    {
+      "key": "nan-house",
+      "province": "Nan",
+      "type": "house"
+    },
+    {
+      "key": "nan-land",
+      "province": "Nan",
+      "type": "land"
+    },
+    {
+      "key": "nan-townhouse",
+      "province": "Nan",
+      "type": "townhouse"
+    },
+    {
+      "key": "phayao-condo",
+      "province": "Phayao",
+      "type": "condo"
+    },
+    {
+      "key": "phayao-house",
+      "province": "Phayao",
+      "type": "house"
+    },
+    {
+      "key": "phayao-land",
+      "province": "Phayao",
+      "type": "land"
+    },
+    {
+      "key": "phayao-townhouse",
+      "province": "Phayao",
+      "type": "townhouse"
+    },
+    {
+      "key": "chiang-rai-condo",
+      "province": "Chiang Rai",
+      "type": "rai"
+    },
+    {
+      "key": "chiang-rai-house",
+      "province": "Chiang Rai",
+      "type": "rai"
+    },
+    {
+      "key": "chiang-rai-land",
+      "province": "Chiang Rai",
+      "type": "rai"
+    },
+    {
+      "key": "chiang-rai-townhouse",
+      "province": "Chiang Rai",
+      "type": "rai"
+    },
+    {
+      "key": "mae-hong-son-condo",
+      "province": "Mae Hong Son",
+      "type": "hong"
+    },
+    {
+      "key": "mae-hong-son-house",
+      "province": "Mae Hong Son",
+      "type": "hong"
+    },
+    {
+      "key": "mae-hong-son-land",
+      "province": "Mae Hong Son",
+      "type": "hong"
+    },
+    {
+      "key": "mae-hong-son-townhouse",
+      "province": "Mae Hong Son",
+      "type": "hong"
+    },
+    {
+      "key": "nakhon-sawan-condo",
+      "province": "Nakhon Sawan",
+      "type": "sawan"
+    },
+    {
+      "key": "nakhon-sawan-house",
+      "province": "Nakhon Sawan",
+      "type": "sawan"
+    },
+    {
+      "key": "nakhon-sawan-land",
+      "province": "Nakhon Sawan",
+      "type": "sawan"
+    },
+    {
+      "key": "nakhon-sawan-townhouse",
+      "province": "Nakhon Sawan",
+      "type": "sawan"
+    },
+    {
+      "key": "uthai-thani-condo",
+      "province": "Uthai Thani",
+      "type": "thani"
+    },
+    {
+      "key": "uthai-thani-house",
+      "province": "Uthai Thani",
+      "type": "thani"
+    },
+    {
+      "key": "uthai-thani-land",
+      "province": "Uthai Thani",
+      "type": "thani"
+    },
+    {
+      "key": "uthai-thani-townhouse",
+      "province": "Uthai Thani",
+      "type": "thani"
+    },
+    {
+      "key": "kamphaeng-phet-condo",
+      "province": "Kamphaeng Phet",
+      "type": "phet"
+    },
+    {
+      "key": "kamphaeng-phet-house",
+      "province": "Kamphaeng Phet",
+      "type": "phet"
+    },
+    {
+      "key": "kamphaeng-phet-land",
+      "province": "Kamphaeng Phet",
+      "type": "phet"
+    },
+    {
+      "key": "kamphaeng-phet-townhouse",
+      "province": "Kamphaeng Phet",
+      "type": "phet"
+    },
+    {
+      "key": "tak-condo",
+      "province": "Tak",
+      "type": "condo"
+    },
+    {
+      "key": "tak-house",
+      "province": "Tak",
+      "type": "house"
+    },
+    {
+      "key": "tak-land",
+      "province": "Tak",
+      "type": "land"
+    },
+    {
+      "key": "tak-townhouse",
+      "province": "Tak",
+      "type": "townhouse"
+    },
+    {
+      "key": "sukhothai-condo",
+      "province": "Sukhothai",
+      "type": "condo"
+    },
+    {
+      "key": "sukhothai-house",
+      "province": "Sukhothai",
+      "type": "house"
+    },
+    {
+      "key": "sukhothai-land",
+      "province": "Sukhothai",
+      "type": "land"
+    },
+    {
+      "key": "sukhothai-townhouse",
+      "province": "Sukhothai",
+      "type": "townhouse"
+    },
+    {
+      "key": "phitsanulok-condo",
+      "province": "Phitsanulok",
+      "type": "condo"
+    },
+    {
+      "key": "phitsanulok-house",
+      "province": "Phitsanulok",
+      "type": "house"
+    },
+    {
+      "key": "phitsanulok-land",
+      "province": "Phitsanulok",
+      "type": "land"
+    },
+    {
+      "key": "phitsanulok-townhouse",
+      "province": "Phitsanulok",
+      "type": "townhouse"
+    },
+    {
+      "key": "phichit-condo",
+      "province": "Phichit",
+      "type": "condo"
+    },
+    {
+      "key": "phichit-house",
+      "province": "Phichit",
+      "type": "house"
+    },
+    {
+      "key": "phichit-land",
+      "province": "Phichit",
+      "type": "land"
+    },
+    {
+      "key": "phichit-townhouse",
+      "province": "Phichit",
+      "type": "townhouse"
+    },
+    {
+      "key": "phetchabun-condo",
+      "province": "Phetchabun",
+      "type": "condo"
+    },
+    {
+      "key": "phetchabun-house",
+      "province": "Phetchabun",
+      "type": "house"
+    },
+    {
+      "key": "phetchabun-land",
+      "province": "Phetchabun",
+      "type": "land"
+    },
+    {
+      "key": "phetchabun-townhouse",
+      "province": "Phetchabun",
+      "type": "townhouse"
+    },
+    {
+      "key": "ratchaburi-condo",
+      "province": "Ratchaburi",
+      "type": "condo"
+    },
+    {
+      "key": "ratchaburi-house",
+      "province": "Ratchaburi",
+      "type": "house"
+    },
+    {
+      "key": "ratchaburi-land",
+      "province": "Ratchaburi",
+      "type": "land"
+    },
+    {
+      "key": "ratchaburi-townhouse",
+      "province": "Ratchaburi",
+      "type": "townhouse"
+    },
+    {
+      "key": "kanchanaburi-condo",
+      "province": "Kanchanaburi",
+      "type": "condo"
+    },
+    {
+      "key": "kanchanaburi-house",
+      "province": "Kanchanaburi",
+      "type": "house"
+    },
+    {
+      "key": "kanchanaburi-land",
+      "province": "Kanchanaburi",
+      "type": "land"
+    },
+    {
+      "key": "kanchanaburi-townhouse",
+      "province": "Kanchanaburi",
+      "type": "townhouse"
+    },
+    {
+      "key": "suphan-buri-condo",
+      "province": "Suphan Buri",
+      "type": "buri"
+    },
+    {
+      "key": "suphan-buri-house",
+      "province": "Suphan Buri",
+      "type": "buri"
+    },
+    {
+      "key": "suphan-buri-land",
+      "province": "Suphan Buri",
+      "type": "buri"
+    },
+    {
+      "key": "suphan-buri-townhouse",
+      "province": "Suphan Buri",
+      "type": "buri"
+    },
+    {
+      "key": "nakhon-pathom-condo",
+      "province": "Nakhon Pathom",
+      "type": "pathom"
+    },
+    {
+      "key": "nakhon-pathom-house",
+      "province": "Nakhon Pathom",
+      "type": "pathom"
+    },
+    {
+      "key": "nakhon-pathom-land",
+      "province": "Nakhon Pathom",
+      "type": "pathom"
+    },
+    {
+      "key": "nakhon-pathom-townhouse",
+      "province": "Nakhon Pathom",
+      "type": "pathom"
+    },
+    {
+      "key": "samut-sakhon-condo",
+      "province": "Samut Sakhon",
+      "type": "sakhon"
+    },
+    {
+      "key": "samut-sakhon-house",
+      "province": "Samut Sakhon",
+      "type": "sakhon"
+    },
+    {
+      "key": "samut-sakhon-land",
+      "province": "Samut Sakhon",
+      "type": "sakhon"
+    },
+    {
+      "key": "samut-sakhon-townhouse",
+      "province": "Samut Sakhon",
+      "type": "sakhon"
+    },
+    {
+      "key": "samut-songkhram-condo",
+      "province": "Samut Songkhram",
+      "type": "songkhram"
+    },
+    {
+      "key": "samut-songkhram-house",
+      "province": "Samut Songkhram",
+      "type": "songkhram"
+    },
+    {
+      "key": "samut-songkhram-land",
+      "province": "Samut Songkhram",
+      "type": "songkhram"
+    },
+    {
+      "key": "samut-songkhram-townhouse",
+      "province": "Samut Songkhram",
+      "type": "songkhram"
+    },
+    {
+      "key": "phetchaburi-condo",
+      "province": "Phetchaburi",
+      "type": "condo"
+    },
+    {
+      "key": "phetchaburi-house",
+      "province": "Phetchaburi",
+      "type": "house"
+    },
+    {
+      "key": "phetchaburi-land",
+      "province": "Phetchaburi",
+      "type": "land"
+    },
+    {
+      "key": "phetchaburi-townhouse",
+      "province": "Phetchaburi",
+      "type": "townhouse"
+    },
+    {
+      "key": "prachuap-khiri-khan-condo",
+      "province": "Prachuap Khiri Khan",
+      "type": "khiri"
+    },
+    {
+      "key": "prachuap-khiri-khan-house",
+      "province": "Prachuap Khiri Khan",
+      "type": "khiri"
+    },
+    {
+      "key": "prachuap-khiri-khan-land",
+      "province": "Prachuap Khiri Khan",
+      "type": "khiri"
+    },
+    {
+      "key": "prachuap-khiri-khan-townhouse",
+      "province": "Prachuap Khiri Khan",
+      "type": "khiri"
+    },
+    {
+      "key": "nakhon-si-thammarat-condo",
+      "province": "Nakhon Si Thammarat",
+      "type": "si"
+    },
+    {
+      "key": "nakhon-si-thammarat-house",
+      "province": "Nakhon Si Thammarat",
+      "type": "si"
+    },
+    {
+      "key": "nakhon-si-thammarat-land",
+      "province": "Nakhon Si Thammarat",
+      "type": "si"
+    },
+    {
+      "key": "nakhon-si-thammarat-townhouse",
+      "province": "Nakhon Si Thammarat",
+      "type": "si"
+    },
+    {
+      "key": "krabi-condo",
+      "province": "Krabi",
+      "type": "condo"
+    },
+    {
+      "key": "krabi-house",
+      "province": "Krabi",
+      "type": "house"
+    },
+    {
+      "key": "krabi-land",
+      "province": "Krabi",
+      "type": "land"
+    },
+    {
+      "key": "krabi-townhouse",
+      "province": "Krabi",
+      "type": "townhouse"
+    },
+    {
+      "key": "phangnga-condo",
+      "province": "Phangnga",
+      "type": "condo"
+    },
+    {
+      "key": "phangnga-house",
+      "province": "Phangnga",
+      "type": "house"
+    },
+    {
+      "key": "phangnga-land",
+      "province": "Phangnga",
+      "type": "land"
+    },
+    {
+      "key": "phangnga-townhouse",
+      "province": "Phangnga",
+      "type": "townhouse"
+    },
+    {
+      "key": "phuket-condo",
+      "province": "Phuket",
+      "type": "condo"
+    },
+    {
+      "key": "phuket-house",
+      "province": "Phuket",
+      "type": "house"
+    },
+    {
+      "key": "phuket-land",
+      "province": "Phuket",
+      "type": "land"
+    },
+    {
+      "key": "phuket-townhouse",
+      "province": "Phuket",
+      "type": "townhouse"
+    },
+    {
+      "key": "surat-thani-condo",
+      "province": "Surat Thani",
+      "type": "thani"
+    },
+    {
+      "key": "surat-thani-house",
+      "province": "Surat Thani",
+      "type": "thani"
+    },
+    {
+      "key": "surat-thani-land",
+      "province": "Surat Thani",
+      "type": "thani"
+    },
+    {
+      "key": "surat-thani-townhouse",
+      "province": "Surat Thani",
+      "type": "thani"
+    },
+    {
+      "key": "ranong-condo",
+      "province": "Ranong",
+      "type": "condo"
+    },
+    {
+      "key": "ranong-house",
+      "province": "Ranong",
+      "type": "house"
+    },
+    {
+      "key": "ranong-land",
+      "province": "Ranong",
+      "type": "land"
+    },
+    {
+      "key": "ranong-townhouse",
+      "province": "Ranong",
+      "type": "townhouse"
+    },
+    {
+      "key": "chumphon-condo",
+      "province": "Chumphon",
+      "type": "condo"
+    },
+    {
+      "key": "chumphon-house",
+      "province": "Chumphon",
+      "type": "house"
+    },
+    {
+      "key": "chumphon-land",
+      "province": "Chumphon",
+      "type": "land"
+    },
+    {
+      "key": "chumphon-townhouse",
+      "province": "Chumphon",
+      "type": "townhouse"
+    },
+    {
+      "key": "songkhla-condo",
+      "province": "Songkhla",
+      "type": "condo"
+    },
+    {
+      "key": "songkhla-house",
+      "province": "Songkhla",
+      "type": "house"
+    },
+    {
+      "key": "songkhla-land",
+      "province": "Songkhla",
+      "type": "land"
+    },
+    {
+      "key": "songkhla-townhouse",
+      "province": "Songkhla",
+      "type": "townhouse"
+    },
+    {
+      "key": "satun-condo",
+      "province": "Satun",
+      "type": "condo"
+    },
+    {
+      "key": "satun-house",
+      "province": "Satun",
+      "type": "house"
+    },
+    {
+      "key": "satun-land",
+      "province": "Satun",
+      "type": "land"
+    },
+    {
+      "key": "satun-townhouse",
+      "province": "Satun",
+      "type": "townhouse"
+    },
+    {
+      "key": "trang-condo",
+      "province": "Trang",
+      "type": "condo"
+    },
+    {
+      "key": "trang-house",
+      "province": "Trang",
+      "type": "house"
+    },
+    {
+      "key": "trang-land",
+      "province": "Trang",
+      "type": "land"
+    },
+    {
+      "key": "trang-townhouse",
+      "province": "Trang",
+      "type": "townhouse"
+    },
+    {
+      "key": "phatthalung-condo",
+      "province": "Phatthalung",
+      "type": "condo"
+    },
+    {
+      "key": "phatthalung-house",
+      "province": "Phatthalung",
+      "type": "house"
+    },
+    {
+      "key": "phatthalung-land",
+      "province": "Phatthalung",
+      "type": "land"
+    },
+    {
+      "key": "phatthalung-townhouse",
+      "province": "Phatthalung",
+      "type": "townhouse"
+    },
+    {
+      "key": "pattani-condo",
+      "province": "Pattani",
+      "type": "condo"
+    },
+    {
+      "key": "pattani-house",
+      "province": "Pattani",
+      "type": "house"
+    },
+    {
+      "key": "pattani-land",
+      "province": "Pattani",
+      "type": "land"
+    },
+    {
+      "key": "pattani-townhouse",
+      "province": "Pattani",
+      "type": "townhouse"
+    },
+    {
+      "key": "yala-condo",
+      "province": "Yala",
+      "type": "condo"
+    },
+    {
+      "key": "yala-house",
+      "province": "Yala",
+      "type": "house"
+    },
+    {
+      "key": "yala-land",
+      "province": "Yala",
+      "type": "land"
+    },
+    {
+      "key": "yala-townhouse",
+      "province": "Yala",
+      "type": "townhouse"
+    },
+    {
+      "key": "narathiwat-condo",
+      "province": "Narathiwat",
+      "type": "condo"
+    },
+    {
+      "key": "narathiwat-house",
+      "province": "Narathiwat",
+      "type": "house"
+    },
+    {
+      "key": "narathiwat-land",
+      "province": "Narathiwat",
+      "type": "land"
+    },
+    {
+      "key": "narathiwat-townhouse",
+      "province": "Narathiwat",
+      "type": "townhouse"
+    },
+    {
+      "key": "buogkan-condo",
+      "province": "buogkan",
+      "type": "condo"
+    },
+    {
+      "key": "buogkan-house",
+      "province": "buogkan",
+      "type": "house"
+    },
+    {
+      "key": "buogkan-land",
+      "province": "buogkan",
+      "type": "land"
+    },
+    {
+      "key": "buogkan-townhouse",
+      "province": "buogkan",
+      "type": "townhouse"
+    }
+  ]
+}
