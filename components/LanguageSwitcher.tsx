@@ -14,7 +14,7 @@ export default function LanguageSwitcher() {
 
   return (
     <nav aria-label="Language selector">
-      <ul>
+      <ul className="flex gap-2">
         {(locales ?? []).map((code) => {
           const label = localeLabels[code] ?? code
           const isActive = activeLocale === code
@@ -24,11 +24,8 @@ export default function LanguageSwitcher() {
                 href={{ pathname, query }}
                 locale={code}
                 aria-label={`Switch to ${label}`}
-                aria-current={isActive ? 'true' : undefined}
-                style={{
-                  marginRight: 8,
-                  fontWeight: isActive ? 'bold' : 'normal'
-                }}
+                aria-current={isActive ? 'page' : undefined}
+                className={isActive ? 'font-bold' : 'font-normal'}
               >
                 {label}
               </Link>
