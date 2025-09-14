@@ -72,6 +72,19 @@ You can also run just the postbuild step manually:
 ```bash
 npm run postbuild
 ```
+
+## Exchange rates
+
+Refresh currency conversion data used by the site:
+
+```bash
+npm run update-rates
+```
+
+This script downloads the latest daily rates from the European Central Bank
+and writes them to `public/data/rates.json`. If the network request fails, the
+existing file remains unchanged.
+
 ## Locale detection
 
 Language detection is handled by [`middleware.ts`](middleware.ts). When a path
