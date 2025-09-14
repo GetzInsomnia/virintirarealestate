@@ -32,16 +32,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <DefaultSeo {...defaultSeo} />
-      <JsonLd
-        scriptKey="organization"
-        scriptId="organization-jsonld"
-        {...orgJsonLd}
-      />
-      <JsonLd
-        scriptKey="website"
-        scriptId="website-jsonld"
-        {...webSiteJsonLd}
-      />
+      <JsonLd scriptId="organization-jsonld" {...orgJsonLd} />
+      <JsonLd scriptId="website-jsonld" {...webSiteJsonLd} />
       <Component {...pageProps} />
     </>
   );
