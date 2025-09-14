@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import PropertyImage from './PropertyImage';
+import PropertyImage, { ProcessedImage } from './PropertyImage';
 import { useCurrency } from '../context/CurrencyContext';
 import { formatCurrencyTHBBase } from '../lib/fx/convert';
 
@@ -7,7 +7,7 @@ interface Property {
   id: number;
   title: { en: string; th: string };
   price: number;
-  images: string[];
+  images: (string | ProcessedImage)[];
 }
 
 interface Props {
@@ -21,7 +21,7 @@ export default function PropertyCard({ property, locale }: Props) {
   const main = formatCurrencyTHBBase(property.price, currency, rates);
   const thb = formatCurrencyTHBBase(property.price, 'THB', rates);
 
-  let src: string | undefined;
+  let src: string | ProcessedImage | undefined;
   try {
     src = property.images?.[0];
   } catch {

@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { NextSeo } from 'next-seo'
 import Script from 'next/script'
-import PropertyImage from '@/src/components/PropertyImage'
+import PropertyImage, { ProcessedImage } from '@/src/components/PropertyImage'
 import { getSeoUrls, getLanguageAlternates } from '@/lib/seo'
 
 interface Property {
@@ -14,7 +14,7 @@ interface Property {
   type: string
   title: { en: string; th: string }
   price: number
-  images: string[]
+  images: (string | ProcessedImage)[]
 }
 
 interface Article {
@@ -90,7 +90,9 @@ export default function PropertyDetail({ property, articles }: Props) {
               price: property.price,
               priceCurrency: 'THB',
             },
-            image: property.images,
+            image: property.images.map((img) =>
+              typeof img === 'string' ? img : img.webp
+            ),
           }).replace(/</g, '\\u003c'),
         }}
       />

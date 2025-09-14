@@ -3,6 +3,7 @@ import MiniSearch from 'minisearch';
 import fs from 'fs/promises';
 import path from 'path';
 import { searchParamsSchema, type SearchParams } from '../../src/lib/validation/search';
+import type { ProcessedImage } from '../../src/components/PropertyImage';
 
 interface PropertyDTO {
   id: number;
@@ -12,7 +13,7 @@ interface PropertyDTO {
   price: number;
   priceBucket: string;
   amenities: string[];
-  images: string[];
+  images: (string | ProcessedImage)[];
   createdAt: string;
   beds?: number;
   baths?: number;

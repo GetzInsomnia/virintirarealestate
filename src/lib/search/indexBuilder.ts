@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import MiniSearch from 'minisearch';
+import type { ProcessedImage } from '@/src/components/PropertyImage';
 
 interface Property {
   id: number;
@@ -11,7 +12,7 @@ interface Property {
   price: number;
   priceBucket: string;
   amenities: string[];
-  images: string[];
+  images: (string | ProcessedImage)[];
   createdAt: string;
   updatedAt: string;
 }
@@ -52,7 +53,7 @@ export function buildIndexes() {
     price: p.price,
     priceBucket: p.priceBucket,
     amenities: p.amenities,
-    images: p.images,
+    images: p.images.map((img) => (typeof img === 'string' ? img : img.webp)),
     createdAt: p.createdAt,
   }));
 
