@@ -1,4 +1,4 @@
-# multi-lang-virintira
+# virintirarealestate
 
 A small Next.js 14 project that demonstrates a bilingual web site using `next-i18next`.
 
@@ -22,7 +22,7 @@ or `npm run lint`. These scripts require all dependencies to be installed.
 Set `NEXT_PUBLIC_SITE_URL` to the fully qualified URL of your deployed site:
 
 ```bash
-NEXT_PUBLIC_SITE_URL=https://www.virintira.com
+NEXT_PUBLIC_SITE_URL=https://www.virintirarealestate.com
 ```
 
 This value is used when generating SEO metadata and the sitemap so that all
