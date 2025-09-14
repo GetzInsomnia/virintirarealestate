@@ -3,6 +3,7 @@ import path from 'path'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import PropertyImage from '@/src/components/PropertyImage'
 
 interface Property {
   id: number
@@ -40,6 +41,15 @@ export default function PropertyDetail({ property, articles }: Props) {
 
   return (
     <div>
+      <div>
+        {property.images.length > 0 ? (
+          property.images.map((img, i) => (
+            <PropertyImage key={img + i} src={img} alt={`${title} image ${i + 1}`} />
+          ))
+        ) : (
+          <PropertyImage src={undefined} alt={`${title} placeholder`} />
+        )}
+      </div>
       <h1>{title}</h1>
       <p>{provinceName}</p>
       <p>{property.price}</p>
