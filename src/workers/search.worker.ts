@@ -13,6 +13,8 @@ interface SearchRequest {
   freshness?: number;
   nearTransit?: boolean;
   furnished?: string;
+  transitLine?: string;
+  transitStation?: string;
   page?: number;
   pageSize?: number;
   sort?: 'price-asc' | 'price-desc' | 'created-desc' | 'created-asc';
@@ -33,6 +35,8 @@ interface PropertyDTO {
   status?: string;
   nearTransit?: boolean;
   furnished?: string;
+  transitLine?: string;
+  transitStation?: string;
 }
 
 interface SearchResponse {
@@ -42,6 +46,8 @@ interface SearchResponse {
 
 const indexCache: Record<string, MiniSearch<any>> = {};
 let manifest: { shards: { key: string; province: string; type: string }[] } | null = null;
+let amenitiesList: string[] | null = null;
+let transitMap: Record<string, string[]> | null = null;
 
 async function loadManifest() {
   if (!manifest) {
@@ -63,6 +69,23 @@ async function loadIndex(key: string) {
   return indexCache[key];
 }
 
+async function loadAmenities() {
+  if (!amenitiesList) {
+    const res = await fetch('/data/amenities.json');
+    const json = await res.json();
+    amenitiesList = json.amenities || [];
+  }
+  return amenitiesList;
+}
+
+async function loadTransit() {
+  if (!transitMap) {
+    const res = await fetch('/data/transit-bkk.json');
+    transitMap = await res.json();
+  }
+  return transitMap;
+}
+
 function applyFilters(docs: any[], req: SearchRequest) {
   return docs.filter((doc) => {
     if (req.minPrice !== undefined && doc.price < req.minPrice) return false;
@@ -75,6 +98,8 @@ function applyFilters(docs: any[], req: SearchRequest) {
       if (days > req.freshness) return false;
     }
     if (req.nearTransit && !doc.nearTransit) return false;
+    if (req.transitLine && doc.transitLine !== req.transitLine) return false;
+    if (req.transitStation && doc.transitStation !== req.transitStation) return false;
     if (req.furnished && doc.furnished !== req.furnished) return false;
     if (req.amenities && req.amenities.length) {
       for (const a of req.amenities) {
@@ -101,6 +126,22 @@ function sortResults(docs: any[], sort: SearchRequest['sort']) {
 
 self.onmessage = async (event: MessageEvent<SearchRequest>) => {
   const req = event.data;
+  const [amenities, transit] = await Promise.all([
+    loadAmenities(),
+    loadTransit(),
+  ]);
+  const amenitySet = new Set(amenities);
+  req.amenities = req.amenities?.filter((a) => amenitySet.has(a));
+  if (req.transitLine && !transit[req.transitLine]) {
+    delete req.transitLine;
+    delete req.transitStation;
+  } else if (
+    req.transitLine &&
+    req.transitStation &&
+    !transit[req.transitLine].includes(req.transitStation)
+  ) {
+    delete req.transitStation;
+  }
   const man = await loadManifest();
   const shards = man.shards.filter((s) => {
     return (!req.province || s.province === req.province) && (!req.type || s.type === req.type);
@@ -134,7 +175,9 @@ self.onmessage = async (event: MessageEvent<SearchRequest>) => {
     baths: doc.baths,
     status: doc.status,
     nearTransit: doc.nearTransit,
-    furnished: doc.furnished
+    furnished: doc.furnished,
+    transitLine: doc.transitLine,
+    transitStation: doc.transitStation
   }));
 
   const response: SearchResponse = { total: filtered.length, results };

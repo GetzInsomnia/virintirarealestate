@@ -1,0 +1,47 @@
+{
+  "Bangkok": [
+    "Phra Nakhon",
+    "Dusit",
+    "Bang Rak",
+    "Bang Khen",
+    "Bang Kapi",
+    "Pathum Wan",
+    "Pom Prap Sattru Phai",
+    "Phaya Thai",
+    "Thon Buri",
+    "Bangkok Yai",
+    "Huai Khwang",
+    "Khlong San",
+    "Lat Phrao",
+    "Sathorn",
+    "Chatuchak"
+  ],
+  "Chiang Mai": [
+    "Mueang Chiang Mai",
+    "Chom Thong",
+    "Mae Chaem",
+    "Chiang Dao",
+    "Doi Saket",
+    "Mae Taeng",
+    "Samoeng",
+    "Fang",
+    "Mae Ai",
+    "Phrao"
+  ],
+  "Phuket": [
+    "Mueang Phuket",
+    "Kathu",
+    "Thalang"
+  ],
+  "Chon Buri": [
+    "Mueang Chon Buri",
+    "Ban Bueng",
+    "Si Racha",
+    "Bang Lamung",
+    "Phanat Nikhom",
+    "Phan Thong",
+    "Sattahip",
+    "Ko Chan",
+    "Nong Yai"
+  ]
+}
