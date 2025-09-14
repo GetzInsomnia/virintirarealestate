@@ -1,0 +1,232 @@
+[
+  {
+    "slug": "bangkok-condo-guide",
+    "category": "condo",
+    "provinces": [
+      "Bangkok"
+    ],
+    "coverImage": "/images/placeholder.jpg",
+    "publishedAt": "2024-01-01T00:00:00Z",
+    "locales": {
+      "en": {
+        "title": "Bangkok Condo Buying Guide",
+        "mdx": "bangkok-condo-guide.en.mdx"
+      },
+      "th": {
+        "title": "คู่มือซื้อคอนโดในกรุงเทพ",
+        "mdx": "bangkok-condo-guide.th.mdx"
+      }
+    }
+  },
+  {
+    "slug": "chiangmai-house-tips",
+    "category": "house",
+    "provinces": [
+      "Chiang Mai"
+    ],
+    "coverImage": "/images/placeholder.jpg",
+    "publishedAt": "2024-01-02T00:00:00Z",
+    "locales": {
+      "en": {
+        "title": "Chiang Mai House Tips",
+        "mdx": "chiangmai-house-tips.en.mdx"
+      },
+      "th": {
+        "title": "เคล็ดลับบ้านเชียงใหม่",
+        "mdx": "chiangmai-house-tips.th.mdx"
+      }
+    }
+  },
+  {
+    "slug": "phuket-land-investment",
+    "category": "land",
+    "provinces": [
+      "Phuket"
+    ],
+    "coverImage": "/images/placeholder.jpg",
+    "publishedAt": "2024-01-03T00:00:00Z",
+    "locales": {
+      "en": {
+        "title": "Phuket Land Investment",
+        "mdx": "phuket-land-investment.en.mdx"
+      },
+      "th": {
+        "title": "การลงทุนที่ดินภูเก็ต",
+        "mdx": "phuket-land-investment.th.mdx"
+      }
+    }
+  },
+  {
+    "slug": "pattaya-townhouse-rental",
+    "category": "townhouse",
+    "provinces": [
+      "Chon Buri"
+    ],
+    "coverImage": "/images/placeholder.jpg",
+    "publishedAt": "2024-01-04T00:00:00Z",
+    "locales": {
+      "en": {
+        "title": "Pattaya Townhouse Rental",
+        "mdx": "pattaya-townhouse-rental.en.mdx"
+      },
+      "th": {
+        "title": "การเช่าทาวน์เฮ้าส์พัทยา",
+        "mdx": "pattaya-townhouse-rental.th.mdx"
+      }
+    }
+  },
+  {
+    "slug": "bangkok-tax-advice",
+    "category": "finance",
+    "provinces": [
+      "Bangkok"
+    ],
+    "coverImage": "/images/placeholder.jpg",
+    "publishedAt": "2024-01-05T00:00:00Z",
+    "locales": {
+      "en": {
+        "title": "Bangkok Tax Advice",
+        "mdx": "bangkok-tax-advice.en.mdx"
+      },
+      "th": {
+        "title": "คำแนะนำภาษีกรุงเทพ",
+        "mdx": "bangkok-tax-advice.th.mdx"
+      }
+    }
+  },
+  {
+    "slug": "chiangmai-market-trends",
+    "category": "market",
+    "provinces": [
+      "Chiang Mai"
+    ],
+    "coverImage": "/images/placeholder.jpg",
+    "publishedAt": "2024-01-06T00:00:00Z",
+    "locales": {
+      "en": {
+        "title": "Chiang Mai Market Trends",
+        "mdx": "chiangmai-market-trends.en.mdx"
+      },
+      "th": {
+        "title": "แนวโน้มตลาดเชียงใหม่",
+        "mdx": "chiangmai-market-trends.th.mdx"
+      }
+    }
+  },
+  {
+    "slug": "phuket-villa-maintenance",
+    "category": "house",
+    "provinces": [
+      "Phuket"
+    ],
+    "coverImage": "/images/placeholder.jpg",
+    "publishedAt": "2024-01-07T00:00:00Z",
+    "locales": {
+      "en": {
+        "title": "Phuket Villa Maintenance",
+        "mdx": "phuket-villa-maintenance.en.mdx"
+      },
+      "th": {
+        "title": "การดูแลวิลล่าภูเก็ต",
+        "mdx": "phuket-villa-maintenance.th.mdx"
+      }
+    }
+  },
+  {
+    "slug": "bangkok-condo-renovation",
+    "category": "condo",
+    "provinces": [
+      "Bangkok"
+    ],
+    "coverImage": "/images/placeholder.jpg",
+    "publishedAt": "2024-01-08T00:00:00Z",
+    "locales": {
+      "en": {
+        "title": "Bangkok Condo Renovation",
+        "mdx": "bangkok-condo-renovation.en.mdx"
+      },
+      "th": {
+        "title": "การปรับปรุงคอนโดกรุงเทพ",
+        "mdx": "bangkok-condo-renovation.th.mdx"
+      }
+    }
+  },
+  {
+    "slug": "national-buying-process",
+    "category": "buying",
+    "provinces": [
+      "Bangkok",
+      "Chiang Mai",
+      "Phuket"
+    ],
+    "coverImage": "/images/placeholder.jpg",
+    "publishedAt": "2024-01-09T00:00:00Z",
+    "locales": {
+      "en": {
+        "title": "National Buying Process",
+        "mdx": "national-buying-process.en.mdx"
+      },
+      "th": {
+        "title": "ขั้นตอนการซื้อทั่วประเทศ",
+        "mdx": "national-buying-process.th.mdx"
+      }
+    }
+  },
+  {
+    "slug": "thailand-mortgage-basics",
+    "category": "finance",
+    "provinces": [
+      "Bangkok"
+    ],
+    "coverImage": "/images/placeholder.jpg",
+    "publishedAt": "2024-01-10T00:00:00Z",
+    "locales": {
+      "en": {
+        "title": "Thailand Mortgage Basics",
+        "mdx": "thailand-mortgage-basics.en.mdx"
+      },
+      "th": {
+        "title": "พื้นฐานจำนองไทย",
+        "mdx": "thailand-mortgage-basics.th.mdx"
+      }
+    }
+  },
+  {
+    "slug": "chiangmai-condo-rules",
+    "category": "condo",
+    "provinces": [
+      "Chiang Mai"
+    ],
+    "coverImage": "/images/placeholder.jpg",
+    "publishedAt": "2024-01-11T00:00:00Z",
+    "locales": {
+      "en": {
+        "title": "Chiang Mai Condo Rules",
+        "mdx": "chiangmai-condo-rules.en.mdx"
+      },
+      "th": {
+        "title": "กฎคอนโดเชียงใหม่",
+        "mdx": "chiangmai-condo-rules.th.mdx"
+      }
+    }
+  },
+  {
+    "slug": "phuket-beachfront-plots",
+    "category": "land",
+    "provinces": [
+      "Phuket"
+    ],
+    "coverImage": "/images/placeholder.jpg",
+    "publishedAt": "2024-01-12T00:00:00Z",
+    "locales": {
+      "en": {
+        "title": "Phuket Beachfront Plots",
+        "mdx": "phuket-beachfront-plots.en.mdx"
+      },
+      "th": {
+        "title": "แปลงหน้าหาดภูเก็ต",
+        "mdx": "phuket-beachfront-plots.th.mdx"
+      }
+    }
+  }
+]
