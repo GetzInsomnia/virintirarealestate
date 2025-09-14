@@ -85,7 +85,7 @@ export function buildIndexes() {
   }
 
   fs.writeFileSync(path.join(indexDir, 'manifest.json'), JSON.stringify(manifest, null, 2));
-  const suggestPath = path.join(process.cwd(), 'public', 'data', 'suggest.json');
+  const suggestPath = path.join(indexDir, 'suggest.json');
   fs.writeFileSync(suggestPath, JSON.stringify({ suggestions: Array.from(suggestions) }, null, 2));
 }
 
