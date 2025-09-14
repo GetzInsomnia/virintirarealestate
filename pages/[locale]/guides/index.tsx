@@ -5,6 +5,9 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import MiniSearch from 'minisearch'
+import { NextSeo } from 'next-seo'
+import Script from 'next/script'
+import { getSeoUrls, getLanguageAlternates } from '@/lib/seo'
 
 interface Article {
   slug: string
@@ -25,6 +28,7 @@ export default function GuidesList({ articles, categories }: Props) {
   const lang = Array.isArray(router.query.locale)
     ? router.query.locale[0]
     : (router.query.locale as string)
+  const { pageUrl } = getSeoUrls(lang, '/guides')
 
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('')
@@ -67,6 +71,11 @@ export default function GuidesList({ articles, categories }: Props) {
 
   return (
     <div>
+      <NextSeo
+        title='Guides'
+        canonical={pageUrl}
+        languageAlternates={getLanguageAlternates('/guides')}
+      />
       <h1>Guides</h1>
       <input
         value={query}
@@ -91,6 +100,23 @@ export default function GuidesList({ articles, categories }: Props) {
           </li>
         ))}
       </ul>
+      {results.length > 0 && (
+        <Script
+          id='guides-itemlist'
+          type='application/ld+json'
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'ItemList',
+              itemListElement: results.map((a, i) => ({
+                '@type': 'ListItem',
+                position: i + 1,
+                url: `/${lang}/guides/${a.slug}`,
+              })),
+            }).replace(/</g, '\\u003c'),
+          }}
+        />
+      )}
     </div>
   )
 }

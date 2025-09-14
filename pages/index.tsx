@@ -6,7 +6,6 @@ import {
   LocalBusinessJsonLd,
   WebPageJsonLd,
   BreadcrumbJsonLd,
-  SiteLinksSearchBoxJsonLd,
 } from 'next-seo'
 import { useRouter } from 'next/router'
 import Script from 'next/script'
@@ -83,14 +82,21 @@ export default function Home() {
           dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
         }]}
       />
-      <SiteLinksSearchBoxJsonLd
-        url={siteUrl}
-        potentialActions={[
-          {
-            target: `${siteUrl}/search?query={search_term_string}`,
-            queryInput: 'search_term_string',
-          },
-        ]}
+      <Script
+        id='website'
+        type='application/ld+json'
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            url: siteUrl,
+            potentialAction: {
+              '@type': 'SearchAction',
+              target: `${siteUrl}/search?query={search_term_string}`,
+              'query-input': 'required name=search_term_string',
+            },
+          }).replace(/</g, '\\u003c'),
+        }}
       />
       {/* eslint-disable-next-line react/no-danger */}
       <Script
