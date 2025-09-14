@@ -3,7 +3,10 @@ import path from 'path'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { NextSeo } from 'next-seo'
+import Script from 'next/script'
 import PropertyImage from '@/src/components/PropertyImage'
+import { getSeoUrls, getLanguageAlternates } from '@/lib/seo'
 
 interface Property {
   id: number
@@ -38,9 +41,15 @@ export default function PropertyDetail({ property, articles }: Props) {
   const related = articles.filter(
     (a) => a.category === property.type || a.provinces.includes(property.province.en)
   )
+  const { pageUrl } = getSeoUrls(lang, `/properties/${property.id}`)
 
   return (
     <div>
+      <NextSeo
+        title={title}
+        canonical={pageUrl}
+        languageAlternates={getLanguageAlternates(`/properties/${property.id}`)}
+      />
       <div>
         {property.images.length > 0 ? (
           property.images.map((img, i) => (
@@ -61,6 +70,30 @@ export default function PropertyDetail({ property, articles }: Props) {
           </li>
         ))}
       </ul>
+      <Script
+        id='realestate-listing'
+        type='application/ld+json'
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'RealEstateListing',
+            url: pageUrl,
+            name: title,
+            description: title,
+            address: {
+              '@type': 'PostalAddress',
+              addressRegion: provinceName,
+              addressCountry: 'TH',
+            },
+            offers: {
+              '@type': 'Offer',
+              price: property.price,
+              priceCurrency: 'THB',
+            },
+            image: property.images,
+          }).replace(/</g, '\\u003c'),
+        }}
+      />
     </div>
   )
 }

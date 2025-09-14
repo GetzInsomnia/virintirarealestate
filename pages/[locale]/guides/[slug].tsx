@@ -5,6 +5,7 @@ import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
 import { useRouter } from 'next/router'
 import { NextSeo, ArticleJsonLd } from 'next-seo'
+import { getSeoUrls, getLanguageAlternates } from '@/lib/seo'
 
 interface ArticleData {
   slug: string
@@ -25,13 +26,18 @@ export default function GuideDetail({ source, article }: Props) {
   const lang = Array.isArray(router.query.locale)
     ? router.query.locale[0]
     : (router.query.locale as string)
-  const url = `/${lang}/guides/${article.slug}`
+  const { pageUrl } = getSeoUrls(lang, `/guides/${article.slug}`)
 
   return (
     <div>
-      <NextSeo title={article.title} openGraph={{ images: [{ url: article.coverImage }] }} />
+      <NextSeo
+        title={article.title}
+        canonical={pageUrl}
+        openGraph={{ images: [{ url: article.coverImage }] }}
+        languageAlternates={getLanguageAlternates(`/guides/${article.slug}`)}
+      />
       <ArticleJsonLd
-        url={url}
+        url={pageUrl}
         title={article.title}
         images={[article.coverImage]}
         datePublished={article.publishedAt}
