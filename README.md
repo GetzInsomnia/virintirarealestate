@@ -28,6 +28,15 @@ NEXT_PUBLIC_SITE_URL=https://www.virintirarealestate.com
 This value is used when generating SEO metadata and the sitemap so that all
 links include an absolute URL.
 
+Set `WATERMARK_ENABLED` to `true` to apply a text watermark when processing uploads:
+
+```bash
+WATERMARK_ENABLED=true
+```
+
+When omitted or `false`, uploads are stored without a watermark.
+
+
 ## Development
 
 Start a development server with hot reload:

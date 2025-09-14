@@ -1,6 +1,7 @@
 import MiniSearch from 'minisearch';
 import { searchParamsSchema, type SearchParams } from '../lib/validation/search';
 import { MIN_PRICE, MAX_PRICE, isValidPrice } from '../lib/filters/price';
+import type { ProcessedImage } from '../components/PropertyImage';
 
 interface PropertyDTO {
   id: number;
@@ -10,7 +11,7 @@ interface PropertyDTO {
   price: number;
   priceBucket: string;
   amenities: string[];
-  images: string[];
+  images: (string | ProcessedImage)[];
   createdAt: string;
   beds?: number;
   baths?: number;
