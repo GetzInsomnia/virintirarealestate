@@ -1,5 +1,8 @@
+import type { NextApiRequest, NextApiResponse } from 'next';
 import MiniSearch from 'minisearch';
-import { searchParamsSchema, type SearchParams } from '../lib/validation/search';
+import fs from 'fs/promises';
+import path from 'path';
+import { searchParamsSchema, type SearchParams } from '../../src/lib/validation/search';
 
 interface PropertyDTO {
   id: number;
@@ -32,19 +35,19 @@ let transitMap: Record<string, string[]> | null = null;
 
 async function loadManifest() {
   if (!manifest) {
-    const res = await fetch('/data/index/manifest.json');
-    manifest = await res.json();
+    const file = await fs.readFile(path.join(process.cwd(), 'public', 'data', 'index', 'manifest.json'), 'utf-8');
+    manifest = JSON.parse(file);
   }
   return manifest!;
 }
 
 async function loadIndex(key: string) {
   if (!indexCache[key]) {
-    const res = await fetch(`/data/index/${key}.json`);
-    const json = await res.json();
+    const file = await fs.readFile(path.join(process.cwd(), 'public', 'data', 'index', `${key}.json`), 'utf-8');
+    const json = JSON.parse(file);
     indexCache[key] = MiniSearch.loadJSON(json, {
       fields: ['title_en', 'title_th', 'description_en', 'description_th'],
-      storeFields: ['id', 'title_en', 'title_th', 'province', 'province_th', 'type', 'price', 'priceBucket', 'amenities', 'images', 'createdAt']
+      storeFields: ['id', 'title_en', 'title_th', 'province', 'province_th', 'type', 'price', 'priceBucket', 'amenities', 'images', 'createdAt'],
     });
   }
   return indexCache[key];
@@ -52,17 +55,25 @@ async function loadIndex(key: string) {
 
 async function loadAmenities() {
   if (!amenitiesList) {
-    const res = await fetch('/data/amenities.json');
-    const json = await res.json();
-    amenitiesList = json.amenities || [];
+    try {
+      const file = await fs.readFile(path.join(process.cwd(), 'public', 'data', 'amenities.json'), 'utf-8');
+      const json = JSON.parse(file);
+      amenitiesList = json.amenities || [];
+    } catch {
+      amenitiesList = [];
+    }
   }
   return amenitiesList;
 }
 
 async function loadTransit() {
   if (!transitMap) {
-    const res = await fetch('/data/transit-bkk.json');
-    transitMap = await res.json();
+    try {
+      const file = await fs.readFile(path.join(process.cwd(), 'public', 'data', 'transit-bkk.json'), 'utf-8');
+      transitMap = JSON.parse(file);
+    } catch {
+      transitMap = {} as any;
+    }
   }
   return transitMap;
 }
@@ -105,45 +116,47 @@ function sortResults(docs: any[], sort: SearchParams['sort']) {
   }
 }
 
-self.onmessage = async (event: MessageEvent<any>) => {
-  const parsed = searchParamsSchema.safeParse(event.data);
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const parsed = searchParamsSchema.safeParse(req.query);
   if (!parsed.success) {
-    (self as any).postMessage({ total: 0, results: [] });
+    res.status(400).json({ error: 'Invalid search parameters' });
     return;
   }
-  const req: SearchParams = parsed.data;
+  const params = parsed.data;
+
   const [amenities, transit] = await Promise.all([
     loadAmenities(),
     loadTransit(),
   ]);
   const amenitySet = new Set(amenities);
-  req.amenities = req.amenities?.filter((a) => amenitySet.has(a));
-  if (req.transitLine && !transit[req.transitLine]) {
-    delete req.transitLine;
-    delete req.transitStation;
+  params.amenities = params.amenities?.filter((a) => amenitySet.has(a));
+  if (params.transitLine && !transit[params.transitLine]) {
+    delete params.transitLine;
+    delete params.transitStation;
   } else if (
-    req.transitLine &&
-    req.transitStation &&
-    !transit[req.transitLine].includes(req.transitStation)
+    params.transitLine &&
+    params.transitStation &&
+    !transit[params.transitLine].includes(params.transitStation)
   ) {
-    delete req.transitStation;
+    delete params.transitStation;
   }
+
   const man = await loadManifest();
   const shards = man.shards.filter((s) => {
-    return (!req.province || s.province === req.province) && (!req.type || s.type === req.type);
+    return (!params.province || s.province === params.province) && (!params.type || s.type === params.type);
   });
 
   const matches: any[] = [];
   for (const shard of shards) {
     const index = await loadIndex(shard.key);
-    const res = index.search(req.query, { prefix: true });
-    matches.push(...res.map(r => r));
+    const resu = index.search(params.query || '', { prefix: true });
+    matches.push(...resu.map((r) => r));
   }
 
-  const filtered = applyFilters(matches, req);
-  const sorted = sortResults(filtered, req.sort);
-  const page = req.page ?? 1;
-  const pageSize = req.pageSize ?? 10;
+  const filtered = applyFilters(matches, params);
+  const sorted = sortResults(filtered, params.sort);
+  const page = params.page ?? 1;
+  const pageSize = params.pageSize ?? 10;
   const start = (page - 1) * pageSize;
   const paginated = sorted.slice(start, start + pageSize);
 
@@ -163,9 +176,10 @@ self.onmessage = async (event: MessageEvent<any>) => {
     nearTransit: doc.nearTransit,
     furnished: doc.furnished,
     transitLine: doc.transitLine,
-    transitStation: doc.transitStation
+    transitStation: doc.transitStation,
   }));
 
   const response: SearchResponse = { total: filtered.length, results };
-  (self as any).postMessage(response);
-};
+  res.status(200).json(response);
+}
+

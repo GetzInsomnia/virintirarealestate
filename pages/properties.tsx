@@ -2,23 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import PropertyFilters, { Filters } from '../src/components/PropertyFilters';
 import PropertyCard from '../src/components/PropertyCard';
-import { z } from 'zod';
-
-const querySchema = z.object({
-  minPrice: z.coerce.number().optional(),
-  maxPrice: z.coerce.number().optional(),
-  beds: z.coerce.number().optional(),
-  baths: z.coerce.number().optional(),
-  status: z.string().optional(),
-  freshness: z.coerce.number().optional(),
-  nearTransit: z.coerce.boolean().optional(),
-  furnished: z.string().optional(),
-  sort: z.string().optional(),
-  amenities: z
-    .union([z.string(), z.array(z.string())])
-    .transform((val) => (Array.isArray(val) ? val : [val]))
-    .optional(),
-});
+import { filterParamsSchema } from '../src/lib/validation/search';
 
 interface SearchResponse {
   total: number;
@@ -41,7 +25,7 @@ export default function PropertySearchPage() {
   };
 
   useEffect(() => {
-    const parsed = querySchema.safeParse(router.query);
+    const parsed = filterParamsSchema.safeParse(router.query);
     if (parsed.success) {
       const q = parsed.data as Filters;
       setFilters(q);
@@ -53,12 +37,13 @@ export default function PropertySearchPage() {
   }, []);
 
   const handleChange = (f: Filters) => {
-    setFilters(f);
+    const safe = filterParamsSchema.parse(f) as Filters;
+    setFilters(safe);
     const query = Object.fromEntries(
-      Object.entries(f).filter(([, v]) => v !== undefined && v !== '' && !(Array.isArray(v) && v.length === 0))
+      Object.entries(safe).filter(([, v]) => v !== undefined && v !== '' && !(Array.isArray(v) && v.length === 0))
     );
     router.replace({ pathname: router.pathname, query }, undefined, { shallow: true });
-    runSearch(f);
+    runSearch(safe);
   };
 
   return (
