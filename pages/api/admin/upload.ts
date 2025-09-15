@@ -5,6 +5,9 @@ import path from 'path'
 import sharp from 'sharp'
 import { applyWatermark } from '../../../src/lib/image/watermark'
 
+const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/avif']
+
 export const config = {
   api: {
     bodyParser: false,
@@ -20,17 +23,31 @@ export default async function handler(
     return
   }
 
-  const form = formidable({ multiples: false })
+  const form = formidable({ multiples: false, maxFileSize: MAX_FILE_SIZE })
 
   form.parse(req, async (err, fields, files) => {
     if (err) {
-      res.status(500).json({ error: 'Failed to parse form' })
+      if ((err as any).httpCode === 413) {
+        res.status(400).json({ error: 'File is too large' })
+      } else {
+        res.status(500).json({ error: 'Failed to parse form' })
+      }
       return
     }
 
     const file = files.file as formidable.File | formidable.File[] | undefined
     if (!file || Array.isArray(file)) {
       res.status(400).json({ error: 'No file uploaded' })
+      return
+    }
+
+    if (!ALLOWED_TYPES.includes(file.mimetype || '')) {
+      res.status(400).json({ error: 'Invalid file type' })
+      return
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      res.status(400).json({ error: 'File is too large' })
       return
     }
 
