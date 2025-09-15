@@ -97,9 +97,11 @@ existing file remains unchanged.
 ## Locale detection
 
 Language detection is handled by [`middleware.ts`](middleware.ts). When a path
-lacks a locale prefix, the middleware always redirects to the default locale
-(`th`). It does not inspect the `Accept-Language` header or any other request
-headers.
+lacks a locale prefix, the middleware parses the request's `Accept-Language`
+header using [`negotiator`](https://www.npmjs.com/package/negotiator) to choose
+the best match among the supported locales (`th`, `en`, `zh`). If none of the
+preferred languages match or the header is missing, the middleware redirects to
+the default locale (`th`).
 
 
 ## License
