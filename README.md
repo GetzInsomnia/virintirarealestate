@@ -87,7 +87,7 @@ npm run postbuild
 Refresh currency conversion data used by the site:
 
 ```bash
-npm run update-rates
+npm run update:rates
 ```
 
 This script downloads the latest daily rates from the European Central Bank
