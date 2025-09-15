@@ -10,7 +10,8 @@
     "lint": "next lint",
     "postbuild": "next-sitemap && node scripts/section-sitemaps.js",
     "update:rates": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' scripts/update-rates.ts",
-    "i18n:check": "ts-node scripts/i18n-check.ts || echo 'i18n check: warned'"
+    "i18n:check": "ts-node scripts/i18n-check.ts || echo 'i18n check: warned'",
+    "index:build": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' src/lib/search/indexBuilder.ts"
   },
   "dependencies": {
     "autoprefixer": "^10.4.21",

@@ -6,15 +6,21 @@ import type { ProcessedImage } from '@/src/components/PropertyImage';
 interface Property {
   id: number;
   province: { en: string; th: string };
+  district?: { en: string; th: string };
   type: string;
   title: { en: string; th: string };
   description: { en: string; th: string };
   price: number;
   priceBucket: string;
   amenities: string[];
-  images: (string | ProcessedImage)[];
+  images: (string | ProcessedImage | { src: string; alt?: string })[];
   createdAt: string;
   updatedAt: string;
+  beds?: number;
+  baths?: number;
+  areaBuilt?: number;
+  pricePerSqm?: number;
+  status?: string;
 }
 
 interface Doc {
@@ -31,6 +37,11 @@ interface Doc {
   amenities: string[];
   images: string[];
   createdAt: string;
+  beds?: number;
+  baths?: number;
+  status?: string;
+  pricePerSqm?: number;
+  areaBuilt?: number;
 }
 
 function slug(value: string) {
@@ -53,8 +64,19 @@ export function buildIndexes() {
     price: p.price,
     priceBucket: p.priceBucket,
     amenities: p.amenities,
-    images: p.images.map((img) => (typeof img === 'string' ? img : img.webp)),
+    images: p.images.map((img) =>
+      typeof img === 'string'
+        ? img
+        : 'webp' in img
+        ? (img as ProcessedImage).webp
+        : (img as any).src
+    ),
     createdAt: p.createdAt,
+    beds: p.beds,
+    baths: p.baths,
+    status: p.status,
+    pricePerSqm: p.pricePerSqm,
+    areaBuilt: p.areaBuilt,
   }));
 
   const indexDir = path.join(process.cwd(), 'public', 'data', 'index');
@@ -76,7 +98,24 @@ export function buildIndexes() {
   for (const [key, groupDocs] of groups.entries()) {
     const mini = new MiniSearch<Doc>({
       fields: ['title_en', 'title_th', 'description_en', 'description_th'],
-      storeFields: ['id', 'title_en', 'title_th', 'province', 'province_th', 'type', 'price', 'priceBucket', 'amenities', 'images', 'createdAt'],
+      storeFields: [
+        'id',
+        'title_en',
+        'title_th',
+        'province',
+        'province_th',
+        'type',
+        'price',
+        'priceBucket',
+        'amenities',
+        'images',
+        'createdAt',
+        'beds',
+        'baths',
+        'status',
+        'pricePerSqm',
+        'areaBuilt',
+      ],
     });
     mini.addAll(groupDocs);
     fs.writeFileSync(path.join(indexDir, `${key}.json`), JSON.stringify(mini.toJSON()));
