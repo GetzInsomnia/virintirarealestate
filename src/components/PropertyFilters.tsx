@@ -1,7 +1,8 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent } from 'react';
 import { PRICE_OPTIONS } from '../lib/filters/price';
 import { useCurrency } from '../context/CurrencyContext';
 import { formatCurrencyTHBBase, formatPriceTHB } from '../lib/fx/convert';
+import useCachedFetch from '../hooks/useCachedFetch';
 
 export interface Filters {
   minPrice?: number;
@@ -24,20 +25,17 @@ interface Props {
 }
 
 export default function PropertyFilters({ filters, onChange }: Props) {
-  const [amenitiesList, setAmenitiesList] = useState<string[]>([]);
-  const [transitLines, setTransitLines] = useState<Record<string, string[]>>({});
   const { currency, rates } = useCurrency();
 
-  useEffect(() => {
-    fetch('/data/amenities.json')
-      .then((res) => res.json())
-      .then((data) => setAmenitiesList(data.amenities || []))
-      .catch(() => setAmenitiesList([]));
-    fetch('/data/transit-bkk.json')
-      .then((res) => res.json())
-      .then((data) => setTransitLines(data))
-      .catch(() => setTransitLines({}));
-  }, []);
+  const { data: amenitiesData } = useCachedFetch<{ amenities: string[] }>(
+    '/data/amenities.json'
+  );
+  const { data: transitData } = useCachedFetch<Record<string, string[]>>(
+    '/data/transit-bkk.json'
+  );
+
+  const amenitiesList = amenitiesData?.amenities || [];
+  const transitLines = transitData || {};
   const handleNumberChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     onChange({ ...filters, [name]: value ? Number(value) : undefined });
