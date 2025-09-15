@@ -1,4 +1,5 @@
 import sharp from 'sharp'
+import watermarkText from '../../../lib/watermarkText'
 
 interface WatermarkOptions {
   opacity?: number
@@ -14,7 +15,7 @@ export async function applyWatermark(
   input: Buffer | string,
   opts: WatermarkOptions = {}
 ): Promise<Buffer> {
-  const { opacity = 0.5, margin = 10, text = 'Zomzom Property' } = opts
+  const { opacity = 0.5, margin = 10, text = watermarkText } = opts
 
   const base = sharp(input)
   const metadata = await base.metadata()

@@ -36,6 +36,14 @@ WATERMARK_ENABLED=true
 
 When omitted or `false`, uploads are stored without a watermark.
 
+Customize the watermark text with `WATERMARK_TEXT`:
+
+```bash
+WATERMARK_TEXT="Your brand here"
+```
+
+If not set, the default is `"Zomzom Property"`.
+
 
 ## Development
 
