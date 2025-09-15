@@ -62,7 +62,7 @@ export default function Home() {
       <LocalBusinessJsonLd
         type='RealEstateAgent'
         id={siteUrl}
-        name='Virintira'
+        name='Zomzom Property'
         description='Multilingual real estate partner.'
         url={siteUrl}
         telephone='+66-2-123-4567'

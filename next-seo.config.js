@@ -1,11 +1,12 @@
 // next-seo.config.js
 // Default SEO configuration shared across all pages.
 // Individual pages should extend these options via the `NextSeo` component.
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.virintira.com/';
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://www.zomzomproperty.com/';
 
 const config = {
   baseUrl: siteUrl,
-  defaultTitle: 'Virintira | Real Estate',
+  defaultTitle: 'Zomzom Property | Real Estate',
   description: 'Multilingual real estate partner.',
   openGraph: {
     type: 'website',
@@ -13,25 +14,25 @@ const config = {
     // List alternates excluding the default locale
     localeAlternate: ['en_US', 'zh_CN'],
     url: siteUrl,
-    site_name: 'Virintira',
+    site_name: 'Zomzom Property',
     images: [
       {
         url: `${siteUrl}og-image.png`,
         width: 1845,
         height: 871,
-        alt: 'Virintira Open Graph Image',
+        alt: 'Zomzom Property Open Graph Image',
       },
       {
         url: `${siteUrl}favicon.ico`,
         width: 256,
         height: 256,
-        alt: 'Virintira Favicon',
+        alt: 'Zomzom Property Favicon',
       },
     ],
   },
   twitter: {
-    handle: '@virintira',
-    site: '@virintira',
+    handle: '@zomzomproperty',
+    site: '@zomzomproperty',
     cardType: 'summary_large_image',
   },
   additionalMetaTags: [

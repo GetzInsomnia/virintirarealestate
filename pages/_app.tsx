@@ -65,19 +65,19 @@ function MyApp({ Component, pageProps }: AppProps) {
   const orgJsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Virintira",
+    name: "Zomzom Property",
     url: siteUrl,
     logo: `${baseUrl}/favicon.ico`,
     sameAs: [
-      "https://twitter.com/virintira",
-      "https://www.facebook.com/virintira",
+      "https://twitter.com/zomzomproperty",
+      "https://www.facebook.com/zomzomproperty",
     ],
   };
 
   const webSiteJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Virintira",
+    name: "Zomzom Property",
     url: siteUrl,
   };
 
