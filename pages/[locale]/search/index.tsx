@@ -1,6 +1,7 @@
 import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import { getSeoUrls, getLanguageAlternates } from '@/lib/seo'
+import SearchPageContent from '../../../src/views/search/SearchPageContent'
 
 export default function SearchPage() {
   const { locale, defaultLocale } = useRouter()
@@ -15,7 +16,7 @@ export default function SearchPage() {
         noindex
         languageAlternates={getLanguageAlternates('/search')}
       />
-      <h1>Search</h1>
+      <SearchPageContent />
     </>
   )
 }

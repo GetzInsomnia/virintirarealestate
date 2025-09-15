@@ -9,9 +9,7 @@ import {
 } from 'next-seo'
 import { useRouter } from 'next/router'
 import Script from 'next/script'
-import LanguageSwitcher from "./../components/LanguageSwitcher"
-import CurrencySwitcher from "../src/components/CurrencySwitcher"
-import PropertyPrice from "../src/components/PropertyPrice"
+import HomePageContent from '../src/views/home/HomePageContent'
 import { getOpenGraph, getLanguageAlternates, getSeoUrls } from '../lib/seo'
 
 export default function Home() {
@@ -116,11 +114,7 @@ export default function Home() {
           }).replace(/</g, '\\u003c'),
         }}
       />
-      <LanguageSwitcher />
-      <CurrencySwitcher />
-      <PropertyPrice priceTHB={1000000} />
-      <h1>{t('welcome')}</h1>
-      <p>{keywords.join(', ')}</p>
+      <HomePageContent keywords={keywords} />
     </>
   )
 }
