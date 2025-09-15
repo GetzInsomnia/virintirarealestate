@@ -12,6 +12,11 @@ import PropertyDetailPageContent, {
   Article,
 } from '../../../../src/views/properties/PropertyDetailPageContent'
 
+export type ImgLike = string | { src: string }
+
+export const asSrc = (img: ImgLike): string =>
+  typeof img === 'string' ? img : img.src
+
 interface Props {
   property: Property
   articles: Article[]
@@ -64,9 +69,7 @@ export default function PropertyDetail({ property, articles }: Props) {
               price: property.price,
               priceCurrency: 'THB',
             },
-            image: property.images.map((img) =>
-              typeof img === 'string' ? img : img.webp
-            ),
+            image: (property.images ?? []).map(asSrc),
           }).replace(/</g, '\\u003c'),
         }}
       />

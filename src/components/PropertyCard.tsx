@@ -1,13 +1,18 @@
 import Link from 'next/link';
-import PropertyImage, { ProcessedImage } from './PropertyImage';
+import PropertyImage from './PropertyImage';
 import { useCurrency } from '../context/CurrencyContext';
 import { formatCurrencyTHBBase } from '../lib/fx/convert';
+
+type ImgLike = string | { src: string };
+
+const asSrc = (img?: ImgLike): string | undefined =>
+  typeof img === 'string' ? img : img?.src;
 
 interface Property {
   id: number;
   title: { en: string; th: string };
   price: number;
-  images: (string | ProcessedImage)[];
+  images: ImgLike[];
 }
 
 interface Props {
@@ -21,12 +26,7 @@ export default function PropertyCard({ property, locale }: Props) {
   const main = formatCurrencyTHBBase(property.price, currency, rates);
   const thb = formatCurrencyTHBBase(property.price, 'THB', rates);
 
-  let src: string | ProcessedImage | undefined;
-  try {
-    src = property.images?.[0];
-  } catch {
-    src = undefined;
-  }
+  const src = asSrc(property.images?.[0]);
 
   return (
     <div className="border p-2">
