@@ -1,8 +1,7 @@
 // next-seo.config.js
 // Default SEO configuration shared across all pages.
 // Individual pages should extend these options via the `NextSeo` component.
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL || 'https://www.zomzomproperty.com/';
+import siteUrl from './lib/siteUrl.js'
 
 const config = {
   baseUrl: siteUrl,
@@ -17,13 +16,13 @@ const config = {
     site_name: 'Zomzom Property',
     images: [
       {
-        url: `${siteUrl}og-image.png`,
+        url: `${siteUrl}/og-image.png`,
         width: 1845,
         height: 871,
         alt: 'Zomzom Property Open Graph Image',
       },
       {
-        url: `${siteUrl}favicon.ico`,
+        url: `${siteUrl}/favicon.ico`,
         width: 256,
         height: 256,
         alt: 'Zomzom Property Favicon',
