@@ -104,6 +104,14 @@ preferred languages match or the header is missing, the middleware redirects to
 the default locale (`th`).
 
 
+## API
+
+### GET `/api/suggest`
+
+Returns search suggestions used by the client. If the suggestions file cannot
+be read, the endpoint responds with HTTP 500.
+
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
