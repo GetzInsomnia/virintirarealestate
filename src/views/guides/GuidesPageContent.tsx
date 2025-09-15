@@ -5,6 +5,7 @@ import MiniSearch from 'minisearch'
 import Script from 'next/script'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import { Crumb } from '../../lib/nav/crumbs'
+import useCachedFetch from '../../hooks/useCachedFetch'
 
 export interface Article {
   slug: string
@@ -28,19 +29,19 @@ export default function GuidesPageContent({ articles, categories, lang, crumbs }
   const [mini, setMini] = useState<MiniSearch<Article> | null>(null)
   const [results, setResults] = useState<Article[]>(articles)
 
+  const { data: indexData } = useCachedFetch<any>(
+    `/data/index/articles-${lang}.json`
+  )
+
   useEffect(() => {
-    async function load() {
-      const res = await fetch(`/data/index/articles-${lang}.json`)
-      const json = await res.json()
-      const m = MiniSearch.loadJSON(json, {
-        idField: 'slug',
-        fields: ['title', 'category', 'provinces'],
-        storeFields: ['slug', 'title', 'category', 'provinces'],
-      }) as MiniSearch<Article>
-      setMini(m)
-    }
-    load()
-  }, [lang])
+    if (!indexData) return
+    const m = MiniSearch.loadJSON(indexData, {
+      idField: 'slug',
+      fields: ['title', 'category', 'provinces'],
+      storeFields: ['slug', 'title', 'category', 'provinces'],
+    }) as MiniSearch<Article>
+    setMini(m)
+  }, [indexData])
 
   useEffect(() => {
     if (!mini) {
