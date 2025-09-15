@@ -1,32 +1,16 @@
 import fs from 'fs'
 import path from 'path'
 import { GetStaticPaths, GetStaticProps } from 'next'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { NextSeo } from 'next-seo'
 import Script from 'next/script'
-import PropertyImage, { ProcessedImage } from '@/src/components/PropertyImage'
 import { getSeoUrls, getLanguageAlternates } from '@/lib/seo'
-import Breadcrumbs from '@/src/components/Breadcrumbs'
 import BreadcrumbJsonLd from '@/src/components/JsonLd/BreadcrumbJsonLd'
 import { pdpCrumbs } from '@/src/lib/nav/crumbs'
-
-interface Property {
-  id: number
-  province: { en: string; th: string }
-  type: string
-  title: { en: string; th: string }
-  price: number
-  images: (string | ProcessedImage)[]
-}
-
-interface Article {
-  slug: string
-  category: string
-  provinces: string[]
-  coverImage: string
-  title: string
-}
+import PropertyDetailPageContent, {
+  Property,
+  Article,
+} from '../../../../src/views/properties/PropertyDetailPageContent'
 
 interface Props {
   property: Property
@@ -41,41 +25,25 @@ export default function PropertyDetail({ property, articles }: Props) {
   const title = property.title[lang as 'en' | 'th'] || property.title.en
   const provinceName =
     property.province[lang as 'en' | 'th'] || property.province.en
-  const related = articles.filter(
-    (a) => a.category === property.type || a.provinces.includes(property.province.en)
-  )
   const { pageUrl } = getSeoUrls(lang, `/properties/${property.id}`)
   const crumbs = pdpCrumbs(lang, property.id, title)
 
   return (
-    <div>
+    <>
       <NextSeo
         title={title}
         canonical={pageUrl}
         languageAlternates={getLanguageAlternates(`/properties/${property.id}`)}
       />
       <BreadcrumbJsonLd items={crumbs} />
-      <Breadcrumbs items={crumbs} />
-      <div>
-        {property.images.length > 0 ? (
-          property.images.map((img, i) => (
-            <PropertyImage key={img + i} src={img} alt={`${title} image ${i + 1}`} />
-          ))
-        ) : (
-          <PropertyImage src={undefined} alt={`${title} placeholder`} />
-        )}
-      </div>
-      <h1>{title}</h1>
-      <p>{provinceName}</p>
-      <p>{property.price}</p>
-      <h2>Related Guides</h2>
-      <ul>
-        {related.map((a) => (
-          <li key={a.slug}>
-            <Link href={`/${lang}/guides/${a.slug}`}>{a.title}</Link>
-          </li>
-        ))}
-      </ul>
+      <PropertyDetailPageContent
+        property={property}
+        articles={articles}
+        lang={lang}
+        title={title}
+        provinceName={provinceName}
+        crumbs={crumbs}
+      />
       <Script
         id='realestate-listing'
         type='application/ld+json'
@@ -102,7 +70,7 @@ export default function PropertyDetail({ property, articles }: Props) {
           }).replace(/</g, '\\u003c'),
         }}
       />
-    </div>
+    </>
   )
 }
 

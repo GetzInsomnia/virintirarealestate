@@ -1,23 +1,14 @@
 import fs from 'fs'
 import path from 'path'
 import { GetStaticPaths, GetStaticProps } from 'next'
-import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote'
+import { MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
 import { useRouter } from 'next/router'
 import { NextSeo, ArticleJsonLd } from 'next-seo'
 import { getSeoUrls, getLanguageAlternates } from '@/lib/seo'
-import Breadcrumbs from '@/src/components/Breadcrumbs'
 import BreadcrumbJsonLd from '@/src/components/JsonLd/BreadcrumbJsonLd'
 import { guidesCrumbs } from '@/src/lib/nav/crumbs'
-
-interface ArticleData {
-  slug: string
-  category: string
-  coverImage: string
-  publishedAt: string
-  provinces: string[]
-  title: string
-}
+import GuideDetailPageContent, { ArticleData } from '../../../../src/views/guides/GuideDetailPageContent'
 
 interface Props {
   source: MDXRemoteSerializeResult
@@ -33,7 +24,7 @@ export default function GuideDetail({ source, article }: Props) {
   const crumbs = guidesCrumbs(lang, article.slug, article.title)
 
   return (
-    <div>
+    <>
       <NextSeo
         title={article.title}
         canonical={pageUrl}
@@ -41,7 +32,6 @@ export default function GuideDetail({ source, article }: Props) {
         languageAlternates={getLanguageAlternates(`/guides/${article.slug}`)}
       />
       <BreadcrumbJsonLd items={crumbs} />
-      <Breadcrumbs items={crumbs} />
       <ArticleJsonLd
         url={pageUrl}
         title={article.title}
@@ -50,9 +40,8 @@ export default function GuideDetail({ source, article }: Props) {
         authorName={['Virintira']}
         description={article.title}
       />
-      <h1>{article.title}</h1>
-      <MDXRemote {...source} />
-    </div>
+      <GuideDetailPageContent source={source} article={article} crumbs={crumbs} />
+    </>
   )
 }
 
