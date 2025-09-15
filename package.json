@@ -9,7 +9,8 @@
     "test": "node --test",
     "lint": "next lint",
     "postbuild": "next-sitemap && node scripts/section-sitemaps.js",
-    "update-rates": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' src/lib/fx/updateRates.ts"
+    "update-rates": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' src/lib/fx/updateRates.ts",
+    "i18n:check": "ts-node scripts/i18n-check.ts || echo 'i18n check: warned'"
   },
   "dependencies": {
     "autoprefixer": "^10.4.21",
