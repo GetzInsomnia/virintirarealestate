@@ -1,12 +1,7 @@
 import Link from 'next/link'
-import PropertyImage from '../../components/PropertyImage'
+import PropertyImage, { asSrc, ImgLike } from '../../components/PropertyImage'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import { Crumb } from '../../lib/nav/crumbs'
-
-type ImgLike = string | { src: string }
-
-const asSrc = (img: ImgLike): string =>
-  typeof img === 'string' ? img : img.src
 
 export interface Property {
   id: number
@@ -51,13 +46,16 @@ export default function PropertyDetailPageContent({
       <Breadcrumbs items={crumbs} />
       <div>
         {(property.images ?? []).length > 0 ? (
-          (property.images ?? []).map((img, i) => (
-            <PropertyImage
-              key={`${asSrc(img)}-${i}`}
-              src={asSrc(img)}
-              alt={`${title} image ${i + 1}`}
-            />
-          ))
+          (property.images ?? []).map((img, i) => {
+            const src = asSrc(img)
+            return (
+              <PropertyImage
+                key={src}
+                src={src}
+                alt={`${title} image ${i + 1}`}
+              />
+            )
+          })
         ) : (
           <PropertyImage src={undefined} alt={`${title} placeholder`} />
         )}
