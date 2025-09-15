@@ -35,12 +35,17 @@ export function PhoneIcon(props: IconProps) {
   )
 }
 
-export const CONTACT_ITEMS = [
+const ALL_CONTACT_ITEMS = [
   { label: 'Line', href: CONTACT.lineOA, Icon: LineIcon },
   { label: 'Facebook', href: CONTACT.facebook, Icon: FacebookIcon },
   { label: 'TikTok', href: CONTACT.tiktok, Icon: TikTokIcon },
-  { label: 'Phone', href: `tel:${CONTACT.phone}`, Icon: PhoneIcon },
+  { label: 'Phone', href: CONTACT.phone ? `tel:${CONTACT.phone}` : undefined, Icon: PhoneIcon },
 ] as const
+
+export const CONTACT_ITEMS = ALL_CONTACT_ITEMS.filter(
+  (item): item is (typeof ALL_CONTACT_ITEMS)[number] & { href: string } =>
+    Boolean(item.href)
+)
 
 export function ContactIcons({ className = '' }: { className?: string }) {
   return (
