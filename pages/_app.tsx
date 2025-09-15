@@ -10,6 +10,7 @@ import { CurrencyProvider } from "../src/context/CurrencyContext";
 import { prompt, inter, notoSC } from "../src/styles/fonts";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import FloatingContacts from "@/src/components/FloatingContacts";
 
 function useNavDirection() {
   const router = useRouter();
@@ -106,6 +107,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <JsonLd scriptId="organization-jsonld" {...orgJsonLd} />
       <JsonLd scriptId="website-jsonld" {...webSiteJsonLd} />
       <CurrencyProvider>
+        <FloatingContacts />
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={router.asPath}
