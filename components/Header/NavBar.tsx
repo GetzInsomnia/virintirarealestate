@@ -5,6 +5,7 @@ import LanguageSwitcher from '../LanguageSwitcher'
 import CurrencySwitcher from '@/src/components/CurrencySwitcher'
 import MegaMenu from '../MegaMenu'
 import MobileMenu from '../MobileMenu'
+import { ContactIcons } from '@/src/components/ContactIcons'
 
 export default function NavBar() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -27,19 +28,22 @@ export default function NavBar() {
         >
           Menu
         </button>
-        <ul className="hidden md:flex gap-4 items-center">
-          {NAV_MAIN.map((item) => (
-            <li key={item.title}>
-              {item.children ? (
-                <MegaMenu item={item} />
-              ) : (
-                <Link href={item.href ?? '#'}>{item.title}</Link>
-              )}
-            </li>
-          ))}
-          <li><LanguageSwitcher /></li>
-          <li><CurrencySwitcher /></li>
-        </ul>
+        <div className="flex items-center gap-4">
+          <ul className="hidden md:flex gap-4 items-center">
+            {NAV_MAIN.map((item) => (
+              <li key={item.title}>
+                {item.children ? (
+                  <MegaMenu item={item} />
+                ) : (
+                  <Link href={item.href ?? '#'}>{item.title}</Link>
+                )}
+              </li>
+            ))}
+            <li><LanguageSwitcher /></li>
+            <li><CurrencySwitcher /></li>
+          </ul>
+          <ContactIcons className="hidden xl:flex" />
+        </div>
       </nav>
       <MobileMenu open={mobileOpen} onClose={handleClose} items={NAV_MAIN}>
         <LanguageSwitcher />
