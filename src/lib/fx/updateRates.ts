@@ -34,7 +34,3 @@ export async function updateRates(): Promise<void> {
     console.warn('Skipping rate update:', err);
   }
 }
-
-updateRates();
-
-export default updateRates;
