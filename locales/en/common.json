@@ -1,39 +1,14 @@
 {
   "welcome": "Welcome! This is the English homepage.",
-  "seo_title": "Accounting Firm | English",
-  "seo_description": "Multilingual accounting firm (English)",
+  "seo_title": "Real Estate Agency | English",
+  "seo_description": "Multilingual real estate agency (English)",
   "seo_keywords": [
-    "accounting",
+    "real estate",
     "multilingual",
     "English",
-    "financial services"
+    "property"
   ],
   "notFound": "Page not found",
   "back_home": "Back Home",
-  "internal_error": "Internal Error",
-  "bookkeeping_service_name": "Bookkeeping Service",
-  "bookkeeping_service_description": "Comprehensive bookkeeping for small businesses.",
-  "bookkeeping_service_keywords": [
-    "bookkeeping",
-    "small business accounting",
-    "financial records",
-    "bank reconciliation"
-  ],
-  "faq_question_1": "What does your bookkeeping service include?",
-  "faq_answer_1": "It includes daily transaction recording, bank reconciliation, and financial reporting.",
-  "blog_post_title": "Why Bookkeeping Matters",
-  "blog_post_description": "Discover why accurate bookkeeping is crucial for small businesses.",
-  "blog_post_keywords": [
-    "bookkeeping",
-    "small business",
-    "accounting"
-  ],
-  "blog_post_author": "Virintira Team",
-  "howto_title": "Prepare Monthly Financial Statements",
-  "howto_description": "Follow these steps to compile your monthly financial statements.",
-  "howto_steps": [
-    { "name": "Collect receipts", "text": "Gather all income and expense receipts." },
-    { "name": "Record entries", "text": "Log each transaction in your ledger." },
-    { "name": "Review and finalize", "text": "Verify totals and generate statements." }
-  ]
+  "internal_error": "Internal Error"
 }

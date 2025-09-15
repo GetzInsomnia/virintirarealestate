@@ -5,8 +5,8 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.virintira.com/'
 
 const config = {
   baseUrl: siteUrl,
-  defaultTitle: 'Virintira | Accounting & Business',
-  description: 'Multilingual accounting partner.',
+  defaultTitle: 'Virintira | Real Estate',
+  description: 'Multilingual real estate partner.',
   openGraph: {
     type: 'website',
     locale: 'th_TH',
