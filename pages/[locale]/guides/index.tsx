@@ -8,6 +8,9 @@ import MiniSearch from 'minisearch'
 import { NextSeo } from 'next-seo'
 import Script from 'next/script'
 import { getSeoUrls, getLanguageAlternates } from '@/lib/seo'
+import Breadcrumbs from '@/src/components/Breadcrumbs'
+import BreadcrumbJsonLd from '@/src/components/JsonLd/BreadcrumbJsonLd'
+import { guidesCrumbs } from '@/src/lib/nav/crumbs'
 
 interface Article {
   slug: string
@@ -29,6 +32,7 @@ export default function GuidesList({ articles, categories }: Props) {
     ? router.query.locale[0]
     : (router.query.locale as string)
   const { pageUrl } = getSeoUrls(lang, '/guides')
+  const crumbs = guidesCrumbs(lang)
 
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('')
@@ -76,6 +80,8 @@ export default function GuidesList({ articles, categories }: Props) {
         canonical={pageUrl}
         languageAlternates={getLanguageAlternates('/guides')}
       />
+      <BreadcrumbJsonLd items={crumbs} />
+      <Breadcrumbs items={crumbs} />
       <h1>Guides</h1>
       <input
         value={query}

@@ -6,6 +6,9 @@ import { serialize } from 'next-mdx-remote/serialize'
 import { useRouter } from 'next/router'
 import { NextSeo, ArticleJsonLd } from 'next-seo'
 import { getSeoUrls, getLanguageAlternates } from '@/lib/seo'
+import Breadcrumbs from '@/src/components/Breadcrumbs'
+import BreadcrumbJsonLd from '@/src/components/JsonLd/BreadcrumbJsonLd'
+import { guidesCrumbs } from '@/src/lib/nav/crumbs'
 
 interface ArticleData {
   slug: string
@@ -27,6 +30,7 @@ export default function GuideDetail({ source, article }: Props) {
     ? router.query.locale[0]
     : (router.query.locale as string)
   const { pageUrl } = getSeoUrls(lang, `/guides/${article.slug}`)
+  const crumbs = guidesCrumbs(lang, article.slug, article.title)
 
   return (
     <div>
@@ -36,6 +40,8 @@ export default function GuideDetail({ source, article }: Props) {
         openGraph={{ images: [{ url: article.coverImage }] }}
         languageAlternates={getLanguageAlternates(`/guides/${article.slug}`)}
       />
+      <BreadcrumbJsonLd items={crumbs} />
+      <Breadcrumbs items={crumbs} />
       <ArticleJsonLd
         url={pageUrl}
         title={article.title}
