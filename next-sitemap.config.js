@@ -1,5 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.virintira.com'
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://www.zomzomproperty.com'
 
 module.exports = {
   siteUrl,

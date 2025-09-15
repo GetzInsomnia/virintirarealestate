@@ -37,7 +37,7 @@ export default function GuideDetail({ source, article }: Props) {
         title={article.title}
         images={[article.coverImage]}
         datePublished={article.publishedAt}
-        authorName={['Virintira']}
+        authorName={['Zomzom Property']}
         description={article.title}
       />
       <GuideDetailPageContent source={source} article={article} crumbs={crumbs} />

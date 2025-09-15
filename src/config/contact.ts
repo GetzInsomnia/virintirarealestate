@@ -6,8 +6,8 @@ export interface ContactConfig {
 }
 
 export const CONTACT: ContactConfig = {
-  lineOA: 'https://line.me/ti/p/@virintira',
-  facebook: 'https://www.facebook.com/virintira',
-  tiktok: 'https://www.tiktok.com/@virintira',
-  phone: '+66912345678',
+  lineOA: 'https://line.me/ti/p/@zomzomproperty',
+  facebook: 'https://www.facebook.com/zomzomproperty',
+  tiktok: '',
+  phone: '+66987654321',
 }

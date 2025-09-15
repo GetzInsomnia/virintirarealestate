@@ -14,7 +14,7 @@ export async function applyWatermark(
   input: Buffer | string,
   opts: WatermarkOptions = {}
 ): Promise<Buffer> {
-  const { opacity = 0.5, margin = 10, text = 'Virintira Real Estate' } = opts
+  const { opacity = 0.5, margin = 10, text = 'Zomzom Property' } = opts
 
   const base = sharp(input)
   const metadata = await base.metadata()

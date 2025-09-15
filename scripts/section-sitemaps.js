@@ -1,7 +1,8 @@
 const fs = require('fs')
 const path = require('path')
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.virintira.com'
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://www.zomzomproperty.com'
 const locales = ['th', 'en', 'zh']
 
 function writeSitemap(file, urls) {
