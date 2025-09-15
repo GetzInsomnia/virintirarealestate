@@ -60,10 +60,10 @@ export default function Home() {
         }]}
       />
       <LocalBusinessJsonLd
-        type='AccountingService'
+        type='RealEstateAgent'
         id={siteUrl}
         name='Virintira'
-        description='Multilingual accounting partner.'
+        description='Multilingual real estate partner.'
         url={siteUrl}
         telephone='+66-2-123-4567'
         address={{

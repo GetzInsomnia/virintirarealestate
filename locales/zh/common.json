@@ -1,39 +1,14 @@
 {
   "welcome": "欢迎！这是中文主页。",
-  "seo_title": "会计事务所 | 中文",
-  "seo_description": "多语言会计事务所（中文）",
+  "seo_title": "房地产公司 | 中文",
+  "seo_description": "多语言房地产公司（中文）",
   "seo_keywords": [
-    "会计",
+    "房地产",
     "多语言",
     "中文",
-    "财务服务"
+    "物业"
   ],
   "notFound": "未找到页面",
   "back_home": "返回首页",
-  "internal_error": "服务器内部错误",
-  "bookkeeping_service_name": "簿记服务",
-  "bookkeeping_service_description": "为小型企业提供全面的簿记服务。",
-  "bookkeeping_service_keywords": [
-    "簿记",
-    "小型企业会计",
-    "财务记录",
-    "银行对账"
-  ],
-  "faq_question_1": "你们的簿记服务包含什么？",
-  "faq_answer_1": "包括每日交易记录、银行对账和财务报表。",
-  "blog_post_title": "为什么簿记很重要",
-  "blog_post_description": "了解准确簿记对小型企业的重要性。",
-  "blog_post_keywords": [
-    "簿记",
-    "小型企业",
-    "会计"
-  ],
-  "blog_post_author": "Virintira 团队",
-  "howto_title": "编制每月财务报表",
-  "howto_description": "按照这些步骤编制每月财务报表。",
-  "howto_steps": [
-    { "name": "收集收据", "text": "收集所有收入和支出凭证。" },
-    { "name": "记录条目", "text": "将每笔交易记录到账本中。" },
-    { "name": "审核并完成", "text": "核对总额并生成报表。" }
-  ]
+  "internal_error": "服务器内部错误"
 }

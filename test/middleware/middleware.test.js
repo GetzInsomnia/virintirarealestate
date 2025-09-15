@@ -25,11 +25,11 @@ test('ignores api paths', () => {
 });
 
 test('uses Accept-Language to determine locale', () => {
-  const req = new NextRequest('https://example.com/blog', {
+  const req = new NextRequest('https://example.com/properties', {
     headers: { 'accept-language': 'zh;q=0.9,en;q=0.8' },
   });
   const res = middleware(req);
-  assert.strictEqual(res.headers.get('location'), 'https://example.com/zh/blog');
+  assert.strictEqual(res.headers.get('location'), 'https://example.com/zh/properties');
 });
 
 test('supports region subtags and q values', () => {
