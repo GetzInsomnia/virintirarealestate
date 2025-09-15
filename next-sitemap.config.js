@@ -1,6 +1,5 @@
 /** @type {import('next-sitemap').IConfig} */
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL || 'https://www.zomzomproperty.com'
+const siteUrl = require('./lib/siteUrl')
 
 module.exports = {
   siteUrl,
