@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import MiniSearch from 'minisearch'
 import Script from 'next/script'
@@ -82,7 +83,7 @@ export default function GuidesPageContent({ articles, categories, lang, crumbs }
         {results.map((a) => (
           <li key={a.slug}>
             <Link href={`/${lang}/guides/${a.slug}`}>
-              <img src={a.coverImage} alt='' width={100} />
+              <Image src={a.coverImage} alt={a.title} width={100} height={100} />
               <span>{a.title}</span>
             </Link>
           </li>
