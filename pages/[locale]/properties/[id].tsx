@@ -7,6 +7,9 @@ import { NextSeo } from 'next-seo'
 import Script from 'next/script'
 import PropertyImage, { ProcessedImage } from '@/src/components/PropertyImage'
 import { getSeoUrls, getLanguageAlternates } from '@/lib/seo'
+import Breadcrumbs from '@/src/components/Breadcrumbs'
+import BreadcrumbJsonLd from '@/src/components/JsonLd/BreadcrumbJsonLd'
+import { pdpCrumbs } from '@/src/lib/nav/crumbs'
 
 interface Property {
   id: number
@@ -42,6 +45,7 @@ export default function PropertyDetail({ property, articles }: Props) {
     (a) => a.category === property.type || a.provinces.includes(property.province.en)
   )
   const { pageUrl } = getSeoUrls(lang, `/properties/${property.id}`)
+  const crumbs = pdpCrumbs(lang, property.id, title)
 
   return (
     <div>
@@ -50,6 +54,8 @@ export default function PropertyDetail({ property, articles }: Props) {
         canonical={pageUrl}
         languageAlternates={getLanguageAlternates(`/properties/${property.id}`)}
       />
+      <BreadcrumbJsonLd items={crumbs} />
+      <Breadcrumbs items={crumbs} />
       <div>
         {property.images.length > 0 ? (
           property.images.map((img, i) => (

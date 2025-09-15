@@ -6,6 +6,9 @@ import PropertyFilters, { Filters } from '../src/components/PropertyFilters'
 import PropertyCard from '../src/components/PropertyCard'
 import { filterParamsSchema } from '../src/lib/validation/search'
 import { getLanguageAlternates, getSeoUrls } from '../lib/seo'
+import Breadcrumbs from '@/src/components/Breadcrumbs'
+import BreadcrumbJsonLd from '@/src/components/JsonLd/BreadcrumbJsonLd'
+import { listingCrumbs } from '@/src/lib/nav/crumbs'
 
 interface SearchResponse {
   total: number;
@@ -18,6 +21,7 @@ export default function PropertySearchPage() {
   const [filters, setFilters] = useState<Filters>({})
   const [results, setResults] = useState<any[]>([])
   const { pageUrl } = getSeoUrls(locale, '/properties')
+  const crumbs = listingCrumbs(locale)
 
   const runSearch = (f: Filters) => {
     const worker = new Worker(new URL('../src/workers/search.worker.ts', import.meta.url))
@@ -57,6 +61,8 @@ export default function PropertySearchPage() {
         canonical={pageUrl}
         languageAlternates={getLanguageAlternates('/properties')}
       />
+      <BreadcrumbJsonLd items={crumbs} />
+      <Breadcrumbs items={crumbs} />
       <PropertyFilters filters={filters} onChange={handleChange} />
       <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
         {results.map((p) => (
