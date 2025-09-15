@@ -11,11 +11,7 @@ import PropertyDetailPageContent, {
   Property,
   Article,
 } from '../../../../src/views/properties/PropertyDetailPageContent'
-
-export type ImgLike = string | { src: string }
-
-export const asSrc = (img: ImgLike): string =>
-  typeof img === 'string' ? img : img.src
+import { asSrc } from '@/src/components/PropertyImage'
 
 interface Props {
   property: Property

@@ -1,12 +1,7 @@
 import Link from 'next/link';
-import PropertyImage from './PropertyImage';
+import PropertyImage, { asSrc, ImgLike } from './PropertyImage';
 import { useCurrency } from '../context/CurrencyContext';
 import { formatCurrencyTHBBase } from '../lib/fx/convert';
-
-type ImgLike = string | { src: string };
-
-const asSrc = (img?: ImgLike): string | undefined =>
-  typeof img === 'string' ? img : img?.src;
 
 interface Property {
   id: number;
