@@ -30,15 +30,18 @@ export default function NavBar() {
         </button>
         <div className="flex items-center gap-4">
           <ul className="hidden md:flex gap-4 items-center">
-            {NAV_MAIN.map((item) => (
-              <li key={item.title}>
-                {item.children ? (
-                  <MegaMenu item={item} />
-                ) : (
-                  <Link href={item.href ?? '#'}>{item.title}</Link>
-                )}
-              </li>
-            ))}
+            {NAV_MAIN.map((item) => {
+              const hasSections = item.sections && item.sections.length > 0
+              return (
+                <li key={item.title}>
+                  {hasSections ? (
+                    <MegaMenu item={item} />
+                  ) : (
+                    <Link href={item.href ?? '#'}>{item.title}</Link>
+                  )}
+                </li>
+              )
+            })}
             <li><LanguageSwitcher /></li>
             <li><CurrencySwitcher /></li>
           </ul>
