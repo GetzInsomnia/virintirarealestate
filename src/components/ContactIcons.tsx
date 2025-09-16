@@ -1,4 +1,4 @@
-import { CONTACT } from '@/src/config/contact'
+import { CONTACT, ContactConfig } from '@/src/config/contact'
 import React from 'react'
 
 interface IconProps extends React.SVGProps<SVGSVGElement> {}
@@ -35,17 +35,39 @@ export function PhoneIcon(props: IconProps) {
   )
 }
 
-const ALL_CONTACT_ITEMS = [
-  { label: 'Line', href: CONTACT.lineOA, Icon: LineIcon },
-  { label: 'Facebook', href: CONTACT.facebook, Icon: FacebookIcon },
-  { label: 'TikTok', href: CONTACT.tiktok, Icon: TikTokIcon },
-  { label: 'Phone', href: CONTACT.phone ? `tel:${CONTACT.phone}` : undefined, Icon: PhoneIcon },
-] as const
+type ContactChannel = keyof ContactConfig
 
-export const CONTACT_ITEMS = ALL_CONTACT_ITEMS.filter(
-  (item): item is (typeof ALL_CONTACT_ITEMS)[number] & { href: string } =>
-    Boolean(item.href)
-)
+const CONTACT_ICON_CONFIG: Record<
+  ContactChannel,
+  {
+    label: string
+    Icon: React.ComponentType<IconProps>
+    formatHref?: (value: string) => string
+  }
+> = {
+  lineOA: { label: 'Line', Icon: LineIcon },
+  facebook: { label: 'Facebook', Icon: FacebookIcon },
+  tiktok: { label: 'TikTok', Icon: TikTokIcon },
+  phone: { label: 'Phone', Icon: PhoneIcon, formatHref: (value) => `tel:${value}` },
+}
+
+export const CONTACT_ITEMS = (Object.entries(CONTACT) as Array<[
+  ContactChannel,
+  string,
+]>).flatMap(([key, value]) => {
+  if (!value) {
+    return []
+  }
+
+  const { label, Icon, formatHref } = CONTACT_ICON_CONFIG[key]
+  const href = formatHref ? formatHref(value) : value
+
+  if (!href) {
+    return []
+  }
+
+  return [{ label, href, Icon }]
+})
 
 export function ContactIcons({ className = '' }: { className?: string }) {
   return (
