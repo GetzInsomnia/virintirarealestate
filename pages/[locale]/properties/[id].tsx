@@ -65,7 +65,7 @@ export default function PropertyDetail({ property, articles }: Props) {
               price: property.price,
               priceCurrency: 'THB',
             },
-            image: (property.images ?? []).map(asSrc),
+            image: (property.images ?? []).map((img) => asSrc(img)),
           }).replace(/</g, '\\u003c'),
         }}
       />
