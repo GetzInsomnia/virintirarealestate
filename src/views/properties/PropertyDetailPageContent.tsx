@@ -7,7 +7,7 @@ export interface Property {
   id: number
   province: { en: string; th: string }
   type: string
-  title: { en: string; th: string }
+  title: { en: string; th: string; zh?: string }
   price: number
   images: ImgLike[]
 }

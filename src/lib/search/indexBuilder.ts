@@ -8,8 +8,8 @@ interface Property {
   province: { en: string; th: string };
   district?: { en: string; th: string };
   type: string;
-  title: { en: string; th: string };
-  description: { en: string; th: string };
+  title: { en: string; th: string; zh?: string };
+  description: { en: string; th: string; zh?: string };
   price: number;
   priceBucket: string;
   amenities: string[];
@@ -30,8 +30,10 @@ interface Doc {
   type: string;
   title_en: string;
   title_th: string;
+  title_zh: string;
   description_en: string;
   description_th: string;
+  description_zh: string;
   price: number;
   priceBucket: string;
   amenities: string[];
@@ -59,8 +61,10 @@ export function buildIndexes() {
     type: p.type,
     title_en: p.title.en,
     title_th: p.title.th,
+    title_zh: p.title.zh ?? p.title.en,
     description_en: p.description.en,
     description_th: p.description.th,
+    description_zh: p.description.zh ?? p.description.en,
     price: p.price,
     priceBucket: p.priceBucket,
     amenities: p.amenities,
@@ -93,15 +97,24 @@ export function buildIndexes() {
     groups.get(key)!.push(doc);
     suggestions.add(doc.title_en);
     suggestions.add(doc.title_th);
+    if (doc.title_zh) suggestions.add(doc.title_zh);
   }
 
   for (const [key, groupDocs] of groups.entries()) {
     const mini = new MiniSearch<Doc>({
-      fields: ['title_en', 'title_th', 'description_en', 'description_th'],
+      fields: [
+        'title_en',
+        'title_th',
+        'title_zh',
+        'description_en',
+        'description_th',
+        'description_zh',
+      ],
       storeFields: [
         'id',
         'title_en',
         'title_th',
+        'title_zh',
         'province',
         'province_th',
         'type',
@@ -115,6 +128,9 @@ export function buildIndexes() {
         'status',
         'pricePerSqm',
         'areaBuilt',
+        'description_en',
+        'description_th',
+        'description_zh',
       ],
     });
     mini.addAll(groupDocs);

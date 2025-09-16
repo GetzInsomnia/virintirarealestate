@@ -5,7 +5,7 @@ import { formatCurrencyTHBBase } from '../lib/fx/convert';
 
 interface Property {
   id: number;
-  title: { en: string; th: string };
+  title: { en: string; th: string; zh?: string };
   price: number;
   images: ImgLike[];
 }
@@ -17,7 +17,11 @@ interface Props {
 
 export default function PropertyCard({ property, locale }: Props) {
   const { currency, rates } = useCurrency();
-  const title = property.title[locale as 'en' | 'th'] || property.title.en;
+  let localeKey: 'en' | 'th' | 'zh' = 'en';
+  if (locale === 'th' || locale === 'zh') {
+    localeKey = locale;
+  }
+  const title = property.title[localeKey] ?? property.title.en;
   const main = formatCurrencyTHBBase(property.price, currency, rates);
   const thb = formatCurrencyTHBBase(property.price, 'THB', rates);
 

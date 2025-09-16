@@ -23,9 +23,13 @@ export default function PropertyDetail({ property, articles }: Props) {
   const lang = Array.isArray(router.query.locale)
     ? router.query.locale[0]
     : (router.query.locale as string)
-  const title = property.title[lang as 'en' | 'th'] || property.title.en
+  let titleLocale: 'en' | 'th' | 'zh' = 'en'
+  if (lang === 'th' || lang === 'zh') {
+    titleLocale = lang
+  }
+  const title = property.title[titleLocale] || property.title.en
   const provinceName =
-    property.province[lang as 'en' | 'th'] || property.province.en
+    property.province[lang === 'th' ? 'th' : 'en'] || property.province.en
   const { pageUrl } = getSeoUrls(lang, `/properties/${property.id}`)
   const crumbs = pdpCrumbs(lang, property.id, title)
 
@@ -76,7 +80,7 @@ export default function PropertyDetail({ property, articles }: Props) {
 export const getStaticPaths: GetStaticPaths = async () => {
   const dataPath = path.join(process.cwd(), 'public', 'data', 'properties.json')
   const properties: Property[] = JSON.parse(fs.readFileSync(dataPath, 'utf-8'))
-  const locales = ['en', 'th']
+  const locales = ['en', 'th', 'zh']
   const paths = []
   for (const p of properties) {
     for (const locale of locales) {
