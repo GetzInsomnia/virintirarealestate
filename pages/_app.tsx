@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { buildUrl } from "../lib/url";
 import defaultSeo from "../next-seo.config";
 import { CurrencyProvider } from "../src/context/CurrencyContext";
-import { prompt, inter, notoSC } from "../src/styles/fonts";
+import { prompt, inter } from "../src/styles/fonts";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import FloatingContacts from "@/src/components/FloatingContacts";
@@ -102,7 +102,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const variantKey = prefersReducedMotion ? "fade" : direction;
 
   return (
-    <div className={`${prompt.variable} ${inter.variable} ${notoSC.variable}`}>
+    <div className={`${prompt.variable} ${inter.variable}`}>
       <DefaultSeo {...defaultSeo} />
       <JsonLd scriptId="organization-jsonld" {...orgJsonLd} />
       <JsonLd scriptId="website-jsonld" {...webSiteJsonLd} />
