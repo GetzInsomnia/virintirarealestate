@@ -77,23 +77,6 @@ self.onmessage = async (event: MessageEvent<any>) => {
     return;
   }
   const req: SearchParams = parsed.data;
-  if (req.minPrice !== undefined) {
-    if (!isValidPrice(req.minPrice) || req.minPrice < MIN_PRICE) {
-      req.minPrice = MIN_PRICE;
-    }
-  }
-  if (req.maxPrice !== undefined) {
-    if (!isValidPrice(req.maxPrice) || req.maxPrice > MAX_PRICE) {
-      req.maxPrice = MAX_PRICE;
-    }
-  }
-  if (
-    req.minPrice !== undefined &&
-    req.maxPrice !== undefined &&
-    req.minPrice > req.maxPrice
-  ) {
-    [req.minPrice, req.maxPrice] = [req.maxPrice, req.minPrice];
-  }
   const [amenities, transit] = await Promise.all([
     loadAmenities(),
     loadTransit(),
@@ -111,17 +94,33 @@ self.onmessage = async (event: MessageEvent<any>) => {
     delete req.transitStation;
   }
   const man = await loadManifest();
-  const shards = man.shards.filter((s) => {
-    return (!req.province || s.province === req.province) && (!req.type || s.type === req.type);
-  });
+  const shards = man.shards;
 
   const matches: any[] = [];
+  const query = req.query?.trim() ?? '';
   for (const shard of shards) {
     const index = await loadIndex(shard.key);
-    const res = index.search(req.query, { prefix: true });
-    matches.push(...res.map(r => r));
+    const res = index.search(query, { prefix: true, fuzzy: 0.2 });
+    matches.push(...res.map((r) => r));
   }
 
+  if (req.minPrice !== undefined) {
+    if (!isValidPrice(req.minPrice) || req.minPrice < MIN_PRICE) {
+      req.minPrice = MIN_PRICE;
+    }
+  }
+  if (req.maxPrice !== undefined) {
+    if (!isValidPrice(req.maxPrice) || req.maxPrice > MAX_PRICE) {
+      req.maxPrice = MAX_PRICE;
+    }
+  }
+  if (
+    req.minPrice !== undefined &&
+    req.maxPrice !== undefined &&
+    req.minPrice > req.maxPrice
+  ) {
+    [req.minPrice, req.maxPrice] = [req.maxPrice, req.minPrice];
+  }
   const filtered = applyFilters(matches, req);
   const sorted = sortResults(filtered, req.sort);
   const page = req.page ?? 1;

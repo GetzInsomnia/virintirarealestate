@@ -2,6 +2,8 @@ import type { SearchParams } from '../validation/search';
 
 export function applyFilters(docs: any[], req: SearchParams) {
   return docs.filter((doc) => {
+    if (req.province && doc.province !== req.province && doc.province_th !== req.province) return false;
+    if (req.type && doc.type !== req.type) return false;
     if (req.minPrice !== undefined && doc.price < req.minPrice) return false;
     if (req.maxPrice !== undefined && doc.price > req.maxPrice) return false;
     if (req.beds !== undefined && (doc.beds ?? 0) < req.beds) return false;
