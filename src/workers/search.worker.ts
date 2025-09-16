@@ -6,7 +6,7 @@ import { applyFilters, sortResults } from '../lib/search/shared';
 
 interface PropertyDTO {
   id: number;
-  title: { en: string; th: string };
+  title: { en: string; th: string; zh?: string };
   province: { en: string; th: string };
   type: string;
   price: number;
@@ -46,8 +46,36 @@ async function loadIndex(key: string) {
     const res = await fetch(`/data/index/${key}.json`);
     const json = await res.json();
     indexCache[key] = MiniSearch.loadJSON(json, {
-      fields: ['title_en', 'title_th', 'description_en', 'description_th'],
-      storeFields: ['id', 'title_en', 'title_th', 'province', 'province_th', 'type', 'price', 'priceBucket', 'amenities', 'images', 'createdAt']
+      fields: [
+        'title_en',
+        'title_th',
+        'title_zh',
+        'description_en',
+        'description_th',
+        'description_zh',
+      ],
+      storeFields: [
+        'id',
+        'title_en',
+        'title_th',
+        'title_zh',
+        'province',
+        'province_th',
+        'type',
+        'price',
+        'priceBucket',
+        'amenities',
+        'images',
+        'createdAt',
+        'beds',
+        'baths',
+        'status',
+        'pricePerSqm',
+        'areaBuilt',
+        'description_en',
+        'description_th',
+        'description_zh',
+      ],
     });
   }
   return indexCache[key];
@@ -130,7 +158,7 @@ self.onmessage = async (event: MessageEvent<any>) => {
 
   const results: PropertyDTO[] = paginated.map((doc: any) => ({
     id: doc.id,
-    title: { en: doc.title_en, th: doc.title_th },
+    title: { en: doc.title_en, th: doc.title_th, zh: doc.title_zh },
     province: { en: doc.province, th: doc.province_th },
     type: doc.type,
     price: doc.price,
