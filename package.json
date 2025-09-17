@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next-sitemap",
+    "build": "next build",
     "start": "node server.js",
     "test": "node --test",
     "lint": "next lint",
-    "postbuild": "node scripts/section-sitemaps.js",
+    "sitemap": "next-sitemap",
     "update:rates": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' scripts/update-rates.ts",
     "i18n:check": "ts-node scripts/i18n-check.ts || echo 'i18n check: warned'",
     "index:build": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' src/lib/search/indexBuilder.ts"
