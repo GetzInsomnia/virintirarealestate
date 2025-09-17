@@ -75,20 +75,16 @@ npm start
 
 ## Sitemap
 
-After each build, the [`postbuild`](package.json) script runs
-[`next-sitemap`](https://github.com/iamvishnusankar/next-sitemap) to
-generate `sitemap.xml` and `robots.txt` under the `public/` directory.
-When you add or remove pages, regenerate these files with:
+Use [`next-sitemap`](https://github.com/iamvishnusankar/next-sitemap) to
+generate `sitemap.xml` and `robots.txt` under the `public/` directory after
+every production build:
 
 ```bash
-npm run build && npm run postbuild
+npm run build
+npm run sitemap
 ```
 
-You can also run just the postbuild step manually:
-
-```bash
-npm run postbuild
-```
+Re-run the sitemap step whenever you add or remove pages.
 
 ## Exchange rates
 
