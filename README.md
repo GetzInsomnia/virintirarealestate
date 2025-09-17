@@ -96,7 +96,8 @@ npm run update:rates
 
 This script downloads the latest daily rates from the European Central Bank
 and writes them to `public/data/rates.json`. If the network request fails, the
-existing file remains unchanged.
+script writes a fallback payload that keeps THB as the only available currency
+so builds and CI continue to work offline.
 
 ## Locale detection
 

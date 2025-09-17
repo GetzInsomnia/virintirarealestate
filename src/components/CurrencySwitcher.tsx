@@ -1,6 +1,6 @@
 import { useCurrency } from '../context/CurrencyContext';
 
-const currencies = ['THB', 'USD', 'EUR', 'JPY'];
+const currencies = ['THB', 'USD', 'CNY', 'EUR', 'JPY', 'SGD', 'HKD'];
 
 export default function CurrencySwitcher() {
   const { currency, setCurrency } = useCurrency();
