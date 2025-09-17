@@ -5,6 +5,8 @@ import { MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
 import { useRouter } from 'next/router'
 import { NextSeo, ArticleJsonLd } from 'next-seo'
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { getSeoUrls, getLanguageAlternates } from '@/lib/seo'
 import BreadcrumbJsonLd from '@/src/components/JsonLd/BreadcrumbJsonLd'
 import { guidesCrumbs } from '@/src/lib/nav/crumbs'
@@ -17,6 +19,7 @@ interface Props {
 
 export default function GuideDetail({ source, article }: Props) {
   const router = useRouter()
+  const { t } = useTranslation('common')
   const lang = Array.isArray(router.query.locale)
     ? router.query.locale[0]
     : (router.query.locale as string)
@@ -37,7 +40,7 @@ export default function GuideDetail({ source, article }: Props) {
         title={article.title}
         images={[article.coverImage]}
         datePublished={article.publishedAt}
-        authorName={['Zomzom Property']}
+        authorName={[t('Brand.name')]}
         description={article.title}
       />
       <GuideDetailPageContent source={source} article={article} crumbs={crumbs} />
@@ -76,5 +79,11 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     provinces: entry.provinces,
     title: entry.locales[locale]?.title || entry.locales.en.title,
   }
-  return { props: { source: mdxSource, article } }
+  return {
+    props: {
+      source: mdxSource,
+      article,
+      ...(await serverSideTranslations(locale || 'th', ['common'])),
+    },
+  }
 }

@@ -18,6 +18,8 @@ export default function Home() {
   const lang = locale || defaultLocale || 'th'
   const keywords = t('seo_keywords', { returnObjects: true }) as string[]
   const { baseUrl, siteUrl, pageUrl } = getSeoUrls(lang)
+  const brandName = t('Brand.name')
+  const brandTagline = t('Brand.tagline')
   return (
     <>
       <NextSeo
@@ -62,8 +64,8 @@ export default function Home() {
       <LocalBusinessJsonLd
         type='RealEstateAgent'
         id={siteUrl}
-        name='Zomzom Property'
-        description='Multilingual real estate partner.'
+        name={brandName}
+        description={brandTagline}
         url={siteUrl}
         telephone='+66-2-123-4567'
         address={{

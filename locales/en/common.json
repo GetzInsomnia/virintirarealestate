@@ -10,5 +10,9 @@
   ],
   "notFound": "Page not found",
   "back_home": "Back Home",
-  "internal_error": "Internal Error"
+  "internal_error": "Internal Error",
+  "Brand": {
+    "name": "Zomzom Property",
+    "tagline": "Multilingual real estate partner."
+  }
 }
