@@ -1,6 +1,6 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { appWithTranslation } from "next-i18next";
+import { appWithTranslation, useTranslation } from "next-i18next";
 import { DefaultSeo } from "next-seo";
 import JsonLd from "../components/JsonLd";
 import { useRouter } from "next/router";
@@ -62,12 +62,14 @@ function MyApp({ Component, pageProps }: AppProps) {
   const { locale, defaultLocale } = router;
   const direction = useNavDirection();
   const prefersReducedMotion = useReducedMotion();
+  const { t } = useTranslation("common");
+  const brandName = t("Brand.name");
 
   const { baseUrl, siteUrl } = buildUrl(locale ?? defaultLocale);
   const orgJsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Zomzom Property",
+    name: brandName,
     url: siteUrl,
     logo: `${baseUrl}/favicon.ico`,
     sameAs: [
@@ -79,7 +81,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const webSiteJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Zomzom Property",
+    name: brandName,
     url: siteUrl,
   };
 

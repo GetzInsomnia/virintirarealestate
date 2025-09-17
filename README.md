@@ -163,6 +163,19 @@ the best match among the supported locales (`th`, `en`, `zh`). If none of the
 preferred languages match or the header is missing, the middleware redirects to
 the default locale (`th`).
 
+## Localization guidelines
+
+- **English** copy should feel warm yet professional, highlighting trust and
+  service quality without sounding overly casual.
+- **Thai** translations should mirror the English messaging while remaining
+  polite and naturally worded for native speakers.
+- **Simplified Chinese** strings should stay concise and businesslike, avoiding
+  idioms that might confuse international readers.
+
+Run `npm run i18n:check` (a wrapper around
+[`scripts/i18n-check.ts`](scripts/i18n-check.ts)) whenever you change the locale
+files to ensure every language exposes the same keys.
+
 ## API
 
 ### GET `/api/suggest`

@@ -21,7 +21,7 @@ const ensurePositiveInt = (value?: number): number | undefined => {
 const placeholderSrc = (width?: number, height?: number): string => {
   const finalWidth = ensurePositiveInt(width) ?? DEFAULT_WIDTH
   const finalHeight = ensurePositiveInt(height) ?? DEFAULT_HEIGHT
-  return `https://placehold.co/${finalWidth}x${finalHeight}?text=Zomzom+Image`
+  return `https://placehold.co/${finalWidth}x${finalHeight}?text=Property+Image`
 }
 
 export const asSrc = (
