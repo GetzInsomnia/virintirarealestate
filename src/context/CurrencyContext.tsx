@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import type { Rates } from '../lib/fx/convert';
+import { normalizeRates } from '../lib/fx/convert';
 
 interface CurrencyContextValue {
   currency: string;
@@ -25,9 +26,16 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
       }
     }
     fetch('/data/rates.json')
-      .then((res) => res.json())
-      .then((data: Rates) => setRates(data))
-      .catch(() => {});
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('Failed to load rates');
+        }
+        return res.json();
+      })
+      .then((data) => setRates(normalizeRates(data)))
+      .catch(() => {
+        setRates({ THB: 1 });
+      });
   }, []);
 
   const setCurrency = (cur: string) => {
