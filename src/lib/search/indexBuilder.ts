@@ -21,7 +21,13 @@ interface Property {
   areaBuilt?: number;
   pricePerSqm?: number;
   status?: string;
+  nearTransit?: boolean;
+  furnished?: string;
+  transitLine?: string;
+  transitStation?: string;
 }
+
+type Locale = 'en' | 'th' | 'zh';
 
 interface Doc {
   id: number;
@@ -44,6 +50,15 @@ interface Doc {
   status?: string;
   pricePerSqm?: number;
   areaBuilt?: number;
+  nearTransit?: boolean;
+  furnished?: string;
+  transitLine?: string;
+  transitStation?: string;
+}
+
+interface SuggestionEntry {
+  canonical: string;
+  locales: Partial<Record<Locale, string>>;
 }
 
 function slug(value: string) {
@@ -81,68 +96,73 @@ export function buildIndexes() {
     status: p.status,
     pricePerSqm: p.pricePerSqm,
     areaBuilt: p.areaBuilt,
+    nearTransit: p.nearTransit,
+    furnished: p.furnished,
+    transitLine: p.transitLine,
+    transitStation: p.transitStation,
   }));
 
   const indexDir = path.join(process.cwd(), 'public', 'data', 'index');
   fs.rmSync(indexDir, { recursive: true, force: true });
   fs.mkdirSync(indexDir, { recursive: true });
 
-  const suggestions = new Set<string>();
-  const manifest: { shards: { key: string; province: string; type: string }[] } = { shards: [] };
+  const suggestions = new Map<string, SuggestionEntry>();
+  const manifest: { shards: { key: string; province: string; type: string }[] } = {
+    shards: [],
+  };
 
   const groups = new Map<string, Doc[]>();
   for (const doc of docs) {
     const key = `${slug(doc.province)}-${doc.type}`;
     if (!groups.has(key)) groups.set(key, []);
     groups.get(key)!.push(doc);
-    suggestions.add(doc.title_en);
-    suggestions.add(doc.title_th);
-    if (doc.title_zh) suggestions.add(doc.title_zh);
+    const canonical = doc.title_en;
+    if (!suggestions.has(canonical)) {
+      suggestions.set(canonical, { canonical, locales: { en: doc.title_en } });
+    }
+    const entry = suggestions.get(canonical)!;
+    if (doc.title_th) entry.locales.th = doc.title_th;
+    if (doc.title_zh) entry.locales.zh = doc.title_zh;
   }
 
   for (const [key, groupDocs] of groups.entries()) {
-    const mini = new MiniSearch<Doc>({
-      fields: [
-        'title_en',
-        'title_th',
-        'title_zh',
-        'description_en',
-        'description_th',
-        'description_zh',
-      ],
-      storeFields: [
-        'id',
-        'title_en',
-        'title_th',
-        'title_zh',
-        'province',
-        'province_th',
-        'type',
-        'price',
-        'priceBucket',
-        'amenities',
-        'images',
-        'createdAt',
-        'beds',
-        'baths',
-        'status',
-        'pricePerSqm',
-        'areaBuilt',
-        'description_en',
-        'description_th',
-        'description_zh',
-      ],
+    const indexes: Partial<Record<Locale, any>> = {};
+    const localeFields: Record<Locale, (keyof Doc)[]> = {
+      en: ['title_en', 'description_en'],
+      th: ['title_th', 'description_th'],
+      zh: ['title_zh', 'description_zh'],
+    };
+
+    (Object.keys(localeFields) as Locale[]).forEach((locale) => {
+      const mini = new MiniSearch<Doc>({
+        fields: localeFields[locale],
+        storeFields: ['id'],
+      });
+      mini.addAll(groupDocs);
+      indexes[locale] = mini.toJSON();
     });
-    mini.addAll(groupDocs);
-    fs.writeFileSync(path.join(indexDir, `${key}.json`), JSON.stringify(mini.toJSON()));
-    const [provinceSlug, type] = key.split('-');
+
+    const shardPayload = {
+      shard: {
+        key,
+        province: groupDocs[0].province,
+        type: groupDocs[0].type,
+      },
+      docs: groupDocs,
+      indexes,
+    };
+
+    fs.writeFileSync(path.join(indexDir, `${key}.json`), JSON.stringify(shardPayload));
     const provinceName = groupDocs[0].province;
-    manifest.shards.push({ key, province: provinceName, type });
+    manifest.shards.push({ key, province: provinceName, type: groupDocs[0].type });
   }
 
   fs.writeFileSync(path.join(indexDir, 'manifest.json'), JSON.stringify(manifest, null, 2));
   const suggestPath = path.join(indexDir, 'suggest.json');
-  fs.writeFileSync(suggestPath, JSON.stringify({ suggestions: Array.from(suggestions) }, null, 2));
+  fs.writeFileSync(
+    suggestPath,
+    JSON.stringify({ suggestions: Array.from(suggestions.values()) }, null, 2)
+  );
 }
 
 if (require.main === module) {

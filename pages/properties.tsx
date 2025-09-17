@@ -29,7 +29,7 @@ export default function PropertySearchPage() {
       setResults(e.data.results)
       worker.terminate()
     }
-    worker.postMessage({ query: '', ...f })
+    worker.postMessage({ locale, query: '', ...f })
   }
 
   useEffect(() => {

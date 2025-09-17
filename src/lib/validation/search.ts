@@ -7,6 +7,7 @@ export const searchParamsSchema = z.object({
   query: safeString.optional(),
   province: safeString.optional(),
   type: safeString.optional(),
+  locale: z.enum(['en', 'th', 'zh']).optional(),
   minPrice: z
     .coerce
     .number()
