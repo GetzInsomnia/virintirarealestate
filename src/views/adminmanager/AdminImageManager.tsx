@@ -200,7 +200,7 @@ const statusStyles: Record<WorkflowStatus, string> = {
 }
 
 const tabs: {
-  id: 'pipeline' | 'users' | 'scheduler' | 'uploads'
+  id: 'pipeline' | 'users' | 'scheduler' | 'uploads' | 'settings'
   label: string
   description: string
 }[] = [
@@ -223,6 +223,11 @@ const tabs: {
     id: 'uploads',
     label: 'Asset uploads',
     description: 'Upload marketing imagery and delivery variants.',
+  },
+  {
+    id: 'settings',
+    label: 'Settings',
+    description: 'Download data backups and review workspace operations.',
   },
 ]
 
@@ -294,6 +299,23 @@ function formatRelative(value: string): string {
   }
   const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24))
   return formatter.format(diffDays, 'days')
+}
+
+function getFilenameFromDisposition(header: string | null): string | null {
+  if (!header) return null
+  const utfMatch = header.match(/filename\*=UTF-8''([^;]+)/i)
+  if (utfMatch?.[1]) {
+    try {
+      return decodeURIComponent(utfMatch[1])
+    } catch {
+      return utfMatch[1]
+    }
+  }
+  const basicMatch = header.match(/filename="?([^";]+)"?/i)
+  if (basicMatch?.[1]) {
+    return basicMatch[1]
+  }
+  return null
 }
 function useToastQueue(): [
   ToastMessage[],
@@ -581,6 +603,7 @@ export default function AdminImageManager() {
     error: null as string | null,
   })
   const [jobsRefreshedAt, setJobsRefreshedAt] = useState<string | null>(null)
+  const [isBackingUp, setIsBackingUp] = useState(false)
 
   const openConfirm = useCallback((record: ChangeSetRecord, action: WorkflowAction) => {
     setConfirmState({
@@ -898,6 +921,47 @@ export default function AdminImageManager() {
       const message = error?.message ?? 'Unable to load scheduler logs'
       setJobsMeta({ loading: false, loaded: true, error: message })
       pushToast({ tone: 'error', title: 'Scheduler logs failed', description: message })
+    }
+  }, [csrfToken, pushToast])
+
+  const downloadBackup = useCallback(async () => {
+    if (!csrfToken) {
+      pushToast({
+        tone: 'error',
+        title: 'Backup unavailable',
+        description: 'Missing CSRF token. Refresh and try again.',
+      })
+      return
+    }
+    setIsBackingUp(true)
+    try {
+      const headers = withAdminCsrfHeader(undefined, csrfToken)
+      const response = await fetch('/api/admin/backup', { headers })
+      if (!response.ok) {
+        const message = await response
+          .json()
+          .then((payload) => payload.error ?? 'Backup failed')
+          .catch(() => 'Backup failed')
+        throw new Error(message)
+      }
+      const blob = await response.blob()
+      const filename =
+        getFilenameFromDisposition(response.headers.get('Content-Disposition')) ??
+        `admin-backup-${new Date().toISOString().replace(/[:.]/g, '-')}.zip`
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = filename
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+      pushToast({ tone: 'success', title: 'Backup ready', description: filename })
+    } catch (error: any) {
+      const message = error?.message ?? 'Unable to download backup'
+      pushToast({ tone: 'error', title: 'Backup failed', description: message })
+    } finally {
+      setIsBackingUp(false)
     }
   }, [csrfToken, pushToast])
 
@@ -1332,6 +1396,40 @@ export default function AdminImageManager() {
       {activeTab === 'uploads' && (
         <section>
           <AssetUploadPanel csrfToken={csrfToken} showToast={pushToast} />
+        </section>
+      )}
+
+      {activeTab === 'settings' && (
+        <section className="space-y-6">
+          <div className="rounded border border-slate-200 bg-white p-5 shadow-sm">
+            <h2 className="text-lg font-semibold">Workspace backups</h2>
+            <p className="mt-2 text-sm text-slate-600">
+              Generate a ZIP archive that includes the Prisma development database, every JSON
+              dataset under <code>public/data</code>, and the 20 most recent processed uploads.
+            </p>
+            <ul className="mt-4 list-disc space-y-1 pl-5 text-sm text-slate-600">
+              <li>An authenticated admin session with a valid CSRF token is required.</li>
+              <li>
+                Ensure the server can read <code>prisma/dev.db</code>, <code>public/data</code>, and{' '}
+                <code>public/uploads/processed</code>.
+              </li>
+            </ul>
+            <div className="mt-5 flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                onClick={downloadBackup}
+                disabled={isBackingUp || !csrfToken}
+                className="rounded bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {isBackingUp ? 'Preparing backup…' : 'Backup now'}
+              </button>
+              {!csrfToken && (
+                <span className="text-xs text-red-600">
+                  CSRF token unavailable. Reload the workspace to try again.
+                </span>
+              )}
+            </div>
+          </div>
         </section>
       )}
 

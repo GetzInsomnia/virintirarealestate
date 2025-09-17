@@ -44,6 +44,21 @@ WATERMARK_TEXT="Your brand here"
 
 If not set, the default is `"Zomzom Property"`.
 
+## Admin backups
+
+Authenticated admins can download a data snapshot from the **Admin workspace → Settings** tab
+or by calling `GET /api/admin/backup` directly. Every request must include a valid admin session
+and CSRF token; the frontend automatically injects the token via the `X-Admin-CSRF` header.
+
+The backup archive contains:
+
+- `prisma/dev.db` when the Prisma development database file exists
+- Every `.json` file in `public/data`
+- Up to 20 of the most recent files stored in `public/uploads/processed`
+
+Grant the Next.js server read access to those paths so the archive can be assembled. The backup
+stream is built on demand, so large upload directories may increase response times.
+
 ## Scripts
 
 ### Development
