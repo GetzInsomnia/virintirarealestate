@@ -44,8 +44,9 @@ WATERMARK_TEXT="Your brand here"
 
 If not set, the default is `"Zomzom Property"`.
 
+## Scripts
 
-## Development
+### Development
 
 Start a development server with hot reload:
 
@@ -53,7 +54,7 @@ Start a development server with hot reload:
 npm run dev
 ```
 
-## Linting
+### Linting
 
 Check code quality using ESLint:
 
@@ -64,7 +65,15 @@ npm run lint
 `npm run lint` expects a `.eslintrc.json` file that extends
 `next/core-web-vitals` in the project root.
 
-## Production
+### Type checking
+
+Run the TypeScript compiler without emitting files:
+
+```bash
+npm run typecheck
+```
+
+### Production
 
 Build the optimized application and start it in production mode:
 
@@ -73,7 +82,15 @@ npm run build
 npm start
 ```
 
-## Sitemap
+### Search indexing
+
+Regenerate the MiniSearch index used by the app:
+
+```bash
+npm run index:build
+```
+
+### Sitemap
 
 Use [`next-sitemap`](https://github.com/iamvishnusankar/next-sitemap) to
 generate `sitemap.xml` and `robots.txt` under the `public/` directory after
@@ -86,7 +103,29 @@ npm run sitemap
 
 Re-run the sitemap step whenever you add or remove pages.
 
-## Exchange rates
+### Internationalization check
+
+Validate translation coverage:
+
+```bash
+npm run i18n:check
+```
+
+### Security and bundle size
+
+Audit production dependencies for known vulnerabilities:
+
+```bash
+npm run audit
+```
+
+Measure the client bundle budget with [`size-limit`](https://github.com/ai/size-limit):
+
+```bash
+npm run size
+```
+
+### Exchange rates (local only)
 
 Refresh currency conversion data used by the site:
 
@@ -95,9 +134,10 @@ npm run update:rates
 ```
 
 This script downloads the latest daily rates from the European Central Bank
-and writes them to `public/data/rates.json`. If the network request fails, the
-script writes a fallback payload that keeps THB as the only available currency
-so builds and CI continue to work offline.
+and writes them to `public/data/rates.json`. The command exits with an error
+whenever the `CI` environment variable is set—never run `update:rates` in CI.
+If the network request fails, the script writes a fallback payload that keeps
+THB as the only available currency so builds and CI continue to work offline.
 
 ## Locale detection
 
@@ -108,14 +148,12 @@ the best match among the supported locales (`th`, `en`, `zh`). If none of the
 preferred languages match or the header is missing, the middleware redirects to
 the default locale (`th`).
 
-
 ## API
 
 ### GET `/api/suggest`
 
 Returns search suggestions used by the client. If the suggestions file cannot
 be read, the endpoint responds with HTTP 500.
-
 
 ## License
 
