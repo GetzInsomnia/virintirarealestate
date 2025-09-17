@@ -5,6 +5,7 @@ export interface AdminSession {
   username: string;
   issuedAt?: number;
   expiresAt: number;
+  csrfToken: string;
 }
 
 export const SESSION_COOKIE_NAME = 'admin_session';
@@ -52,12 +53,14 @@ export interface AdminSessionCookieResult {
   cookie: string;
   value: string;
   payload: AdminSession;
+  csrfToken: string;
 }
 
 function createSessionValue(
   username: string,
   secret: string,
-  ttlMs: number
+  ttlMs: number,
+  csrfToken: string
 ): { value: string; payload: AdminSession } {
   const now = Date.now();
   const expiresAt = now + ttlMs;
@@ -65,6 +68,7 @@ function createSessionValue(
     username,
     issuedAt: now,
     expiresAt,
+    csrfToken,
   };
   const payloadJson = JSON.stringify(payload);
   const payloadPart = Buffer.from(payloadJson, 'utf8').toString('base64url');
@@ -87,7 +91,13 @@ export function createAdminSessionCookie(
   }
 
   const ttlMs = options.ttlMs ?? defaultSessionDurationMs();
-  const { value, payload } = createSessionValue(username, secret, ttlMs);
+  const csrfToken = crypto.randomBytes(32).toString('hex');
+  const { value, payload } = createSessionValue(
+    username,
+    secret,
+    ttlMs,
+    csrfToken
+  );
   const cookieName = SESSION_COOKIE_NAME;
   const parts = [`${cookieName}=${value}`];
   const path = options.path ?? '/';
@@ -110,6 +120,7 @@ export function createAdminSessionCookie(
     cookie: parts.join('; '),
     value,
     payload,
+    csrfToken,
   };
 }
 
@@ -167,10 +178,11 @@ export function getAdminSessionFromCookies(cookies: CookieMap): AdminSession | n
     return null;
   }
 
-  const { username, expiresAt, issuedAt } = payload as {
+  const { username, expiresAt, issuedAt, csrfToken } = payload as {
     username?: unknown;
     expiresAt?: unknown;
     issuedAt?: unknown;
+    csrfToken?: unknown;
   };
 
   if (typeof username !== 'string' || username.length === 0) {
@@ -186,10 +198,14 @@ export function getAdminSessionFromCookies(cookies: CookieMap): AdminSession | n
   }
 
   const parsedIssuedAt = typeof issuedAt === 'number' ? issuedAt : undefined;
+  if (typeof csrfToken !== 'string' || csrfToken.length === 0) {
+    return null;
+  }
 
   return {
     username,
     expiresAt,
     issuedAt: parsedIssuedAt,
+    csrfToken,
   };
 }

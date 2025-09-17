@@ -1,6 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import fs from 'fs/promises';
 import path from 'path';
+import { getAdminSessionFromCookies } from '@/src/lib/auth/session';
+import { parseCookies } from '@/src/lib/http/cookies';
+import { isValidCsrfToken } from '@/src/lib/security/csrf';
+import { ADMIN_CSRF_HEADER_NAME } from '@/src/lib/security/csrfConstants';
+
+const GENERIC_CSRF_ERROR = 'Invalid request';
 
 function slugify(value: string) {
   return value.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
@@ -17,6 +23,16 @@ function priceBucket(price: number) {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
+    return;
+  }
+  const cookies = parseCookies(req.headers.cookie);
+  const session = getAdminSessionFromCookies(cookies);
+  if (!session) {
+    res.status(401).json({ error: 'Unauthorized' });
+    return;
+  }
+  if (!isValidCsrfToken(session, cookies, req.headers[ADMIN_CSRF_HEADER_NAME])) {
+    res.status(403).json({ error: GENERIC_CSRF_ERROR });
     return;
   }
   if (process.env.NODE_ENV === 'production') {
