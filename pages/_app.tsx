@@ -7,6 +7,8 @@ import { useRouter } from "next/router";
 import { buildUrl } from "../lib/url";
 import defaultSeo from "../next-seo.config";
 import { CurrencyProvider } from "../src/context/CurrencyContext";
+import { AdminPreviewProvider } from "../src/context/AdminPreviewContext";
+import AdminPreviewBanner from "../components/AdminPreviewBanner";
 import { prompt, inter } from "../src/styles/fonts";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -106,21 +108,26 @@ function MyApp({ Component, pageProps }: AppProps) {
       <DefaultSeo {...defaultSeo} />
       <JsonLd scriptId="organization-jsonld" {...orgJsonLd} />
       <JsonLd scriptId="website-jsonld" {...webSiteJsonLd} />
-      <CurrencyProvider>
-        <FloatingContacts />
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={router.asPath}
-            variants={variants[variantKey]}
-            initial="hidden"
-            animate="enter"
-            exit="exit"
-            transition={{ type: "tween", duration: 0.2 }}
-          >
-            <Component {...pageProps} />
-          </motion.div>
-        </AnimatePresence>
-      </CurrencyProvider>
+      <AdminPreviewProvider>
+        <CurrencyProvider>
+          <div className="sticky top-0 z-50">
+            <AdminPreviewBanner />
+          </div>
+          <FloatingContacts />
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={router.asPath}
+              variants={variants[variantKey]}
+              initial="hidden"
+              animate="enter"
+              exit="exit"
+              transition={{ type: "tween", duration: 0.2 }}
+            >
+              <Component {...pageProps} />
+            </motion.div>
+          </AnimatePresence>
+        </CurrencyProvider>
+      </AdminPreviewProvider>
     </div>
   );
 }
