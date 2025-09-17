@@ -7,10 +7,9 @@ import {
 } from 'react'
 import Image from 'next/image'
 
-import {
-  useAdminCsrfToken,
-  withAdminCsrfHeader,
-} from '@/src/lib/security/adminCsrf'
+import AdminLoginForm from '@/src/components/admin/AdminLoginForm'
+import { useAdminAuth } from '@/src/context/AdminAuthContext'
+import { ApiError, apiFetch, apiRequest } from '@/src/lib/api'
 
 type WorkflowStatus = 'draft' | 'review' | 'scheduled' | 'published'
 
@@ -437,25 +436,31 @@ function ConfirmDialog({
   )
 }
 function AssetUploadPanel({
-  csrfToken,
   showToast,
 }: {
-  csrfToken: string | null
   showToast: (toast: Omit<ToastMessage, 'id'>) => void
 }) {
+  const { isAuthenticated } = useAdminAuth()
   const [isUploading, setIsUploading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [result, setResult] = useState<UploadResponse | null>(null)
+  const [propertyId, setPropertyId] = useState('')
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (!csrfToken) {
-      setError('Missing security token. Please log in again.')
+    if (!isAuthenticated) {
+      setError('You must be signed in to upload assets.')
       showToast({
         tone: 'error',
         title: 'Upload blocked',
-        description: 'Missing security token. Please refresh your admin session.',
+        description: 'Please sign in again to upload property imagery.',
       })
+      return
+    }
+
+    const trimmedId = propertyId.trim()
+    if (!trimmedId) {
+      setError('Enter the property ID the asset belongs to.')
       return
     }
 
@@ -482,20 +487,18 @@ function AssetUploadPanel({
     try {
       setIsUploading(true)
       setError(null)
-      const headers = withAdminCsrfHeader(undefined, csrfToken)
-      const res = await fetch('/api/admin/upload', {
+      const response = await apiFetch(`/v1/properties/${encodeURIComponent(trimmedId)}/images`, {
         method: 'POST',
         body: data,
-        headers,
       })
-      if (!res.ok) {
-        const message = await res
+      if (!response.ok) {
+        const message = await response
           .json()
-          .then((payload) => payload.error ?? 'Upload failed')
+          .then((payload) => payload?.error ?? 'Upload failed')
           .catch(() => 'Upload failed')
         throw new Error(message)
       }
-      const payload = (await res.json()) as UploadResponse
+      const payload = (await response.json()) as UploadResponse
       setResult(payload)
       showToast({
         tone: 'success',
@@ -526,18 +529,28 @@ function AssetUploadPanel({
         </span>
       </div>
       <form onSubmit={handleSubmit} className="mt-4 space-y-3">
+        <div>
+          <label className="block text-sm font-medium text-slate-700">Property ID</label>
+          <input
+            name="propertyId"
+            value={propertyId}
+            onChange={(event) => setPropertyId(event.target.value)}
+            className="mt-1 w-full rounded border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-slate-500 focus:outline-none"
+            placeholder="e.g. 1024"
+          />
+        </div>
         <input
           type="file"
           name="file"
           accept="image/*"
           className="block w-full rounded border border-dashed border-slate-300 p-3 text-sm"
         />
-        <div className="flex items-center justify-between text-xs text-slate-500">
+        <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
           <span>Accepts JPEG, PNG, WebP, AVIF up to 5MB</span>
           <button
             type="submit"
             className="rounded bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60"
-            disabled={isUploading}
+            disabled={isUploading || !isAuthenticated}
           >
             {isUploading ? 'Uploading…' : 'Upload asset'}
           </button>
@@ -571,11 +584,12 @@ function AssetUploadPanel({
   )
 }
 export default function AdminImageManager() {
+  const { isAuthenticated, isReady, logout } = useAdminAuth()
+
   const [activeTab, setActiveTab] = useState<(typeof tabs)[number]['id']>('pipeline')
   const [changeSets, setChangeSets] = useState<ChangeSetRecord[]>(initialChangeSets)
   const [confirmState, setConfirmState] = useState<ConfirmState | null>(null)
   const [filter, setFilter] = useState<'all' | WorkflowStatus>('all')
-  const csrfToken = useAdminCsrfToken()
 
   const [toasts, pushToast, dismissToast] = useToastQueue()
 
@@ -604,6 +618,21 @@ export default function AdminImageManager() {
   })
   const [jobsRefreshedAt, setJobsRefreshedAt] = useState<string | null>(null)
   const [isBackingUp, setIsBackingUp] = useState(false)
+
+  const loadJobs = useCallback(async () => {
+    if (!isAuthenticated) return
+    setJobsMeta({ loading: true, loaded: true, error: null })
+    try {
+      const payload = await apiRequest<{ jobs: SchedulerJobDto[] }>('/v1/scheduler/logs')
+      setJobs(payload.jobs)
+      setJobsMeta({ loading: false, loaded: true, error: null })
+      setJobsRefreshedAt(new Date().toISOString())
+    } catch (error: any) {
+      const message = error instanceof ApiError ? error.message : error?.message ?? 'Unable to load scheduler logs'
+      setJobsMeta({ loading: false, loaded: true, error: message })
+      pushToast({ tone: 'error', title: 'Scheduler logs failed', description: message })
+    }
+  }, [isAuthenticated, pushToast])
 
   const openConfirm = useCallback((record: ChangeSetRecord, action: WorkflowAction) => {
     setConfirmState({
@@ -642,55 +671,73 @@ export default function AdminImageManager() {
       }
 
       const isoSchedule = scheduleAt ? new Date(scheduleAt).toISOString() : undefined
+      let nextStatus: WorkflowStatus = action.targetStatus ?? record.status
+      let nextSchedule: string | null = record.scheduledFor ?? null
+      let lastAction = action.label
+
+      switch (action.key) {
+        case 'submit':
+          nextStatus = 'review'
+          nextSchedule = null
+          lastAction = 'Sent to review'
+          break
+        case 'approve':
+        case 'reschedule':
+          nextStatus = 'scheduled'
+          nextSchedule = isoSchedule ?? record.scheduledFor ?? null
+          lastAction = action.key === 'approve' ? 'Scheduled for publish' : 'Schedule updated'
+          break
+        case 'cancel':
+          nextStatus = 'review'
+          nextSchedule = null
+          lastAction = 'Schedule cancelled'
+          break
+        case 'publish':
+          nextStatus = 'published'
+          nextSchedule = null
+          lastAction = 'Published manually'
+          break
+        case 'return':
+          nextStatus = 'draft'
+          nextSchedule = null
+          lastAction = 'Returned for edits'
+          break
+        default:
+          nextSchedule = action.requiresSchedule ? isoSchedule ?? record.scheduledFor ?? null : record.scheduledFor ?? null
+      }
+
+      const nowIso = new Date().toISOString()
 
       setChangeSets((current) =>
-        current.map((item) => {
-          if (item.id !== record.id) return item
-          const nowIso = new Date().toISOString()
-          let nextStatus: WorkflowStatus = action.targetStatus ?? item.status
-          let nextSchedule: string | null | undefined = item.scheduledFor
-          let lastAction = action.label
-
-          switch (action.key) {
-            case 'submit':
-              nextStatus = 'review'
-              nextSchedule = null
-              lastAction = 'Sent to review'
-              break
-            case 'approve':
-            case 'reschedule':
-              nextStatus = 'scheduled'
-              nextSchedule = isoSchedule ?? item.scheduledFor ?? null
-              lastAction = action.key === 'approve' ? 'Scheduled for publish' : 'Schedule updated'
-              break
-            case 'cancel':
-              nextStatus = 'review'
-              nextSchedule = null
-              lastAction = 'Schedule cancelled'
-              break
-            case 'publish':
-              nextStatus = 'published'
-              nextSchedule = null
-              lastAction = 'Published manually'
-              break
-            case 'return':
-              nextStatus = 'draft'
-              nextSchedule = null
-              lastAction = 'Returned for edits'
-              break
-            default:
-              nextSchedule = action.requiresSchedule ? isoSchedule : item.scheduledFor
-          }
-
-          return {
-            ...item,
-            status: nextStatus,
-            scheduledFor: nextSchedule ?? null,
-            updatedAt: nowIso,
-            lastAction,
-          }
-        }),
+        current.map((item) =>
+          item.id === record.id
+            ? {
+                ...item,
+                status: nextStatus,
+                scheduledFor: nextSchedule,
+                updatedAt: nowIso,
+                lastAction,
+              }
+            : item,
+        ),
       )
+
+      void apiRequest('/v1/schedule', {
+        method: 'POST',
+        json: {
+          changeSetId: record.id,
+          action: action.key,
+          status: nextStatus,
+          scheduleAt: nextSchedule,
+        },
+      })
+        .then(() => {
+          loadJobs()
+        })
+        .catch((error: any) => {
+          const message = error instanceof ApiError ? error.message : error?.message ?? 'Unable to sync workflow action'
+          pushToast({ tone: 'error', title: 'Workflow sync failed', description: message })
+        })
 
       const actionSummary: Record<string, { title: string; description: string }> = {
         submit: {
@@ -726,7 +773,7 @@ export default function AdminImageManager() {
         pushToast({ tone: 'info', title: `${action.label} applied` })
       }
     },
-    [idCounter, pushToast],
+    [idCounter, loadJobs, pushToast],
   )
 
   const confirmAction = useCallback(() => {
@@ -759,19 +806,10 @@ export default function AdminImageManager() {
     return changeSets.filter((item) => item.status === filter)
   }, [changeSets, filter])
   const loadUsers = useCallback(async () => {
-    if (!csrfToken) return
+    if (!isAuthenticated) return
     setUsersMeta((current) => ({ ...current, loading: true, error: null }))
     try {
-      const headers = withAdminCsrfHeader({}, csrfToken)
-      const res = await fetch('/api/admin/users', { headers })
-      if (!res.ok) {
-        const message = await res
-          .json()
-          .then((payload) => payload.error ?? 'Failed to load users')
-          .catch(() => 'Failed to load users')
-        throw new Error(message)
-      }
-      const data = (await res.json()) as UsersApiResponse
+      const data = await apiRequest<UsersApiResponse>('/v1/admin/users')
       setUsers(data.users)
       setUsersMeta({
         loading: false,
@@ -781,14 +819,14 @@ export default function AdminImageManager() {
         migratable: data.migratableEnvAdmin,
       })
     } catch (error: any) {
-      const message = error?.message ?? 'Unable to load users'
+      const message = error instanceof ApiError ? error.message : error?.message ?? 'Unable to load users'
       setUsersMeta((current) => ({ ...current, loading: false, loaded: true, error: message }))
       pushToast({ tone: 'error', title: 'Failed to load users', description: message })
     }
-  }, [csrfToken, pushToast])
+  }, [isAuthenticated, pushToast])
 
   const createUser = useCallback(async () => {
-    if (!csrfToken) return
+    if (!isAuthenticated) return
     if (!newUser.username || newUser.password.length < 8) {
       pushToast({
         tone: 'error',
@@ -798,89 +836,51 @@ export default function AdminImageManager() {
       return
     }
     try {
-      const headers = withAdminCsrfHeader(
-        {
-          'Content-Type': 'application/json',
-        },
-        csrfToken,
-      )
-      const res = await fetch('/api/admin/users', {
+      const payload = await apiRequest<{ user: AdminUserDto }>('/v1/admin/users', {
         method: 'POST',
-        headers,
-        body: JSON.stringify(newUser),
+        json: newUser,
       })
-      if (!res.ok) {
-        const message = await res
-          .json()
-          .then((payload) => payload.error ?? 'Failed to create user')
-          .catch(() => 'Failed to create user')
-        throw new Error(message)
-      }
-      const payload = await res.json()
-      setUsers((current) => [payload.user as AdminUserDto, ...current])
+      setUsers((current) => [payload.user, ...current])
       setNewUser({ username: '', password: '', isActive: true })
       pushToast({ tone: 'success', title: 'Admin user created', description: payload.user.username })
     } catch (error: any) {
-      const message = error?.message ?? 'Unable to create user'
+      const message = error instanceof ApiError ? error.message : error?.message ?? 'Unable to create user'
       pushToast({ tone: 'error', title: 'Create user failed', description: message })
     }
-  }, [csrfToken, newUser, pushToast])
+  }, [isAuthenticated, newUser, pushToast])
 
   const updateUser = useCallback(
     async (id: number, updates: { password?: string; isActive?: boolean }) => {
-      if (!csrfToken) return
+      if (!isAuthenticated) return
       try {
-        const headers = withAdminCsrfHeader(
-          {
-            'Content-Type': 'application/json',
-          },
-          csrfToken,
-        )
-        const res = await fetch(`/api/admin/users/${id}`, {
+        const payload = await apiRequest<{ user: AdminUserDto }>(`/v1/admin/users/${id}`, {
           method: 'PATCH',
-          headers,
-          body: JSON.stringify(updates),
+          json: updates,
         })
-        if (!res.ok) {
-          const message = await res
-            .json()
-            .then((payload) => payload.error ?? 'Failed to update user')
-            .catch(() => 'Failed to update user')
-          throw new Error(message)
-        }
-        const payload = await res.json()
-        setUsers((current) =>
-          current.map((user) => (user.id === id ? (payload.user as AdminUserDto) : user)),
-        )
+        setUsers((current) => current.map((user) => (user.id === id ? payload.user : user)))
         pushToast({
           tone: 'success',
           title: 'User updated',
           description: `Saved changes for ${payload.user.username}`,
         })
       } catch (error: any) {
-        const message = error?.message ?? 'Unable to update user'
+        const message = error instanceof ApiError ? error.message : error?.message ?? 'Unable to update user'
         pushToast({ tone: 'error', title: 'Update failed', description: message })
       }
     },
-    [csrfToken, pushToast],
+    [isAuthenticated, pushToast],
   )
 
   const migrateEnvAdmin = useCallback(async () => {
-    if (!csrfToken) return
+    if (!isAuthenticated) return
     try {
-      const headers = withAdminCsrfHeader({}, csrfToken)
-      const res = await fetch('/api/admin/users/migrate', {
+      const payload = await apiRequest<{
+        user: AdminUserDto
+        dbAuthEnabled: boolean
+        message?: string
+      }>('/v1/admin/users/migrate', {
         method: 'POST',
-        headers,
       })
-      if (!res.ok) {
-        const message = await res
-          .json()
-          .then((payload) => payload.error ?? 'Migration failed')
-          .catch(() => 'Migration failed')
-        throw new Error(message)
-      }
-      const payload = await res.json()
       setUsers((current) => {
         const existing = current.find((user) => user.id === payload.user.id)
         if (existing) {
@@ -893,50 +893,29 @@ export default function AdminImageManager() {
         dbAuthEnabled: payload.dbAuthEnabled,
         migratable: false,
       }))
-      pushToast({ tone: 'success', title: 'Admin migrated', description: payload.message })
+      pushToast({
+        tone: 'success',
+        title: 'Admin migrated',
+        description: payload.message ?? 'Environment credentials migrated successfully.',
+      })
     } catch (error: any) {
-      const message = error?.message ?? 'Unable to migrate admin user'
+      const message = error instanceof ApiError ? error.message : error?.message ?? 'Unable to migrate admin user'
       pushToast({ tone: 'error', title: 'Migration failed', description: message })
     }
-  }, [csrfToken, pushToast])
-
-  const loadJobs = useCallback(async () => {
-    if (!csrfToken) return
-    setJobsMeta({ loading: true, loaded: true, error: null })
-    try {
-      const headers = withAdminCsrfHeader({}, csrfToken)
-      const res = await fetch('/api/admin/scheduler/logs', { headers })
-      if (!res.ok) {
-        const message = await res
-          .json()
-          .then((payload) => payload.error ?? 'Failed to load jobs')
-          .catch(() => 'Failed to load jobs')
-        throw new Error(message)
-      }
-      const payload = (await res.json()) as { jobs: SchedulerJobDto[] }
-      setJobs(payload.jobs)
-      setJobsMeta({ loading: false, loaded: true, error: null })
-      setJobsRefreshedAt(new Date().toISOString())
-    } catch (error: any) {
-      const message = error?.message ?? 'Unable to load scheduler logs'
-      setJobsMeta({ loading: false, loaded: true, error: message })
-      pushToast({ tone: 'error', title: 'Scheduler logs failed', description: message })
-    }
-  }, [csrfToken, pushToast])
+  }, [isAuthenticated, pushToast])
 
   const downloadBackup = useCallback(async () => {
-    if (!csrfToken) {
+    if (!isAuthenticated) {
       pushToast({
         tone: 'error',
         title: 'Backup unavailable',
-        description: 'Missing CSRF token. Refresh and try again.',
+        description: 'Sign in again to request a workspace backup.',
       })
       return
     }
     setIsBackingUp(true)
     try {
-      const headers = withAdminCsrfHeader(undefined, csrfToken)
-      const response = await fetch('/api/admin/backup', { headers })
+      const response = await apiFetch('/v1/backup', { method: 'POST' })
       if (!response.ok) {
         const message = await response
           .json()
@@ -963,7 +942,7 @@ export default function AdminImageManager() {
     } finally {
       setIsBackingUp(false)
     }
-  }, [csrfToken, pushToast])
+  }, [isAuthenticated, pushToast])
 
   useEffect(() => {
     if (activeTab === 'users' && !usersMeta.loaded && !usersMeta.loading) {
@@ -976,10 +955,33 @@ export default function AdminImageManager() {
       loadJobs()
     }
   }, [activeTab, jobsMeta.loaded, jobsMeta.loading, loadJobs])
+
+  if (!isReady) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-slate-100">
+        <div className="rounded-lg bg-white px-6 py-4 text-sm font-medium text-slate-600 shadow">
+          Loading admin workspace…
+        </div>
+      </div>
+    )
+  }
+
+  if (!isAuthenticated) {
+    return <AdminLoginForm title="Admin workspace" description="Sign in to manage content operations." />
+  }
   return (
     <div className="space-y-6 p-6">
       <header className="space-y-3">
-        <h1 className="text-2xl font-bold">Admin workspace</h1>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h1 className="text-2xl font-bold">Admin workspace</h1>
+          <button
+            type="button"
+            onClick={logout}
+            className="rounded border border-slate-300 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-slate-600 transition hover:border-slate-400 hover:text-slate-800"
+          >
+            Sign out
+          </button>
+        </div>
         <p className="max-w-3xl text-sm text-slate-600">
           Coordinate content releases, manage admin access, review scheduler health, and upload
           production-ready imagery from one streamlined dashboard.
@@ -1125,7 +1127,7 @@ export default function AdminImageManager() {
             </table>
           </div>
 
-          <AssetUploadPanel csrfToken={csrfToken} showToast={pushToast} />
+          <AssetUploadPanel showToast={pushToast} />
         </section>
       )}
 
@@ -1395,7 +1397,7 @@ export default function AdminImageManager() {
 
       {activeTab === 'uploads' && (
         <section>
-          <AssetUploadPanel csrfToken={csrfToken} showToast={pushToast} />
+          <AssetUploadPanel showToast={pushToast} />
         </section>
       )}
 
@@ -1408,7 +1410,7 @@ export default function AdminImageManager() {
               dataset under <code>public/data</code>, and the 20 most recent processed uploads.
             </p>
             <ul className="mt-4 list-disc space-y-1 pl-5 text-sm text-slate-600">
-              <li>An authenticated admin session with a valid CSRF token is required.</li>
+              <li>An authenticated admin session with a valid access token is required.</li>
               <li>
                 Ensure the server can read <code>prisma/dev.db</code>, <code>public/data</code>, and{' '}
                 <code>public/uploads/processed</code>.
@@ -1418,14 +1420,14 @@ export default function AdminImageManager() {
               <button
                 type="button"
                 onClick={downloadBackup}
-                disabled={isBackingUp || !csrfToken}
+                disabled={isBackingUp || !isAuthenticated}
                 className="rounded bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {isBackingUp ? 'Preparing backup…' : 'Backup now'}
               </button>
-              {!csrfToken && (
+              {!isAuthenticated && (
                 <span className="text-xs text-red-600">
-                  CSRF token unavailable. Reload the workspace to try again.
+                  Sign in to generate workspace backups.
                 </span>
               )}
             </div>

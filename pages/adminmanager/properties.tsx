@@ -1,8 +1,8 @@
 import { useState, FormEvent } from 'react';
-import {
-  useAdminCsrfToken,
-  withAdminCsrfHeader,
-} from '@/src/lib/security/adminCsrf';
+
+import AdminLoginForm from '@/src/components/admin/AdminLoginForm';
+import { useAdminAuth } from '@/src/context/AdminAuthContext';
+import { ApiError, apiRequest } from '@/src/lib/api';
 
 interface FormState {
   type: string;
@@ -24,7 +24,7 @@ export default function AdminPropertyManager() {
     baths: '',
     areaBuilt: '',
   });
-  const csrfToken = useAdminCsrfToken();
+  const { isAuthenticated, isReady } = useAdminAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -33,59 +33,57 @@ export default function AdminPropertyManager() {
 
   const handlePublish = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!csrfToken) {
-      alert('Missing security token. Please log in again.');
+    if (!isAuthenticated) {
+      alert('Please sign in again to publish.');
       return;
     }
-    const headers = withAdminCsrfHeader(
-      { 'Content-Type': 'application/json' },
-      csrfToken
-    );
     try {
-      const res = await fetch('/api/admin/properties', {
+      await apiRequest('/v1/properties', {
         method: 'POST',
-        headers,
-        body: JSON.stringify({
+        json: {
           ...form,
           priceTHB: Number(form.priceTHB),
           beds: form.beds ? Number(form.beds) : undefined,
           baths: form.baths ? Number(form.baths) : undefined,
           areaBuilt: Number(form.areaBuilt),
-        }),
+        },
       });
-      if (!res.ok) throw new Error('Publish failed');
-      alert('Property published and index built');
+      alert('Property published and index build queued.');
       setForm({ type: 'condo', province: '', district: '', priceTHB: '', beds: '', baths: '', areaBuilt: '' });
     } catch (err: any) {
-      alert(err.message || 'Publish failed');
+      const message = err instanceof ApiError ? err.message : err?.message || 'Publish failed';
+      alert(message);
     }
   };
 
   const handleDemo = async () => {
-    if (!csrfToken) {
-      alert('Missing security token. Please log in again.');
+    if (!isAuthenticated) {
+      alert('Please sign in again to run demo generation.');
       return;
     }
     try {
-      const demoHeaders = withAdminCsrfHeader(undefined, csrfToken);
-      const res = await fetch('/api/admin/generate-demo', {
+      await apiRequest('/v1/properties/demo', {
         method: 'POST',
-        headers: demoHeaders,
       });
-      if (!res.ok) throw new Error('Demo generation failed');
       if (window.confirm('Demo properties generated. Publish index now?')) {
-        const buildHeaders = withAdminCsrfHeader(undefined, csrfToken);
-        const r = await fetch('/api/admin/build-index', {
+        await apiRequest('/v1/search/reindex', {
           method: 'POST',
-          headers: buildHeaders,
         });
-        if (!r.ok) throw new Error('Index build failed');
-        alert('Index built');
+        alert('Index build triggered');
       }
     } catch (err: any) {
-      alert(err.message || 'Operation failed');
+      const message = err instanceof ApiError ? err.message : err?.message || 'Operation failed';
+      alert(message);
     }
   };
+
+  if (!isReady) {
+    return null;
+  }
+
+  if (!isAuthenticated) {
+    return <AdminLoginForm title="Admin property tools" description="Sign in to manage property content." />;
+  }
 
   return (
     <div className="p-4 space-y-4">

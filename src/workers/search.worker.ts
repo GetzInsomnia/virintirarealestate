@@ -3,6 +3,7 @@ import { searchParamsSchema, type SearchParams } from '../lib/validation/search'
 import { MIN_PRICE, MAX_PRICE, isValidPrice } from '../lib/filters/price';
 import type { ProcessedImage } from '../components/PropertyImage';
 import { applyFilters, sortResults } from '../lib/search/shared';
+import { USE_API_READ } from '../lib/config';
 
 type Locale = 'en' | 'th' | 'zh';
 
@@ -129,38 +130,61 @@ function localePriority(locale?: string): Locale[] {
 
 async function loadManifest() {
   if (!manifest) {
-    const res = await fetch('/data/index/manifest.json');
-    manifest = await res.json();
+    if (!USE_API_READ) {
+      manifest = { shards: [] };
+      return manifest;
+    }
+    try {
+      const res = await fetch('/data/index/manifest.json');
+      if (!res.ok) {
+        manifest = { shards: [] };
+      } else {
+        manifest = await res.json();
+      }
+    } catch {
+      manifest = { shards: [] };
+    }
   }
   return manifest!;
 }
 
 async function loadShard(key: string): Promise<LoadedShard> {
   if (!shardCache[key]) {
-    const res = await fetch(`/data/index/${key}.json`);
-    const json = await res.json();
-    if (json && typeof json === 'object' && 'indexes' in json && 'docs' in json) {
-      const docs: SearchDoc[] = Array.isArray(json.docs) ? json.docs : [];
-      const docMap = new Map<number, SearchDoc>();
-      for (const doc of docs) {
-        docMap.set(doc.id, doc);
+    try {
+      const res = await fetch(`/data/index/${key}.json`);
+      if (!res.ok) {
+        throw new Error('Missing shard');
       }
-      const indexes: Partial<Record<Locale, MiniSearch<SearchDoc>>> = {};
-      (Object.keys(MODERN_FIELDS) as Locale[]).forEach((locale) => {
-        const indexJson = json.indexes?.[locale];
-        if (indexJson) {
-          indexes[locale] = MiniSearch.loadJSON(indexJson, {
-            fields: MODERN_FIELDS[locale],
-            storeFields: ['id'],
-          });
+      const json = await res.json();
+      if (json && typeof json === 'object' && 'indexes' in json && 'docs' in json) {
+        const docs: SearchDoc[] = Array.isArray(json.docs) ? json.docs : [];
+        const docMap = new Map<number, SearchDoc>();
+        for (const doc of docs) {
+          docMap.set(doc.id, doc);
         }
-      });
-      shardCache[key] = { docs, docMap, indexes };
-    } else {
+        const indexes: Partial<Record<Locale, MiniSearch<SearchDoc>>> = {};
+        (Object.keys(MODERN_FIELDS) as Locale[]).forEach((locale) => {
+          const indexJson = (json as any).indexes?.[locale];
+          if (indexJson) {
+            indexes[locale] = MiniSearch.loadJSON(indexJson, {
+              fields: MODERN_FIELDS[locale],
+              storeFields: ['id'],
+            });
+          }
+        });
+        shardCache[key] = { docs, docMap, indexes };
+      } else {
+        shardCache[key] = {
+          legacy: true,
+          index: MiniSearch.loadJSON(json, LEGACY_OPTIONS),
+        };
+      }
+    } catch {
       shardCache[key] = {
-        legacy: true,
-        index: MiniSearch.loadJSON(json, LEGACY_OPTIONS),
-      };
+        docs: [],
+        docMap: new Map<number, SearchDoc>(),
+        indexes: {},
+      } as ModernShard;
     }
   }
   return shardCache[key];
@@ -168,17 +192,33 @@ async function loadShard(key: string): Promise<LoadedShard> {
 
 async function loadAmenities() {
   if (!amenitiesList) {
-    const res = await fetch('/data/amenities.json');
-    const json = await res.json();
-    amenitiesList = json.amenities || [];
+    try {
+      const res = await fetch('/data/amenities.json');
+      if (res.ok) {
+        const json = await res.json();
+        amenitiesList = json.amenities || [];
+      } else {
+        amenitiesList = [];
+      }
+    } catch {
+      amenitiesList = [];
+    }
   }
   return amenitiesList;
 }
 
 async function loadTransit() {
   if (!transitMap) {
-    const res = await fetch('/data/transit-bkk.json');
-    transitMap = await res.json();
+    try {
+      const res = await fetch('/data/transit-bkk.json');
+      if (res.ok) {
+        transitMap = await res.json();
+      } else {
+        transitMap = {};
+      }
+    } catch {
+      transitMap = {};
+    }
   }
   return transitMap;
 }
