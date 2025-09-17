@@ -7,7 +7,111 @@ export interface AdminSession {
   expiresAt: number;
 }
 
-const SESSION_COOKIE_NAME = 'admin_session';
+export const SESSION_COOKIE_NAME = 'admin_session';
+
+function parsePositiveInteger(value: string | undefined, fallback: number): number {
+  if (!value) return fallback;
+  const parsed = Number.parseInt(value, 10);
+  if (Number.isNaN(parsed) || parsed <= 0) {
+    return fallback;
+  }
+  return parsed;
+}
+
+function parseBooleanFlag(value: string | undefined): boolean {
+  if (!value) {
+    return false;
+  }
+  const normalized = value.trim().toLowerCase();
+  return ['1', 'true', 't', 'yes', 'y', 'on'].includes(normalized);
+}
+
+function isDatabaseAuthEnabled(): boolean {
+  return parseBooleanFlag(
+    process.env.ADMIN_DB_AUTH_ENABLED ?? process.env.ADMIN_DB_AUTH
+  );
+}
+
+function defaultSessionDurationMs(): number {
+  const minutes = parsePositiveInteger(
+    process.env.ADMIN_SESSION_TTL_MINUTES,
+    60
+  );
+  return minutes * 60 * 1000;
+}
+
+export interface AdminSessionCookieOptions {
+  ttlMs?: number;
+  sameSite?: 'Strict' | 'Lax' | 'None';
+  secure?: boolean;
+  path?: string;
+  domain?: string;
+}
+
+export interface AdminSessionCookieResult {
+  cookie: string;
+  value: string;
+  payload: AdminSession;
+}
+
+function createSessionValue(
+  username: string,
+  secret: string,
+  ttlMs: number
+): { value: string; payload: AdminSession } {
+  const now = Date.now();
+  const expiresAt = now + ttlMs;
+  const payload: AdminSession = {
+    username,
+    issuedAt: now,
+    expiresAt,
+  };
+  const payloadJson = JSON.stringify(payload);
+  const payloadPart = Buffer.from(payloadJson, 'utf8').toString('base64url');
+  const hmac = crypto.createHmac('sha256', secret);
+  hmac.update(payloadPart);
+  const signature = hmac.digest('hex');
+  return {
+    value: `${payloadPart}.${signature}`,
+    payload,
+  };
+}
+
+export function createAdminSessionCookie(
+  username: string,
+  options: AdminSessionCookieOptions = {}
+): AdminSessionCookieResult {
+  const secret = process.env.SESSION_SECRET;
+  if (!secret) {
+    throw new Error('SESSION_SECRET is not configured');
+  }
+
+  const ttlMs = options.ttlMs ?? defaultSessionDurationMs();
+  const { value, payload } = createSessionValue(username, secret, ttlMs);
+  const cookieName = SESSION_COOKIE_NAME;
+  const parts = [`${cookieName}=${value}`];
+  const path = options.path ?? '/';
+  parts.push(`Path=${path}`);
+  const maxAgeSeconds = Math.max(Math.floor(ttlMs / 1000), 0);
+  parts.push(`Max-Age=${maxAgeSeconds}`);
+  parts.push(`Expires=${new Date(payload.expiresAt).toUTCString()}`);
+  parts.push('HttpOnly');
+  const sameSite = options.sameSite ?? 'Strict';
+  parts.push(`SameSite=${sameSite}`);
+  if (options.domain) {
+    parts.push(`Domain=${options.domain}`);
+  }
+  const secureDefault = process.env.NODE_ENV === 'production';
+  if (options.secure ?? secureDefault) {
+    parts.push('Secure');
+  }
+
+  return {
+    cookie: parts.join('; '),
+    value,
+    payload,
+  };
+}
 
 function constantTimeCompare(expected: string, provided: string): boolean {
   try {
@@ -26,8 +130,9 @@ export function getAdminSessionFromCookies(cookies: CookieMap): AdminSession | n
   const sessionCookie = cookies[SESSION_COOKIE_NAME];
   const secret = process.env.SESSION_SECRET;
   const expectedUser = process.env.ADMIN_USER;
+  const dbAuthEnabled = isDatabaseAuthEnabled();
 
-  if (!sessionCookie || !secret || !expectedUser) {
+  if (!sessionCookie || !secret || (!dbAuthEnabled && !expectedUser)) {
     return null;
   }
 
@@ -68,7 +173,11 @@ export function getAdminSessionFromCookies(cookies: CookieMap): AdminSession | n
     issuedAt?: unknown;
   };
 
-  if (typeof username !== 'string' || username !== expectedUser) {
+  if (typeof username !== 'string' || username.length === 0) {
+    return null;
+  }
+
+  if (!dbAuthEnabled && expectedUser && username !== expectedUser) {
     return null;
   }
 
