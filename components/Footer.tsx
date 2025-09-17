@@ -1,8 +1,8 @@
 import Link from 'next/link'
-import { NAV_MAIN } from '@/src/config/nav'
+import { NAV_MAIN } from '@/config/nav'
 import LanguageSwitcher from './LanguageSwitcher'
-import CurrencySwitcher from '@/src/components/CurrencySwitcher'
-import { ContactIcons, CONTACT_ITEMS } from '@/src/components/ContactIcons'
+import CurrencySwitcher from '@/components/CurrencySwitcher'
+import { ContactIcons, CONTACT_ITEMS } from '@/components/ContactIcons'
 
 export default function Footer() {
   return (

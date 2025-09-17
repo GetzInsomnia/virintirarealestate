@@ -47,11 +47,13 @@ interface SearchDoc {
   amenities: string[];
   images: string[];
   createdAt: string;
+  image?: string;
   beds?: number;
   baths?: number;
   status?: string;
   pricePerSqm?: number;
   areaBuilt?: number;
+  area?: number;
   nearTransit?: boolean;
   furnished?: string;
   transitLine?: string;
@@ -90,7 +92,7 @@ const LEGACY_OPTIONS = {
     'description_en',
     'description_th',
     'description_zh',
-  ],
+  ] as string[],
   storeFields: [
     'id',
     'title_en',
@@ -102,18 +104,24 @@ const LEGACY_OPTIONS = {
     'price',
     'priceBucket',
     'amenities',
+    'image',
     'images',
     'createdAt',
     'beds',
     'baths',
     'status',
     'pricePerSqm',
+    'area',
     'areaBuilt',
     'description_en',
     'description_th',
     'description_zh',
-  ],
-} as const;
+    'nearTransit',
+    'furnished',
+    'transitLine',
+    'transitStation',
+  ] as string[],
+};
 
 function isLegacyShard(shard: LoadedShard): shard is LegacyShard {
   return 'legacy' in shard && shard.legacy;
@@ -126,6 +134,66 @@ function localePriority(locale?: string): Locale[] {
   if (!['en', 'th', 'zh'].includes(lower)) return bases;
   const preferred = lower as Locale;
   return [preferred, ...bases.filter((loc) => loc !== preferred)];
+}
+
+function toStringOrEmpty(value: unknown): string {
+  return typeof value === 'string' ? value : '';
+}
+
+function toNumberOrUndefined(value: unknown): number | undefined {
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    return value;
+  }
+  if (typeof value === 'string') {
+    const parsed = Number(value);
+    if (Number.isFinite(parsed)) {
+      return parsed;
+    }
+  }
+  return undefined;
+}
+
+function mapLegacyDoc(raw: any, id: number): SearchDoc {
+  const images: string[] = Array.isArray(raw?.images)
+    ? (raw.images as unknown[]).filter((value): value is string => typeof value === 'string')
+    : [];
+  const image = typeof raw?.image === 'string' ? raw.image : undefined;
+  if (image && !images.includes(image)) {
+    images.push(image);
+  }
+
+  const priceValue = Number(raw?.price);
+
+  return {
+    id,
+    province: toStringOrEmpty(raw?.province),
+    province_th: toStringOrEmpty(raw?.province_th),
+    type: toStringOrEmpty(raw?.type),
+    title_en: toStringOrEmpty(raw?.title_en),
+    title_th: toStringOrEmpty(raw?.title_th),
+    title_zh: toStringOrEmpty(raw?.title_zh),
+    description_en: toStringOrEmpty(raw?.description_en),
+    description_th: toStringOrEmpty(raw?.description_th),
+    description_zh: toStringOrEmpty(raw?.description_zh),
+    price: Number.isFinite(priceValue) ? priceValue : 0,
+    priceBucket: toStringOrEmpty(raw?.priceBucket),
+    amenities: Array.isArray(raw?.amenities)
+      ? (raw.amenities as unknown[]).filter((value): value is string => typeof value === 'string')
+      : [],
+    images,
+    image,
+    createdAt: toStringOrEmpty(raw?.createdAt),
+    beds: toNumberOrUndefined(raw?.beds),
+    baths: toNumberOrUndefined(raw?.baths),
+    status: toStringOrEmpty(raw?.status),
+    pricePerSqm: toNumberOrUndefined(raw?.pricePerSqm),
+    areaBuilt: toNumberOrUndefined(raw?.areaBuilt),
+    area: toNumberOrUndefined(raw?.area),
+    nearTransit: typeof raw?.nearTransit === 'boolean' ? raw.nearTransit : undefined,
+    furnished: toStringOrEmpty(raw?.furnished),
+    transitLine: toStringOrEmpty(raw?.transitLine),
+    transitStation: toStringOrEmpty(raw?.transitStation),
+  };
 }
 
 async function loadManifest() {
@@ -176,7 +244,7 @@ async function loadShard(key: string): Promise<LoadedShard> {
       } else {
         shardCache[key] = {
           legacy: true,
-          index: MiniSearch.loadJSON(json, LEGACY_OPTIONS),
+          index: MiniSearch.loadJSON(json as any, LEGACY_OPTIONS as any),
         };
       }
     } catch {
@@ -214,10 +282,10 @@ async function loadTransit() {
       if (res.ok) {
         transitMap = await res.json();
       } else {
-        transitMap = {};
+        transitMap = null;
       }
     } catch {
-      transitMap = {};
+      transitMap = null;
     }
   }
   return transitMap;
@@ -236,13 +304,17 @@ self.onmessage = async (event: MessageEvent<any>) => {
   ]);
   const amenitySet = new Set(amenities);
   req.amenities = req.amenities?.filter((a) => amenitySet.has(a));
+  if (!transit) {
+    (self as any).postMessage({ total: 0, results: [] });
+    return;
+  }
   if (req.transitLine && !transit[req.transitLine]) {
     delete req.transitLine;
     delete req.transitStation;
   } else if (
     req.transitLine &&
     req.transitStation &&
-    !transit[req.transitLine].includes(req.transitStation)
+    (!transit[req.transitLine] || !transit[req.transitLine].includes(req.transitStation))
   ) {
     delete req.transitStation;
   }
@@ -260,18 +332,18 @@ self.onmessage = async (event: MessageEvent<any>) => {
       for (const r of res) {
         const id = typeof r.id === 'number' ? r.id : Number(r.id);
         if (!Number.isFinite(id) || seen.has(id)) continue;
-        matches.push(r as SearchDoc);
+        matches.push(mapLegacyDoc(r, id));
         seen.add(id);
       }
       if (!query) {
-        const store = (shard.index as any).documentStore;
-        const docs = store ? Object.values(store.docs || {}) : [];
+        const storeDocs = ((shard.index as any)?.documentStore?.docs ?? {}) as Record<string, unknown>;
+        const docs = Object.values(storeDocs);
         for (const entry of docs) {
-          const value = entry?.store;
+          const value = (entry as any)?.store;
           const docId = value?.id;
           const numericId = typeof docId === 'number' ? docId : Number(docId);
           if (!value || !Number.isFinite(numericId) || seen.has(numericId)) continue;
-          matches.push(value as SearchDoc);
+          matches.push(mapLegacyDoc(value, numericId));
           seen.add(numericId);
         }
       }

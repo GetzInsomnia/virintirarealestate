@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { NavItem } from '@/src/config/nav'
+import { NavItem } from '@/config/nav'
 
 interface MobileMenuProps {
   open: boolean
@@ -24,7 +24,8 @@ export default function MobileMenu({ open, onClose, items, children }: MobileMen
 
   useEffect(() => {
     if (open) {
-      menuRef.current?.querySelector('a,button,select')?.focus()
+      const first = menuRef.current?.querySelector<HTMLElement>('a,button,select,input,textarea')
+      first && typeof first.focus === 'function' && first.focus()
     }
   }, [open])
 

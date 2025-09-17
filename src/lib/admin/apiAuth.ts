@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { getAdminSessionFromCookies, type AdminSession } from '@/src/lib/auth/session';
-import { parseCookies } from '@/src/lib/http/cookies';
-import { isValidCsrfToken } from '@/src/lib/security/csrf';
-import { ADMIN_CSRF_HEADER_NAME } from '@/src/lib/security/csrfConstants';
+import { getAdminSessionFromCookies, type AdminSession } from '@/lib/auth/session';
+import { parseCookies } from '@/lib/http/cookies';
+import { isValidCsrfToken } from '@/lib/security/csrf';
+import { ADMIN_CSRF_HEADER_NAME } from '@/lib/security/csrfConstants';
 
 interface ErrorResponse {
   error: string;

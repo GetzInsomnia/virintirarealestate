@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
-import { NavItem } from '@/src/config/nav'
+import { NavItem } from '@/config/nav'
 
 interface MegaMenuProps {
   item: NavItem

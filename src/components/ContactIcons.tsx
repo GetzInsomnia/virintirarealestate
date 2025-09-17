@@ -1,4 +1,4 @@
-import { CONTACT, ContactConfig } from '@/src/config/contact'
+import { CONTACT, ContactConfig } from '@/config/contact'
 import React from 'react'
 
 interface IconProps extends React.SVGProps<SVGSVGElement> {}

@@ -1,15 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import bcrypt from 'bcryptjs';
 
-import { prisma } from '@/src/lib/prisma';
-import { requireAdminAuth } from '@/src/lib/admin/apiAuth';
+import { prisma } from '@/lib/prisma';
+import { requireAdminAuth } from '@/lib/admin/apiAuth';
 import {
   BCRYPT_ROUNDS,
   normalizeBoolean,
   toAdminUserDto,
   type AdminUserDto,
-} from '@/src/lib/admin/userUtils';
-import { logAuditEvent } from '@/src/lib/logging/audit';
+} from '@/lib/admin/userUtils';
+import { logAuditEvent } from '@/lib/logging/audit';
 
 type ResponseBody = { ok: true; user: AdminUserDto } | { error: string };
 
