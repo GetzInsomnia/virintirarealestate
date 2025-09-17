@@ -66,16 +66,13 @@ export default function PropertyDetailPageContent({
       )}
       <div>
         {(property.images ?? []).length > 0 ? (
-          (property.images ?? []).map((img, i) => {
-            const src = asSrc(img)
-            return (
-              <PropertyImage
-                key={src}
-                src={src}
-                alt={`${title} image ${i + 1}`}
-              />
-            )
-          })
+          (property.images ?? []).map((img, i) => (
+            <PropertyImage
+              key={`${asSrc(img)}-${i}`}
+              src={img}
+              alt={`${title} image ${i + 1}`}
+            />
+          ))
         ) : (
           <PropertyImage src={undefined} alt={`${title} placeholder`} />
         )}
