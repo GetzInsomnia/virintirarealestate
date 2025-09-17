@@ -19,14 +19,14 @@ const securityHeaders = [
   },
   {
     key: 'Permissions-Policy',
-    value: 'camera=(), microphone=(), geolocation=()',
+    value: 'geolocation=(), microphone=(), camera=()',
   },
 ]
 
 const indexCacheHeaders = [
   {
     key: 'Cache-Control',
-    value: 'public, max-age=31536000, immutable',
+    value: 'public, max-age=600, stale-while-revalidate=60',
   },
 ]
 
