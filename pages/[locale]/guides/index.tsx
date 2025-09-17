@@ -3,10 +3,10 @@ import path from 'path'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { NextSeo } from 'next-seo'
-import { getSeoUrls, getLanguageAlternates } from '@/lib/seo'
-import BreadcrumbJsonLd from '@/src/components/JsonLd/BreadcrumbJsonLd'
-import { guidesCrumbs } from '@/src/lib/nav/crumbs'
-import GuidesPageContent, { Article } from '../../../src/views/guides/GuidesPageContent'
+import { getSeoUrls, getLanguageAlternates } from 'lib/seo'
+import BreadcrumbJsonLd from '@/components/JsonLd/BreadcrumbJsonLd'
+import { guidesCrumbs } from '@/lib/nav/crumbs'
+import GuidesPageContent, { Article } from '@/views/guides/GuidesPageContent'
 
 interface Props {
   articles: Article[]

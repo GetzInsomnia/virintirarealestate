@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { prisma } from '@/src/lib/prisma';
-import { requireAdminAuth } from '@/src/lib/admin/apiAuth';
+import { prisma } from '@/lib/prisma';
+import { requireAdminAuth } from '@/lib/admin/apiAuth';
 
 interface PublishJobLogDto {
   id: number;

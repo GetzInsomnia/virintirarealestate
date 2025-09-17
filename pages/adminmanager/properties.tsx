@@ -1,8 +1,8 @@
 import { useState, FormEvent } from 'react';
 
-import AdminLoginForm from '@/src/components/admin/AdminLoginForm';
-import { useAdminAuth } from '@/src/context/AdminAuthContext';
-import { ApiError, apiRequest } from '@/src/lib/api';
+import AdminLoginForm from '@/components/admin/AdminLoginForm';
+import { useAdminAuth } from '@/context/AdminAuthContext';
+import { ApiError, apiRequest } from '@/lib/api';
 
 interface FormState {
   type: string;

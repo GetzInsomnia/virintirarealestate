@@ -2,14 +2,14 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import crypto from 'crypto'
 import bcrypt from 'bcryptjs'
 
-import { createAdminSessionCookie } from '../../../src/lib/auth/session'
-import { logAuditEvent } from '../../../src/lib/logging/audit'
-import { consumeLoginRateLimit } from '../../../src/lib/security/rateLimit'
-import { prisma } from '@/src/lib/prisma'
+import { createAdminSessionCookie } from '@/lib/auth/session'
+import { logAuditEvent } from '@/lib/logging/audit'
+import { consumeLoginRateLimit } from '@/lib/security/rateLimit'
+import { prisma } from '@/lib/prisma'
 import {
   ADMIN_CSRF_COOKIE_NAME,
   ADMIN_CSRF_TOKEN_COOKIE_NAME,
-} from '@/src/lib/security/csrfConstants'
+} from '@/lib/security/csrfConstants'
 
 interface LoginRequestBody {
   username?: unknown

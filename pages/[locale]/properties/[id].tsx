@@ -4,14 +4,15 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { NextSeo } from 'next-seo'
 import Script from 'next/script'
-import { getSeoUrls, getLanguageAlternates } from '@/lib/seo'
-import BreadcrumbJsonLd from '@/src/components/JsonLd/BreadcrumbJsonLd'
-import { pdpCrumbs } from '@/src/lib/nav/crumbs'
+import { getSeoUrls, getLanguageAlternates } from 'lib/seo'
+import BreadcrumbJsonLd from '@/components/JsonLd/BreadcrumbJsonLd'
+import { pdpCrumbs } from '@/lib/nav/crumbs'
 import PropertyDetailPageContent, {
   Property,
   Article,
-} from '../../../../src/views/properties/PropertyDetailPageContent'
-import { asSrc } from '@/src/components/PropertyImage'
+} from '@/views/properties/PropertyDetailPageContent'
+import { asSrc } from '@/components/PropertyImage'
+import type { ImgLike } from '@/components/PropertyImage'
 
 interface Props {
   property: Property
@@ -69,7 +70,7 @@ export default function PropertyDetail({ property, articles }: Props) {
               price: property.price,
               priceCurrency: 'THB',
             },
-            image: (property.images ?? []).map((img) => asSrc(img)),
+            image: (property.images ?? []).map((img: ImgLike) => asSrc(img)),
           }).replace(/</g, '\\u003c'),
         }}
       />

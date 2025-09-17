@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useState } from 'react'
 
-import { useAdminAuth } from '@/src/context/AdminAuthContext'
+import { useAdminAuth } from '@/context/AdminAuthContext'
 
 interface Props {
   title?: string

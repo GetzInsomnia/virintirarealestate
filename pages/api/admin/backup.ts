@@ -4,7 +4,7 @@ import fs from 'fs/promises'
 import { Dirent } from 'fs'
 import path from 'path'
 
-import { requireAdminAuth } from '@/src/lib/admin/apiAuth'
+import { requireAdminAuth } from '@/lib/admin/apiAuth'
 
 interface ErrorResponse {
   error: string

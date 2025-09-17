@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useAdminPreview } from '@/src/context/AdminPreviewContext';
+import { useAdminPreview } from '@/context/AdminPreviewContext';
 
 export default function AdminPreviewBanner(): JSX.Element | null {
   const { isPreview, exitPreview, activatePreview, lastInlineEditTarget } =
