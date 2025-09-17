@@ -1,11 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import crypto from 'crypto'
-import { Pool } from 'pg'
 import bcrypt from 'bcryptjs'
 
 import { createAdminSessionCookie } from '../../../src/lib/auth/session'
 import { logAuditEvent } from '../../../src/lib/logging/audit'
 import { consumeLoginRateLimit } from '../../../src/lib/security/rateLimit'
+import { prisma } from '@/src/lib/prisma'
 
 interface LoginRequestBody {
   username?: unknown
@@ -28,8 +28,6 @@ const INTERNAL_ERROR = 'Unable to process login right now'
 
 const DUMMY_BCRYPT_HASH = bcrypt.hashSync('admin-login-dummy-password', 10)
 
-let cachedPool: Pool | null = null
-
 function parseBooleanFlag(value: string | undefined | null): boolean {
   if (!value) return false
   const normalized = value.trim().toLowerCase()
@@ -42,38 +40,6 @@ function isDatabaseAuthEnabled(): boolean {
   )
 }
 
-function shouldUseDatabaseSsl(): boolean {
-  return parseBooleanFlag(
-    process.env.ADMIN_DB_SSL ?? process.env.DATABASE_SSL ?? undefined
-  )
-}
-
-function getDatabaseConnectionString(): string {
-  const connectionString =
-    process.env.ADMIN_DB_URL ?? process.env.DATABASE_URL ?? undefined
-  if (!connectionString) {
-    throw new Error(
-      'Database authentication is enabled but no connection string is configured'
-    )
-  }
-  return connectionString
-}
-
-function getPool(): Pool {
-  if (cachedPool) {
-    return cachedPool
-  }
-  const connectionString = getDatabaseConnectionString()
-  const useSsl = shouldUseDatabaseSsl()
-  cachedPool = new Pool({
-    connectionString,
-    ssl: useSsl ? { rejectUnauthorized: false } : undefined,
-  })
-  cachedPool.on('error', (error) => {
-    console.error('Unexpected admin database error', error)
-  })
-  return cachedPool
-}
 
 function getClientIp(req: NextApiRequest): string {
   const forwarded = req.headers['x-forwarded-for']
@@ -103,28 +69,6 @@ function constantTimeEquals(a: string, b: string): boolean {
   }
 }
 
-function isValueExplicitlyFalse(value: unknown): boolean {
-  if (value === null || value === undefined) return false
-  if (typeof value === 'boolean') return value === false
-  if (typeof value === 'number') return value === 0
-  if (typeof value === 'string') {
-    const normalized = value.trim().toLowerCase()
-    return ['0', 'false', 'f', 'no', 'inactive', 'disabled'].includes(normalized)
-  }
-  return false
-}
-
-function extractPasswordHash(row: Record<string, unknown>): string | null {
-  const possibleKeys = ['password_hash', 'passwordHash', 'hash', 'password']
-  for (const key of possibleKeys) {
-    const value = row[key]
-    if (typeof value === 'string' && value.length > 0) {
-      return value
-    }
-  }
-  return null
-}
-
 function comparePassword(password: string, hash: string): Promise<boolean> {
   return new Promise((resolve, reject) => {
     bcrypt.compare(password, hash, (error, result) => {
@@ -141,54 +85,26 @@ async function verifyWithDatabase(
   username: string,
   password: string
 ): Promise<string | null> {
-  const pool = getPool()
-  const table = process.env.ADMIN_DB_TABLE ?? 'admin_users'
-  const usernameColumn = process.env.ADMIN_DB_USERNAME_COLUMN ?? 'username'
-  const passwordColumn =
-    process.env.ADMIN_DB_PASSWORD_HASH_COLUMN ?? 'password_hash'
-  const activeColumn = process.env.ADMIN_DB_ACTIVE_COLUMN
+  const user = await prisma.user.findUnique({
+    where: { username },
+  })
 
-  const selectColumns = [
-    `${usernameColumn} AS username`,
-    `${passwordColumn} AS password_hash`,
-  ]
-  if (activeColumn) {
-    selectColumns.push(`${activeColumn} AS is_active`)
-  }
-
-  const query = `SELECT ${selectColumns.join(', ')} FROM ${table} WHERE ${usernameColumn} = $1 LIMIT 1`
-
-  const result = await pool.query(query, [username])
-  if (result.rows.length === 0) {
+  if (!user) {
     await comparePassword(password, DUMMY_BCRYPT_HASH)
     return null
   }
 
-  const row = result.rows[0] as Record<string, unknown>
-  const passwordHash = extractPasswordHash(row)
-  if (!passwordHash) {
+  if (!user.isActive) {
     await comparePassword(password, DUMMY_BCRYPT_HASH)
     return null
   }
 
-  if (activeColumn) {
-    const activeValue = row.is_active ?? row.active ?? row.enabled
-    if (isValueExplicitlyFalse(activeValue)) {
-      await comparePassword(password, DUMMY_BCRYPT_HASH)
-      return null
-    }
-  }
-
-  const passwordMatches = await comparePassword(password, passwordHash)
+  const passwordMatches = await comparePassword(password, user.passwordHash)
   if (!passwordMatches) {
     return null
   }
 
-  const canonicalUsername =
-    typeof row.username === 'string' && row.username.length > 0
-      ? row.username
-      : username
-  return canonicalUsername
+  return user.username
 }
 
 async function verifyWithEnv(

@@ -4,6 +4,15 @@ const next = require('next');
 const fs = require('fs');
 const path = require('path');
 
+let startScheduler = () => {};
+
+try {
+  require('ts-node/register/transpile-only');
+  ({ startScheduler } = require('./src/lib/scheduler/schedule'));
+} catch (error) {
+  console.error('Failed to load scheduler module', error);
+}
+
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
@@ -17,6 +26,12 @@ app.prepare().then(() => {
     fs.chmodSync(uploadDir, 0o755);
   } catch (err) {
     console.error(`Failed to set permissions for ${uploadDir}:`, err);
+  }
+
+  try {
+    startScheduler();
+  } catch (error) {
+    console.error('Failed to start publish scheduler', error);
   }
 
   createServer((req, res) => {
