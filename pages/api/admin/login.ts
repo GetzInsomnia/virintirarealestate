@@ -6,6 +6,10 @@ import { createAdminSessionCookie } from '../../../src/lib/auth/session'
 import { logAuditEvent } from '../../../src/lib/logging/audit'
 import { consumeLoginRateLimit } from '../../../src/lib/security/rateLimit'
 import { prisma } from '@/src/lib/prisma'
+import {
+  ADMIN_CSRF_COOKIE_NAME,
+  ADMIN_CSRF_TOKEN_COOKIE_NAME,
+} from '@/src/lib/security/csrfConstants'
 
 interface LoginRequestBody {
   username?: unknown
@@ -14,6 +18,7 @@ interface LoginRequestBody {
 
 interface SuccessResponse {
   ok: true
+  csrfToken: string
 }
 
 interface ErrorResponse {
@@ -225,7 +230,43 @@ export default async function handler(
       return
     }
 
-    res.setHeader('Set-Cookie', sessionCookie.cookie)
+    const maxAgeSeconds = Math.max(
+      Math.floor((sessionCookie.payload.expiresAt - Date.now()) / 1000),
+      0
+    )
+    const expires = new Date(sessionCookie.payload.expiresAt).toUTCString()
+    const sameSite = 'Strict'
+    const secure = process.env.NODE_ENV === 'production'
+    const cookiePath = '/'
+
+    const csrfHttpOnlyCookie = [
+      `${ADMIN_CSRF_COOKIE_NAME}=${sessionCookie.csrfToken}`,
+      `Path=${cookiePath}`,
+      `Max-Age=${maxAgeSeconds}`,
+      `Expires=${expires}`,
+      `SameSite=${sameSite}`,
+      'HttpOnly',
+    ]
+    if (secure) {
+      csrfHttpOnlyCookie.push('Secure')
+    }
+
+    const csrfReadableCookie = [
+      `${ADMIN_CSRF_TOKEN_COOKIE_NAME}=${sessionCookie.csrfToken}`,
+      `Path=${cookiePath}`,
+      `Max-Age=${maxAgeSeconds}`,
+      `Expires=${expires}`,
+      `SameSite=${sameSite}`,
+    ]
+    if (secure) {
+      csrfReadableCookie.push('Secure')
+    }
+
+    res.setHeader('Set-Cookie', [
+      sessionCookie.cookie,
+      csrfHttpOnlyCookie.join('; '),
+      csrfReadableCookie.join('; '),
+    ])
 
     await logAuditEvent({
       actor: verifiedUsername,
@@ -235,7 +276,7 @@ export default async function handler(
       details: { expiresAt: sessionCookie.payload.expiresAt },
     })
 
-    res.status(200).json({ ok: true })
+    res.status(200).json({ ok: true, csrfToken: sessionCookie.csrfToken })
   } catch (error) {
     console.error('Admin login attempt failed', error)
     await logAuditEvent({

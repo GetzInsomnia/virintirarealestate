@@ -1,4 +1,8 @@
 import { useState, FormEvent } from 'react';
+import {
+  useAdminCsrfToken,
+  withAdminCsrfHeader,
+} from '@/src/lib/security/adminCsrf';
 
 interface FormState {
   type: string;
@@ -20,6 +24,7 @@ export default function AdminPropertyManager() {
     baths: '',
     areaBuilt: '',
   });
+  const csrfToken = useAdminCsrfToken();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -28,10 +33,18 @@ export default function AdminPropertyManager() {
 
   const handlePublish = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!csrfToken) {
+      alert('Missing security token. Please log in again.');
+      return;
+    }
+    const headers = withAdminCsrfHeader(
+      { 'Content-Type': 'application/json' },
+      csrfToken
+    );
     try {
       const res = await fetch('/api/admin/properties', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({
           ...form,
           priceTHB: Number(form.priceTHB),
@@ -49,11 +62,23 @@ export default function AdminPropertyManager() {
   };
 
   const handleDemo = async () => {
+    if (!csrfToken) {
+      alert('Missing security token. Please log in again.');
+      return;
+    }
     try {
-      const res = await fetch('/api/admin/generate-demo', { method: 'POST' });
+      const demoHeaders = withAdminCsrfHeader(undefined, csrfToken);
+      const res = await fetch('/api/admin/generate-demo', {
+        method: 'POST',
+        headers: demoHeaders,
+      });
       if (!res.ok) throw new Error('Demo generation failed');
       if (window.confirm('Demo properties generated. Publish index now?')) {
-        const r = await fetch('/api/admin/build-index', { method: 'POST' });
+        const buildHeaders = withAdminCsrfHeader(undefined, csrfToken);
+        const r = await fetch('/api/admin/build-index', {
+          method: 'POST',
+          headers: buildHeaders,
+        });
         if (!r.ok) throw new Error('Index build failed');
         alert('Index built');
       }

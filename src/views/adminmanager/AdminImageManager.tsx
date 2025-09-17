@@ -1,5 +1,9 @@
 import { FormEvent, useState } from 'react';
 import Image from 'next/image';
+import {
+  useAdminCsrfToken,
+  withAdminCsrfHeader,
+} from '@/src/lib/security/adminCsrf';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/avif'];
@@ -12,6 +16,7 @@ interface UploadResponse {
 export default function AdminImageManager() {
   const [result, setResult] = useState<UploadResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const csrfToken = useAdminCsrfToken();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -34,12 +39,20 @@ export default function AdminImageManager() {
       return;
     }
 
+    if (!csrfToken) {
+      setError('Missing security token. Please log in again.');
+      setResult(null);
+      return;
+    }
+
     const data = new FormData();
     data.append('file', file);
     try {
+      const headers = withAdminCsrfHeader(undefined, csrfToken);
       const res = await fetch('/api/admin/upload', {
         method: 'POST',
         body: data,
+        headers,
       });
       if (!res.ok) {
         let message = 'Upload failed';

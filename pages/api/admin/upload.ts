@@ -9,10 +9,15 @@ import { parseCookies } from '../../../src/lib/http/cookies'
 import { logAuditEvent } from '../../../src/lib/logging/audit'
 import { isValidCsrfToken } from '../../../src/lib/security/csrf'
 import { consumeUploadRateLimit } from '../../../src/lib/security/rateLimit'
+import {
+  ADMIN_CSRF_HEADER_NAME,
+  ADMIN_CSRF_COOKIE_NAME,
+} from '@/src/lib/security/csrfConstants'
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/avif']
-const CSRF_HEADER_NAME = 'x-csrf'
+const CSRF_HEADER_NAME = ADMIN_CSRF_HEADER_NAME
+const GENERIC_CSRF_ERROR = 'Invalid request'
 
 function getClientIp(req: NextApiRequest): string {
   const forwarded = req.headers['x-forwarded-for']
@@ -76,16 +81,20 @@ export default async function handler(
     return
   }
 
-  if (!isValidCsrfToken(cookies, req.headers[CSRF_HEADER_NAME])) {
-    await logFailure('csrf_mismatch')
-    res.status(403).json({ error: 'Invalid CSRF token' })
-    return
-  }
-
   const session = getAdminSessionFromCookies(cookies)
   if (!session) {
     await logFailure('unauthorized')
     res.status(401).json({ error: 'Unauthorized' })
+    return
+  }
+
+  if (
+    !isValidCsrfToken(session, cookies, req.headers[CSRF_HEADER_NAME], {
+      cookieName: ADMIN_CSRF_COOKIE_NAME,
+    })
+  ) {
+    await logFailure('csrf_mismatch')
+    res.status(403).json({ error: GENERIC_CSRF_ERROR })
     return
   }
 
