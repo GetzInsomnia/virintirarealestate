@@ -35,6 +35,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# prisma sqlite database
+prisma/dev.db
+prisma/prisma/dev.db
+prisma/prisma/dev.db-journal
+
 # sitemap and robots
 public/sitemap*.xml
 public/robots.txt
