@@ -1,22 +1,14 @@
 import { NextSeo } from 'next-seo'
-import { useRouter } from 'next/router'
-import { getSeoUrls, getLanguageAlternates } from 'lib/seo'
-import SearchPageContent from '@/views/search/SearchPageContent'
+import SearchView, { SearchViewProps } from '@/views/search/searchView'
 
-export default function SearchPage() {
-  const { locale, defaultLocale } = useRouter()
-  const lang = locale || defaultLocale || 'th'
-  const { pageUrl } = getSeoUrls(lang, '/search')
+export { getStaticPaths, getStaticProps } from '@/views/search/searchView'
 
+export default function SearchPage(props: SearchViewProps) {
+  const { head } = props
   return (
     <>
-      <NextSeo
-        title='Search'
-        canonical={pageUrl}
-        noindex
-        languageAlternates={getLanguageAlternates('/search')}
-      />
-      <SearchPageContent />
+      <NextSeo {...head.seo} />
+      <SearchView {...props} />
     </>
   )
 }
