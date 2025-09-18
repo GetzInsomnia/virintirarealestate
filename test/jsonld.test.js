@@ -1,4 +1,10 @@
-require('ts-node').register({ transpileOnly: true, compilerOptions: { jsx: 'react-jsx', module: 'commonjs' } });
+const path = require('path');
+require('ts-node').register({
+  transpileOnly: true,
+  project: path.resolve(__dirname, '../tsconfig.json'),
+  compilerOptions: { jsx: 'react-jsx', module: 'commonjs' },
+});
+require('tsconfig-paths/register');
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const React = require('react');
@@ -100,7 +106,19 @@ test('index page JSON-LD escapes unsafe characters', () => {
   };
 
   const Home = require('../pages/index').default;
-  const html = renderToStaticMarkup(React.createElement(Home));
+  const props = {
+    head: {
+      seo: { title: '', description: '', canonical: '', languageAlternates: [], openGraph: {}, additionalMetaTags: [] },
+      webPage: { id: '', url: '', title: '', description: '' },
+      breadcrumb: [],
+      localBusiness: {},
+      websiteJson: {},
+      speakableJson: { speakable: { '@type': 'SpeakableSpecification' } },
+    },
+    keywords: [],
+    lang: 'en',
+  };
+  const html = renderToStaticMarkup(React.createElement(Home, props));
   Module.prototype.require = originalRequire;
   const match = html.match(/<script id="speakable"[^>]*>([\s\S]*?)<\/script>/);
   assert.ok(match);
@@ -156,7 +174,19 @@ test('index page JSON-LD includes SpeakableSpecification', () => {
   };
 
   const Home = require('../pages/index').default;
-  const html = renderToStaticMarkup(React.createElement(Home));
+  const props = {
+    head: {
+      seo: { title: '', description: '', canonical: '', languageAlternates: [], openGraph: {}, additionalMetaTags: [] },
+      webPage: { id: '', url: '', title: '', description: '' },
+      breadcrumb: [],
+      localBusiness: {},
+      websiteJson: {},
+      speakableJson: { speakable: { '@type': 'SpeakableSpecification' } },
+    },
+    keywords: [],
+    lang: 'en',
+  };
+  const html = renderToStaticMarkup(React.createElement(Home, props));
   Module.prototype.require = originalRequire;
   const match = html.match(/<script id="speakable"[^>]*>([\s\S]*?)<\/script>/);
   assert.ok(match);
