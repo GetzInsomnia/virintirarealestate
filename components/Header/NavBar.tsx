@@ -1,11 +1,11 @@
 import { useState, useRef } from 'react'
 import Link from 'next/link'
-import { NAV_MAIN } from '@/src/config/nav'
+import { NAV_MAIN } from '@/config/nav'
 import LanguageSwitcher from '../LanguageSwitcher'
-import CurrencySwitcher from '@/src/components/CurrencySwitcher'
+import CurrencySwitcher from '@/components/CurrencySwitcher'
 import MegaMenu from '../MegaMenu'
 import MobileMenu from '../MobileMenu'
-import { ContactIcons } from '@/src/components/ContactIcons'
+import { ContactIcons } from '@/components/ContactIcons'
 
 export default function NavBar() {
   const [mobileOpen, setMobileOpen] = useState(false)

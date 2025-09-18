@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 
-import { prisma } from '@/src/lib/prisma';
+import { prisma } from '@/lib/prisma';
 
 export interface AuditEvent {
   timestamp?: string;

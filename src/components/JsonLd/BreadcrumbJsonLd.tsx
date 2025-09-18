@@ -1,5 +1,5 @@
-import JsonLd from '@/components/JsonLd';
-import type { Crumb } from '@/src/lib/nav/crumbs';
+import JsonLd from 'components/JsonLd';
+import type { Crumb } from '@/lib/nav/crumbs';
 
 interface Props {
   items: Crumb[];

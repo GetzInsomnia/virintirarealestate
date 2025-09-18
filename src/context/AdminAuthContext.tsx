@@ -8,7 +8,7 @@ import {
   type ReactNode,
 } from 'react'
 
-import { ApiError, apiRequest, setAuthToken, setUnauthorizedHandler } from '@/src/lib/api'
+import { ApiError, apiRequest, setAuthToken, setUnauthorizedHandler } from '@/lib/api'
 
 interface AdminAuthContextValue {
   token: string | null

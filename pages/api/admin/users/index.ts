@@ -1,16 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import bcrypt from 'bcryptjs';
 
-import { prisma } from '@/src/lib/prisma';
-import { requireAdminAuth } from '@/src/lib/admin/apiAuth';
-import { logAuditEvent } from '@/src/lib/logging/audit';
+import { prisma } from '@/lib/prisma';
+import { requireAdminAuth } from '@/lib/admin/apiAuth';
+import { logAuditEvent } from '@/lib/logging/audit';
 import {
   BCRYPT_ROUNDS,
   isDbAuthEnabled,
   normalizeBoolean,
   toAdminUserDto,
   type AdminUserDto,
-} from '@/src/lib/admin/userUtils';
+} from '@/lib/admin/userUtils';
 
 interface UsersResponse {
   users: AdminUserDto[];

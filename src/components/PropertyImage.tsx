@@ -5,7 +5,7 @@ export interface ProcessedImage {
   avif: string
 }
 
-export type ImgLike = string | { src: string } | ProcessedImage
+export type ImgLike = string | { src?: string } | ProcessedImage | undefined
 
 const DEFAULT_WIDTH = 600
 const DEFAULT_HEIGHT = 400
@@ -38,7 +38,7 @@ export const asSrc = (
     return trimmed ? trimmed : placeholderSrc(width, height)
   }
 
-  const candidate = 'webp' in img ? img.webp : img.src
+  const candidate: string = 'webp' in img ? img.webp : img.src ?? ''
   const trimmed = candidate.trim()
   return trimmed ? trimmed : placeholderSrc(width, height)
 }

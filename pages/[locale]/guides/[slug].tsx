@@ -7,10 +7,10 @@ import { useRouter } from 'next/router'
 import { NextSeo, ArticleJsonLd } from 'next-seo'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { getSeoUrls, getLanguageAlternates } from '@/lib/seo'
-import BreadcrumbJsonLd from '@/src/components/JsonLd/BreadcrumbJsonLd'
-import { guidesCrumbs } from '@/src/lib/nav/crumbs'
-import GuideDetailPageContent, { ArticleData } from '../../../../src/views/guides/GuideDetailPageContent'
+import { getSeoUrls, getLanguageAlternates } from 'lib/seo'
+import BreadcrumbJsonLd from '@/components/JsonLd/BreadcrumbJsonLd'
+import { guidesCrumbs } from '@/lib/nav/crumbs'
+import GuideDetailPageContent, { ArticleData } from '@/views/guides/GuideDetailPageContent'
 
 interface Props {
   source: MDXRemoteSerializeResult

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { CONTACT_ITEMS } from '@/src/components/ContactIcons'
+import { CONTACT_ITEMS } from '@/components/ContactIcons'
 
 interface IconProps extends React.SVGProps<SVGSVGElement> {}
 

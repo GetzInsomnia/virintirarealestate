@@ -3,8 +3,8 @@ import fs from 'fs/promises';
 import path from 'path';
 import { Prisma } from '@prisma/client';
 
-import { prisma } from '@/src/lib/prisma';
-import { logAuditEvent } from '@/src/lib/logging/audit';
+import { prisma } from '@/lib/prisma';
+import { logAuditEvent } from '@/lib/logging/audit';
 
 type PublishJobWithChangeSet = Prisma.PublishJobGetPayload<{
   include: { changeSet: true };

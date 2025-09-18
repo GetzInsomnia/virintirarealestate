@@ -7,9 +7,9 @@ import {
 } from 'react'
 import Image from 'next/image'
 
-import AdminLoginForm from '@/src/components/admin/AdminLoginForm'
-import { useAdminAuth } from '@/src/context/AdminAuthContext'
-import { ApiError, apiFetch, apiRequest } from '@/src/lib/api'
+import AdminLoginForm from '@/components/admin/AdminLoginForm'
+import { useAdminAuth } from '@/context/AdminAuthContext'
+import { ApiError, apiFetch, apiRequest } from '@/lib/api'
 
 type WorkflowStatus = 'draft' | 'review' | 'scheduled' | 'published'
 

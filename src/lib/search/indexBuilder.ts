@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import MiniSearch from 'minisearch';
-import type { ProcessedImage } from '@/src/components/PropertyImage';
+import type { ProcessedImage } from '@/components/PropertyImage';
 
 interface Property {
   id: number;

@@ -1,11 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import fs from 'fs/promises';
 import path from 'path';
-import { getAdminSessionFromCookies } from '@/src/lib/auth/session';
-import { parseCookies } from '@/src/lib/http/cookies';
-import { isValidCsrfToken } from '@/src/lib/security/csrf';
-import { ADMIN_CSRF_HEADER_NAME } from '@/src/lib/security/csrfConstants';
-import { buildIndexes } from '../../../src/lib/search/indexBuilder';
+import { getAdminSessionFromCookies } from '@/lib/auth/session';
+import { parseCookies } from '@/lib/http/cookies';
+import { isValidCsrfToken } from '@/lib/security/csrf';
+import { ADMIN_CSRF_HEADER_NAME } from '@/lib/security/csrfConstants';
+import { buildIndexes } from '@/lib/search/indexBuilder';
 
 const GENERIC_CSRF_ERROR = 'Invalid request';
 

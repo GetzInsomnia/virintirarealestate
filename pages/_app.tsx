@@ -4,16 +4,16 @@ import { appWithTranslation, useTranslation } from "next-i18next";
 import { DefaultSeo } from "next-seo";
 import JsonLd from "../components/JsonLd";
 import { useRouter } from "next/router";
-import { buildUrl } from "../lib/url";
+import { buildUrl } from "lib/url";
 import defaultSeo from "../next-seo.config";
-import { CurrencyProvider } from "../src/context/CurrencyContext";
-import { AdminPreviewProvider } from "../src/context/AdminPreviewContext";
-import { AdminAuthProvider } from "../src/context/AdminAuthContext";
+import { CurrencyProvider } from "@/context/CurrencyContext";
+import { AdminPreviewProvider } from "@/context/AdminPreviewContext";
+import { AdminAuthProvider } from "@/context/AdminAuthContext";
 import AdminPreviewBanner from "../components/AdminPreviewBanner";
-import { prompt, inter } from "../src/styles/fonts";
+import { prompt, inter } from "@/styles/fonts";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import FloatingContacts from "@/src/components/FloatingContacts";
+import FloatingContacts from "@/components/FloatingContacts";
 
 function useNavDirection() {
   const router = useRouter();

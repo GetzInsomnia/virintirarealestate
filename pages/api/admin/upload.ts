@@ -3,16 +3,16 @@ import formidable from 'formidable'
 import fs from 'fs/promises'
 import path from 'path'
 import sharp from 'sharp'
-import { applyWatermark } from '../../../src/lib/image/watermark'
-import { getAdminSessionFromCookies } from '../../../src/lib/auth/session'
-import { parseCookies } from '../../../src/lib/http/cookies'
-import { logAuditEvent } from '../../../src/lib/logging/audit'
-import { isValidCsrfToken } from '../../../src/lib/security/csrf'
-import { consumeUploadRateLimit } from '../../../src/lib/security/rateLimit'
+import { applyWatermark } from '@/lib/image/watermark'
+import { getAdminSessionFromCookies } from '@/lib/auth/session'
+import { parseCookies } from '@/lib/http/cookies'
+import { logAuditEvent } from '@/lib/logging/audit'
+import { isValidCsrfToken } from '@/lib/security/csrf'
+import { consumeUploadRateLimit } from '@/lib/security/rateLimit'
 import {
   ADMIN_CSRF_HEADER_NAME,
   ADMIN_CSRF_COOKIE_NAME,
-} from '@/src/lib/security/csrfConstants'
+} from '@/lib/security/csrfConstants'
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/avif']
