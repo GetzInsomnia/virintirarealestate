@@ -9,6 +9,7 @@ import {
   type KeyboardEvent,
 } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import PropertyImage from '@/components/PropertyImage'
 
 export type SearchLocale = 'en' | 'th' | 'zh'
 
@@ -262,11 +263,12 @@ export default function SearchPanel({
                       onMouseDown={(event) => event.preventDefault()}
                       onClick={() => handleSuggestionClick(item.title)}
                     >
-                      <img
+                      <PropertyImage
                         src={item.image}
-                        alt=""
-                        width={48}
-                        height={48}
+                        alt={item.title}
+                        w={48}
+                        h={48}
+                        sizes="48px"
                         className="h-12 w-12 flex-shrink-0 rounded object-cover"
                       />
                       <span className="text-sm font-medium text-neutral-900">{item.title}</span>
