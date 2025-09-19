@@ -14,5 +14,71 @@
   "Brand": {
     "name": "Zomzom Property",
     "tagline": "多语言房地产合作伙伴"
+  },
+  "Console": {
+    "heading": "控制台",
+    "greeting": "欢迎回来，{{name}}",
+    "nav": {
+      "ariaLabel": "控制台导航",
+      "overview": "概览",
+      "account": "账户",
+      "posts": "房源",
+      "favorites": "收藏"
+    },
+    "plans": {
+      "free": "免费",
+      "premium": "尊享"
+    },
+    "overview": {
+      "plan": "订阅",
+      "planHelper": "前往账户标签管理套餐。",
+      "posts": "房源",
+      "favorites": "收藏",
+      "favoritesLimit": "您的收藏已达上限。",
+      "favoritesRemaining": "剩余 {{count}} 个收藏名额",
+      "activityTitle": "最新动态",
+      "activityDescription": "快速查看收藏与房源表现。"
+    },
+    "paywall": {
+      "title": "解锁更多发布次数",
+      "description": "升级至尊享套餐即可无限发布并获得高级推广工具。",
+      "upgradeCta": "立即升级",
+      "contactCta": "联系销售"
+    },
+    "account": {
+      "title": "账户信息",
+      "name": "姓名",
+      "email": "邮箱",
+      "plan": "套餐",
+      "localeTitle": "首选语言",
+      "localeDescription": "选择控制台显示语言。"
+    },
+    "locales": {
+      "th": "泰语",
+      "en": "英语",
+      "zh": "中文"
+    },
+    "posts": {
+      "title": "我的房源",
+      "createCta": "创建房源",
+      "paywallHint": "免费套餐最多发布三条房源，更多请升级。",
+      "emptyState": "暂未发布任何房源。",
+      "manageCta": "管理",
+      "placeholderTitle": "房源草稿 {{index}}",
+      "status": {
+        "published": "已发布",
+        "draft": "草稿"
+      }
+    },
+    "favorites": {
+      "title": "收藏房源",
+      "limitReached": "收藏上限 ({{count}})",
+      "remaining": "剩余 {{count}} 个收藏名额",
+      "counter": "{{used}} / {{limit}}",
+      "emptyState": "您还没有收藏任何房源。",
+      "placeholderTitle": "心仪房源 {{index}}",
+      "placeholderLocation": "泰国 曼谷",
+      "viewCta": "查看"
+    }
   }
 }

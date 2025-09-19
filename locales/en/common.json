@@ -14,5 +14,71 @@
   "Brand": {
     "name": "Zomzom Property",
     "tagline": "Multilingual real estate partner."
+  },
+  "Console": {
+    "heading": "Your console",
+    "greeting": "Welcome back, {{name}}",
+    "nav": {
+      "ariaLabel": "Console navigation",
+      "overview": "Overview",
+      "account": "Account",
+      "posts": "Posts",
+      "favorites": "Favorites"
+    },
+    "plans": {
+      "free": "Free",
+      "premium": "Premium"
+    },
+    "overview": {
+      "plan": "Subscription",
+      "planHelper": "Manage your plan from the account tab.",
+      "posts": "Listings",
+      "favorites": "Favorites",
+      "favoritesLimit": "You have reached your favorites limit.",
+      "favoritesRemaining": "{{count}} favorites remaining",
+      "activityTitle": "Recent activity",
+      "activityDescription": "Track your saved homes and listings performance at a glance."
+    },
+    "paywall": {
+      "title": "Unlock more publishing power",
+      "description": "Upgrade to Premium to publish unlimited listings and access enhanced promotion tools.",
+      "upgradeCta": "Upgrade",
+      "contactCta": "Contact sales"
+    },
+    "account": {
+      "title": "Account details",
+      "name": "Name",
+      "email": "Email",
+      "plan": "Plan",
+      "localeTitle": "Preferred language",
+      "localeDescription": "Choose the language used across your console experience."
+    },
+    "locales": {
+      "th": "Thai",
+      "en": "English",
+      "zh": "Chinese"
+    },
+    "posts": {
+      "title": "Your listings",
+      "createCta": "Create listing",
+      "paywallHint": "Upgrade to continue publishing more than three listings on the free plan.",
+      "emptyState": "You have not published any listings yet.",
+      "manageCta": "Manage",
+      "placeholderTitle": "Listing draft {{index}}",
+      "status": {
+        "published": "Published",
+        "draft": "Draft"
+      }
+    },
+    "favorites": {
+      "title": "Saved homes",
+      "limitReached": "Favorites limit reached ({{count}})",
+      "remaining": "{{count}} favorites remaining",
+      "counter": "{{used}} of {{limit}}",
+      "emptyState": "You have not saved any homes yet.",
+      "placeholderTitle": "Dream home {{index}}",
+      "placeholderLocation": "Bangkok, Thailand",
+      "viewCta": "View"
+    }
   }
 }
