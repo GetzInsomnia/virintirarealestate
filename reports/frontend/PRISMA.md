@@ -1,0 +1,61 @@
+# PRISMA
+
+## Enums
+- (none)
+
+## Models & fields (raw)
+
+### User
+```
+id                Int         @id @default(autoincrement())
+username          String      @unique
+passwordHash      String
+isActive          Boolean     @default(true)
+createdAt         DateTime    @default(now())
+updatedAt         DateTime    @updatedAt
+changeSets        ChangeSet[] @relation("ChangeSetCreatedBy")
+appliedChangeSets ChangeSet[] @relation("ChangeSetAppliedBy")
+```
+
+### ChangeSet
+```
+id           Int           @id @default(autoincrement())
+createdAt    DateTime      @default(now())
+description  String?
+patch        String
+createdById  Int?
+createdBy    User?         @relation("ChangeSetCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+appliedAt    DateTime?
+appliedById  Int?
+appliedBy    User?         @relation("ChangeSetAppliedBy", fields: [appliedById], references: [id], onDelete: SetNull)
+publishJobs  PublishJob[]
+```
+
+### PublishJob
+```
+id           Int              @id @default(autoincrement())
+changeSetId  Int
+changeSet    ChangeSet        @relation(fields: [changeSetId], references: [id], onDelete: Cascade)
+status       String           @default("QUEUED")
+queuedAt     DateTime         @default(now())
+startedAt    DateTime?
+completedAt  DateTime?
+failedAt     DateTime?
+attempts     Int              @default(0)
+errorMessage String?
+logs         AuditLog[]
+```
+
+### AuditLog
+```
+id           Int        @id @default(autoincrement())
+createdAt    DateTime   @default(now())
+actor        String
+action       String
+result       String?
+ip           String?
+reason       String?
+details      String?
+publishJobId Int?
+publishJob   PublishJob? @relation(fields: [publishJobId], references: [id], onDelete: SetNull)
+```

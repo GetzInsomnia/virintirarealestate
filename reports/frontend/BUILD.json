@@ -1,7 +1,6 @@
 {
   "name": "zomzomproperty",
   "version": "0.1.0",
-  "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -16,6 +15,7 @@
     "update:rates": "node -e \"if (process.env.CI) { console.error('update:rates must not run in CI'); process.exit(1); }\" && ts-node --compiler-options '{\"module\":\"CommonJS\"}' scripts/update-rates.ts"
   },
   "dependencies": {
+    "@prisma/client": "^5.22.0",
     "archiver": "^5.3.2",
     "autoprefixer": "^10.4.21",
     "bcryptjs": "^3.0.2",
@@ -52,7 +52,43 @@
     "eslint": "8.57.0",
     "eslint-config-next": "14.2.30",
     "jsdom": "^26.1.0",
+    "prisma": "^5.22.0",
     "size-limit": "^11.1.4",
     "typescript": "^5.8.3"
+  },
+  "tsconfig": {
+    "target": "esnext",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    }
+  },
+  "detected": {
+    "frontend": true,
+    "backend": true
   }
 }
