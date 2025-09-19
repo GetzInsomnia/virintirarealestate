@@ -1,23 +1,19 @@
 # INVENTORY
 
-**Repo**: zomzomproperty  |  **Version**: 0.1.0  |  **Type**: Frontend(Next.js) Backend(Fastify/Prisma)
+**Repo**: zomzomproperty  |  **Version**: 0.1.0  |  **Type**: Frontend(Next.js)
 
 ## File type counts (top 20)
-
-- `.json`: 326
+- `.json`: 327
 - `.ttf`: 72
 - `.ts`: 57
 - `.tsx`: 56
 - `.mdx`: 24
 - `.js`: 17
+- `.md`: 15
 - `(noext)`: 7
 - `.png`: 7
-- `.md`: 6
 - `.xml`: 2
 - `.yml`: 1
-- `.sql`: 1
-- `.toml`: 1
-- `.prisma`: 1
 - `.ico`: 1
 - `.jpg`: 1
 - `.txt`: 1
@@ -86,13 +82,6 @@
 │  ├─ adminmanager.tsx
 │  ├─ index.tsx
 │  └─ properties.tsx
-├─ prisma
-│  ├─ migrations
-│  │  ├─ 20250917022742_add_admin_scheduler_models
-│  │  │  └─ migration.sql
-│  │  └─ migration_lock.toml
-│  ├─ schema.prisma
-│  └─ seed.ts
 ├─ public
 │  ├─ data
 │  │  ├─ articles
@@ -534,6 +523,16 @@
 │  └─ web-app-manifest-512x512.png
 ├─ reports
 │  ├─ frontend
+│  │  ├─ ADMIN.md
+│  │  ├─ BUILD.json
+│  │  ├─ ENV.md
+│  │  ├─ I18N.md
+│  │  ├─ INVENTORY.md
+│  │  ├─ PERFORMANCE.md
+│  │  ├─ PRISMA.md
+│  │  ├─ ROUTES.md
+│  │  ├─ SECURITY.md
+│  │  └─ SEO.md
 │  ├─ ENV.md
 │  └─ INVENTORY.md
 ├─ scripts
@@ -638,8 +637,9 @@
 │  │  │  └─ searchView.tsx
 │  │  └─ shared
 │  │     └─ loadCommonTranslation.ts
-│  └─ workers
-│     └─ search.worker.ts
+│  ├─ workers
+│  │  └─ search.worker.ts
+│  └─ env.ts
 ├─ styles
 │  └─ globals.css
 ├─ test

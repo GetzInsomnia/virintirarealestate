@@ -15,7 +15,6 @@
     "update:rates": "node -e \"if (process.env.CI) { console.error('update:rates must not run in CI'); process.exit(1); }\" && ts-node --compiler-options '{\"module\":\"CommonJS\"}' scripts/update-rates.ts"
   },
   "dependencies": {
-    "@prisma/client": "^5.22.0",
     "archiver": "^5.3.2",
     "autoprefixer": "^10.4.21",
     "bcryptjs": "^3.0.2",
@@ -52,7 +51,6 @@
     "eslint": "8.57.0",
     "eslint-config-next": "14.2.30",
     "jsdom": "^26.1.0",
-    "prisma": "^5.22.0",
     "size-limit": "^11.1.4",
     "typescript": "^5.8.3"
   },
@@ -89,6 +87,6 @@
   },
   "detected": {
     "frontend": true,
-    "backend": true
+    "backend": false
   }
 }

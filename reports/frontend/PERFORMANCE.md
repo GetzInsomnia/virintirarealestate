@@ -1,5 +1,5 @@
 # PERFORMANCE
 
-- Raw <img> occurrences: **0**
+- Raw <img>: **1**
 - next/image imports: **4**
-- dynamic import() count: **4**
+- dynamic import(): **2**

@@ -1,7 +1,5 @@
 # ROUTES
 
-## Backend (Fastify) routes (static scan)
-- No Fastify routes detected.
 
 ## Frontend (Next.js) pages & API
 
