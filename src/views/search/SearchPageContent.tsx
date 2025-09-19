@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from 'react'
 import { useRouter } from 'next/router'
+import PropertyImage from '@/components/PropertyImage'
 import { normalizeSearchLocale } from '@/components/search/SearchPanel'
 
 interface ResultItem {
@@ -131,11 +132,11 @@ export default function SearchPageContent() {
                 const href = `/${activeLocale}/search?q=${encodeURIComponent(item.title)}`
                 return (
                   <li key={item.title} className="flex items-center gap-4 px-4 py-3">
-                    <img
+                    <PropertyImage
                       src={item.image}
-                      alt=""
-                      width={64}
-                      height={64}
+                      alt={item.title}
+                      w={64}
+                      h={64}
                       className="h-16 w-16 flex-shrink-0 rounded object-cover"
                     />
                     <div className="flex-1">
