@@ -1,14 +1,14 @@
 import Link from 'next/link';
 import PropertyImage, { asSrc, ImgLike } from './PropertyImage';
-import { useCurrency } from '../context/CurrencyContext';
+import PropertyPrice from './PropertyPrice';
 import { useAdminPreview } from '../context/AdminPreviewContext';
-import { formatCurrencyTHBBase } from '../lib/fx/convert';
 
 interface Property {
   id: number;
   title: { en: string; th: string; zh?: string };
   price: number;
   images: ImgLike[];
+  status?: string;
 }
 
 interface Props {
@@ -17,20 +17,33 @@ interface Props {
 }
 
 export default function PropertyCard({ property, locale }: Props) {
-  const { currency, rates } = useCurrency();
   const { isPreview, requestInlineEdit } = useAdminPreview();
   let localeKey: 'en' | 'th' | 'zh' = 'en';
   if (locale === 'th' || locale === 'zh') {
     localeKey = locale;
   }
   const title = property.title[localeKey] ?? property.title.en;
-  const main = formatCurrencyTHBBase(property.price, currency, rates);
-  const thb = formatCurrencyTHBBase(property.price, 'THB', rates);
+  const status = property.status?.toUpperCase();
+  const statusLabel = status
+    ? status
+        .replace(/_/g, ' ')
+        .toLowerCase()
+        .replace(/\b\w/g, (char) => char.toUpperCase())
+    : null;
+  const badgeClass =
+    status === 'SOLD'
+      ? 'bg-gray-600 text-white'
+      : status === 'RESERVED'
+      ? 'bg-amber-500 text-black'
+      : 'bg-emerald-500 text-white';
+  const containerClass = `relative border p-2 ${
+    status === 'SOLD' ? 'opacity-80 grayscale' : ''
+  }`;
 
   const src = asSrc(property.images?.[0]);
 
   return (
-    <div className="relative border p-2">
+    <div className={containerClass}>
       {isPreview && (
         <button
           type="button"
@@ -51,11 +64,13 @@ export default function PropertyCard({ property, locale }: Props) {
         <PropertyImage src={src} alt={title} />
         <h3 className="font-semibold mt-2">{title}</h3>
       </Link>
-      <div>
-        <div>{main}</div>
-        {currency !== 'THB' && (
-          <div className="text-sm text-gray-500">≈ {thb}</div>
-        )}
+      {statusLabel && (
+        <span className={`absolute left-2 top-2 rounded px-2 py-1 text-xs font-semibold ${badgeClass}`}>
+          {statusLabel}
+        </span>
+      )}
+      <div className="mt-2">
+        <PropertyPrice priceTHB={property.price} />
       </div>
     </div>
   );

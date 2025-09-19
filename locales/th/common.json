@@ -14,5 +14,71 @@
   "Brand": {
     "name": "Zomzom Property",
     "tagline": "พันธมิตรอสังหาริมทรัพย์หลายภาษา"
+  },
+  "Console": {
+    "heading": "คอนโซลของคุณ",
+    "greeting": "ยินดีต้อนรับกลับ {{name}}",
+    "nav": {
+      "ariaLabel": "เมนูคอนโซล",
+      "overview": "ภาพรวม",
+      "account": "บัญชี",
+      "posts": "ประกาศ",
+      "favorites": "รายการโปรด"
+    },
+    "plans": {
+      "free": "ฟรี",
+      "premium": "พรีเมียม"
+    },
+    "overview": {
+      "plan": "การสมัครสมาชิก",
+      "planHelper": "จัดการแพ็กเกจของคุณได้ที่แท็บบัญชี",
+      "posts": "ประกาศ",
+      "favorites": "รายการโปรด",
+      "favoritesLimit": "คุณใช้โควต้ารายการโปรดครบแล้ว",
+      "favoritesRemaining": "เหลืออีก {{count}} รายการ",
+      "activityTitle": "กิจกรรมล่าสุด",
+      "activityDescription": "ติดตามรายการโปรดและประสิทธิภาพประกาศของคุณได้อย่างรวดเร็ว"
+    },
+    "paywall": {
+      "title": "ปลดล็อกการลงประกาศมากขึ้น",
+      "description": "อัปเกรดเป็นพรีเมียมเพื่อโพสต์ได้ไม่จำกัดและใช้เครื่องมือโปรโมตขั้นสูง",
+      "upgradeCta": "อัปเกรด",
+      "contactCta": "ติดต่อฝ่ายขาย"
+    },
+    "account": {
+      "title": "ข้อมูลบัญชี",
+      "name": "ชื่อ",
+      "email": "อีเมล",
+      "plan": "แพ็กเกจ",
+      "localeTitle": "ภาษาที่ต้องการ",
+      "localeDescription": "เลือกภาษาสำหรับการใช้งานคอนโซล"
+    },
+    "locales": {
+      "th": "ไทย",
+      "en": "อังกฤษ",
+      "zh": "จีน"
+    },
+    "posts": {
+      "title": "ประกาศของคุณ",
+      "createCta": "สร้างประกาศ",
+      "paywallHint": "อัปเกรดเพื่อโพสต์เกินสามประกาศในแพ็กเกจฟรี",
+      "emptyState": "ยังไม่มีประกาศ",
+      "manageCta": "จัดการ",
+      "placeholderTitle": "ประกาศร่าง {{index}}",
+      "status": {
+        "published": "เผยแพร่",
+        "draft": "ร่าง"
+      }
+    },
+    "favorites": {
+      "title": "บ้านที่บันทึกไว้",
+      "limitReached": "ใช้โควต้ารายการโปรดครบ ({{count}})",
+      "remaining": "เหลืออีก {{count}} รายการ",
+      "counter": "{{used}} จาก {{limit}}",
+      "emptyState": "ยังไม่มีบ้านที่บันทึก",
+      "placeholderTitle": "บ้านในฝัน {{index}}",
+      "placeholderLocation": "กรุงเทพฯ ประเทศไทย",
+      "viewCta": "ดูรายละเอียด"
+    }
   }
 }

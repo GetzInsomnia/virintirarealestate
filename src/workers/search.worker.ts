@@ -11,15 +11,18 @@ interface PropertyDTO {
   id: number;
   title: { en: string; th: string; zh?: string };
   province: { en: string; th: string };
+  district?: { en: string; th?: string };
   type: string;
   price: number;
   priceBucket: string;
   amenities: string[];
   images: (string | ProcessedImage)[];
   createdAt: string;
+  updatedAt?: string;
   beds?: number;
   baths?: number;
   status?: string;
+  views?: number;
   nearTransit?: boolean;
   furnished?: string;
   transitLine?: string;
@@ -35,6 +38,8 @@ interface SearchDoc {
   id: number;
   province: string;
   province_th: string;
+  district?: string;
+  district_th?: string;
   type: string;
   title_en: string;
   title_th: string;
@@ -47,6 +52,7 @@ interface SearchDoc {
   amenities: string[];
   images: string[];
   createdAt: string;
+  updatedAt?: string;
   image?: string;
   beds?: number;
   baths?: number;
@@ -54,6 +60,8 @@ interface SearchDoc {
   pricePerSqm?: number;
   areaBuilt?: number;
   area?: number;
+  views?: number;
+  tags?: string[];
   nearTransit?: boolean;
   furnished?: string;
   transitLine?: string;
@@ -100,6 +108,8 @@ const LEGACY_OPTIONS = {
     'title_zh',
     'province',
     'province_th',
+    'district',
+    'district_th',
     'type',
     'price',
     'priceBucket',
@@ -107,12 +117,15 @@ const LEGACY_OPTIONS = {
     'image',
     'images',
     'createdAt',
+    'updatedAt',
     'beds',
     'baths',
     'status',
     'pricePerSqm',
     'area',
     'areaBuilt',
+    'views',
+    'tags',
     'description_en',
     'description_th',
     'description_zh',
@@ -168,6 +181,8 @@ function mapLegacyDoc(raw: any, id: number): SearchDoc {
     id,
     province: toStringOrEmpty(raw?.province),
     province_th: toStringOrEmpty(raw?.province_th),
+    district: toStringOrEmpty(raw?.district),
+    district_th: toStringOrEmpty(raw?.district_th),
     type: toStringOrEmpty(raw?.type),
     title_en: toStringOrEmpty(raw?.title_en),
     title_th: toStringOrEmpty(raw?.title_th),
@@ -183,12 +198,17 @@ function mapLegacyDoc(raw: any, id: number): SearchDoc {
     images,
     image,
     createdAt: toStringOrEmpty(raw?.createdAt),
+    updatedAt: toStringOrEmpty(raw?.updatedAt),
     beds: toNumberOrUndefined(raw?.beds),
     baths: toNumberOrUndefined(raw?.baths),
     status: toStringOrEmpty(raw?.status),
     pricePerSqm: toNumberOrUndefined(raw?.pricePerSqm),
     areaBuilt: toNumberOrUndefined(raw?.areaBuilt),
     area: toNumberOrUndefined(raw?.area),
+    views: toNumberOrUndefined(raw?.views),
+    tags: Array.isArray(raw?.tags)
+      ? (raw.tags as unknown[]).filter((value): value is string => typeof value === 'string')
+      : undefined,
     nearTransit: typeof raw?.nearTransit === 'boolean' ? raw.nearTransit : undefined,
     furnished: toStringOrEmpty(raw?.furnished),
     transitLine: toStringOrEmpty(raw?.transitLine),
@@ -305,10 +325,9 @@ self.onmessage = async (event: MessageEvent<any>) => {
   const amenitySet = new Set(amenities);
   req.amenities = req.amenities?.filter((a) => amenitySet.has(a));
   if (!transit) {
-    (self as any).postMessage({ total: 0, results: [] });
-    return;
-  }
-  if (req.transitLine && !transit[req.transitLine]) {
+    delete req.transitLine;
+    delete req.transitStation;
+  } else if (req.transitLine && !transit[req.transitLine]) {
     delete req.transitLine;
     delete req.transitStation;
   } else if (
@@ -404,15 +423,20 @@ self.onmessage = async (event: MessageEvent<any>) => {
     id: doc.id,
     title: { en: doc.title_en, th: doc.title_th, zh: doc.title_zh },
     province: { en: doc.province, th: doc.province_th },
+    district: doc.district
+      ? { en: doc.district, th: doc.district_th }
+      : undefined,
     type: doc.type,
     price: doc.price,
     priceBucket: doc.priceBucket,
     amenities: doc.amenities,
     images: doc.images,
     createdAt: doc.createdAt,
+    updatedAt: doc.updatedAt,
     beds: doc.beds,
     baths: doc.baths,
     status: doc.status,
+    views: doc.views,
     nearTransit: doc.nearTransit,
     furnished: doc.furnished,
     transitLine: doc.transitLine,
