@@ -76,6 +76,13 @@ export default function NavBar() {
             <li><CurrencySwitcher /></li>
           </ul>
           <ContactIcons className="hidden xl:flex" />
+          <Link
+            href={`/${activeLocale}/console`}
+            className="ml-2 inline-flex h-10 w-10 items-center justify-center rounded-full border border-neutral-300 text-lg"
+            aria-label="Open console hub"
+          >
+            <span aria-hidden="true">👤</span>
+          </Link>
           <button
             type="button"
             ref={searchToggleRef}
