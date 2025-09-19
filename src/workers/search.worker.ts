@@ -1,4 +1,4 @@
-import MiniSearch from 'minisearch';
+import MiniSearch, { type Options } from 'minisearch';
 import { searchParamsSchema, type SearchParams } from '../lib/validation/search';
 import { MIN_PRICE, MAX_PRICE, isValidPrice } from '../lib/filters/price';
 import type { ProcessedImage } from '../components/PropertyImage';
@@ -76,7 +76,7 @@ interface ModernShard {
 
 interface LegacyShard {
   legacy: true;
-  index: MiniSearch<any>;
+  index: MiniSearch<SearchDoc>;
 }
 
 type LoadedShard = ModernShard | LegacyShard;
@@ -92,48 +92,52 @@ const MODERN_FIELDS: Record<Locale, (keyof SearchDoc)[]> = {
   zh: ['title_zh', 'description_zh'],
 };
 
-const LEGACY_OPTIONS = {
-  fields: [
-    'title_en',
-    'title_th',
-    'title_zh',
-    'description_en',
-    'description_th',
-    'description_zh',
-  ] as string[],
-  storeFields: [
-    'id',
-    'title_en',
-    'title_th',
-    'title_zh',
-    'province',
-    'province_th',
-    'district',
-    'district_th',
-    'type',
-    'price',
-    'priceBucket',
-    'amenities',
-    'image',
-    'images',
-    'createdAt',
-    'updatedAt',
-    'beds',
-    'baths',
-    'status',
-    'pricePerSqm',
-    'area',
-    'areaBuilt',
-    'views',
-    'tags',
-    'description_en',
-    'description_th',
-    'description_zh',
-    'nearTransit',
-    'furnished',
-    'transitLine',
-    'transitStation',
-  ] as string[],
+const LEGACY_FIELDS = [
+  'title_en',
+  'title_th',
+  'title_zh',
+  'description_en',
+  'description_th',
+  'description_zh',
+] as const;
+
+const LEGACY_STORE_FIELDS = [
+  'id',
+  'title_en',
+  'title_th',
+  'title_zh',
+  'province',
+  'province_th',
+  'district',
+  'district_th',
+  'type',
+  'price',
+  'priceBucket',
+  'amenities',
+  'image',
+  'images',
+  'createdAt',
+  'updatedAt',
+  'beds',
+  'baths',
+  'status',
+  'pricePerSqm',
+  'area',
+  'areaBuilt',
+  'views',
+  'tags',
+  'description_en',
+  'description_th',
+  'description_zh',
+  'nearTransit',
+  'furnished',
+  'transitLine',
+  'transitStation',
+] as const;
+
+const LEGACY_OPTIONS: Options<SearchDoc> = {
+  fields: [...LEGACY_FIELDS],
+  storeFields: [...LEGACY_STORE_FIELDS],
 };
 
 function isLegacyShard(shard: LoadedShard): shard is LegacyShard {
@@ -243,7 +247,8 @@ async function loadShard(key: string): Promise<LoadedShard> {
       if (!res.ok) {
         throw new Error('Missing shard');
       }
-      const json = await res.json();
+      const file = await res.text();
+      const json = JSON.parse(file);
       if (json && typeof json === 'object' && 'indexes' in json && 'docs' in json) {
         const docs: SearchDoc[] = Array.isArray(json.docs) ? json.docs : [];
         const docMap = new Map<number, SearchDoc>();
@@ -252,19 +257,30 @@ async function loadShard(key: string): Promise<LoadedShard> {
         }
         const indexes: Partial<Record<Locale, MiniSearch<SearchDoc>>> = {};
         (Object.keys(MODERN_FIELDS) as Locale[]).forEach((locale) => {
-          const indexJson = (json as any).indexes?.[locale];
-          if (indexJson) {
-            indexes[locale] = MiniSearch.loadJSON(indexJson, {
-              fields: MODERN_FIELDS[locale],
+          const indexJson = json.indexes?.[locale];
+          if (typeof indexJson === 'string') {
+            indexes[locale] = MiniSearch.loadJSON<SearchDoc>(indexJson, {
+              fields: [...MODERN_FIELDS[locale]],
               storeFields: ['id'],
             });
+          } else if (indexJson && typeof indexJson === 'object') {
+            indexes[locale] = MiniSearch.loadJSON<SearchDoc>(
+              JSON.stringify(indexJson),
+              {
+                fields: [...MODERN_FIELDS[locale]],
+                storeFields: ['id'],
+              }
+            );
           }
         });
         shardCache[key] = { docs, docMap, indexes };
       } else {
         shardCache[key] = {
           legacy: true,
-          index: MiniSearch.loadJSON(json as any, LEGACY_OPTIONS as any),
+          index: MiniSearch.loadJSON<SearchDoc>(
+            typeof json === 'string' ? json : file,
+            LEGACY_OPTIONS
+          ),
         };
       }
     } catch {
